@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/ll_toast_warning"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/primary"
+        android:gravity="center_vertical"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:id="@+id/iv_my_toast_warning"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="10dp"
+            android:src="@mipmap/icon_toast_warning" />
+
+        <TextView
+            android:id="@+id/tv_my_toast_warning"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="用户名不能为空！"
+            android:textColor="@color/primary_light"
+            android:textSize="19sp" />
+    </LinearLayout>
+
+</LinearLayout>

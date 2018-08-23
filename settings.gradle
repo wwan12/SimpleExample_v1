@@ -1,0 +1,1 @@
+include ':app', ':simpleanimation', ':network', ':tool', ':danmuku', ':independentmodule', ':qrcode'

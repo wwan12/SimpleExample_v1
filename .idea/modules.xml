@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/SimpleExample.iml" filepath="$PROJECT_DIR$/SimpleExample.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/danmuku/danmuku.iml" filepath="$PROJECT_DIR$/danmuku/danmuku.iml" />
+      <module fileurl="file://$PROJECT_DIR$/independentmodule/independentmodule.iml" filepath="$PROJECT_DIR$/independentmodule/independentmodule.iml" />
+      <module fileurl="file://$PROJECT_DIR$/network/network.iml" filepath="$PROJECT_DIR$/network/network.iml" />
+      <module fileurl="file://$PROJECT_DIR$/qrcode/qrcode.iml" filepath="$PROJECT_DIR$/qrcode/qrcode.iml" />
+      <module fileurl="file://$PROJECT_DIR$/simpleanimation/simpleanimation.iml" filepath="$PROJECT_DIR$/simpleanimation/simpleanimation.iml" />
+      <module fileurl="file://$PROJECT_DIR$/tool/tool.iml" filepath="$PROJECT_DIR$/tool/tool.iml" />
+    </modules>
+  </component>
+</project>
