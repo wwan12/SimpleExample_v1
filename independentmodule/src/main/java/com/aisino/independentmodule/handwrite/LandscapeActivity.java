@@ -1,13 +1,12 @@
 package com.aisino.independentmodule.handwrite;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
-import com.aisino.independentmodule.ModuleManager;
 import com.aisino.independentmodule.R;
-import static com.aisino.independentmodule.ModuleManager.MODULE_CALLBACK;
 
 
 //2017-9-26
@@ -27,8 +26,12 @@ public class LandscapeActivity extends Activity {
             @Override
             public void onClick(View v) {
                 if (pathView.getTouched()) {
-                    ModuleManager.getMap().save(MODULE_CALLBACK, pathView.getBitMap());
-                    setResult(MODULE_CALLBACK);
+//                    ModuleManager.Companion.getMap().save(Companion.getMODULE_CALLBACK(), pathView.getBitMap());
+                    Intent resultIntent = new Intent();
+                    Bundle bundle=new Bundle();
+                    bundle.putParcelable("result", pathView.getBitMap());
+                    resultIntent.putExtras(bundle);
+                    setResult(RESULT_OK,resultIntent);
                     finish();
                 } else {
                     Toast.makeText(LandscapeActivity.this, "您没有签名~", Toast.LENGTH_SHORT).show();

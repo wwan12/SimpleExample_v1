@@ -38,7 +38,6 @@ class Submit {
     var method = Method.GET
     var returnType = ReturnType.JSON
     var downloadPath = System.currentTimeMillis().toString() + ".jpg"
-    var testEntity: Entity?=null
     var outTime = 5L//单位为秒
     private val toUI=Handler()
     val _params: MutableMap<String, Any> = mutableMapOf()
@@ -89,12 +88,7 @@ class Submit {
         }
         if (url == "") return
 
-
         tag=method.name
-
-        if (testEntity!=null){
-
-        }
 
         when (method) {//分类请求
             Method.GET -> get()

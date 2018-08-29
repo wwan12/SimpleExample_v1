@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.Toast
-import com.aisino.independentmodule.ModuleManager.MODULE_CALLBACK
 import com.aisino.independentmodule.handwrite.LandscapeActivity
 import com.aisino.independentmodule.link.NFC
 import com.aisino.independentmodule.link.NFC_READ
@@ -33,7 +32,7 @@ class IndependentModuleActivity : AppCompatActivity() {
     fun toM(view: View, type: String) {
         view.setOnClickListener {
             when (type) {
-                indList[0] -> startActivityForResult(Intent(this, LandscapeActivity::class.java), MODULE_CALLBACK)
+                indList[0] -> startActivityForResult(Intent(this, LandscapeActivity::class.java), 1)
                 indList[1] -> {
                     val nfc = NFC(this, NFC_READ, "")
 
