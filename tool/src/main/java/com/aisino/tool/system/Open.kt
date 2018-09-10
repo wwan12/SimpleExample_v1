@@ -37,6 +37,13 @@ fun Activity.openCall(phone: String) {
     this.startActivity(Intent(Intent.ACTION_CALL, uri))
 }
 
+/**
+ * 关闭输入法
+ */
+fun Activity.closeInput() {
+    this.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
+}
+
 
 
 /**

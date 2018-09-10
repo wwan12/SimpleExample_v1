@@ -1,9 +1,11 @@
 package com.aisino.tool.widget
 
 import android.app.Activity
+import android.content.ComponentCallbacks
 import android.view.View
 import android.widget.*
 import com.aisino.tool.R
+import java.lang.Comparable
 
 fun Activity.openUnterTheViewListWindow(view: View,data: ArrayList<String>,itemRun:(i: Int)->Unit):PopupWindow{
     // 将布局文件转换成View对象，popupview 内容视图

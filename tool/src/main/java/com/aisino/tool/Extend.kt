@@ -1,6 +1,5 @@
 package com.aisino.tool
 
-import android.app.Activity
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
@@ -10,17 +9,20 @@ import android.widget.Toast
  * 开发用
  */
 private var DEBUG = true
-fun Activity.DEBUG(boolean: Boolean): Unit {
-    DEBUG=boolean
-}
 
 fun DEBUG(): Boolean {
+    DEBUG=BuildConfig.DEBUG
     return DEBUG
 }
 
 fun String.log(tag:String="tag"): Unit {
-    if (DEBUG){
+    if (DEBUG()){
         Log.i(tag, this)
+    }
+}
+fun String.loge(tag:String="tag"): Unit {
+    if (DEBUG()){
+        Log.e(tag, this)
     }
 }
 
@@ -29,7 +31,7 @@ fun String.toast(context: Context): Unit {
 }
 
 fun String.promptError(describe: String): Unit {
-    if (DEBUG){
+    if (DEBUG()){
         Log.e("promptError", "File\t" + getFileName() + "\n"
                 + "Class\t" + getClassName() + "\n"
                 + "Method\t" + getMethodName() + "\n" + "Line\t" + getLineNumber() + "\n$this\n$describe")

@@ -8,6 +8,10 @@ package com.aisino.danmuku;
  * 版本号：1
  */
 public class VideoActivity {
+    public static final int HTTP_TYPE = 0;
+    public static final int LOCAL_TYPE = 1;
+
+
     //    2.Add JZVideoPlayer in your layout:
 //
 //    <cn.jzvd.JZVideoPlayerStandard

@@ -23,20 +23,30 @@ android {
         }
     }
 
+    gradle.startParameter.getTaskNames().each { task ->
+        //library里 BuildConfig.DEBUG默认一直是flase;所以需要自定义
+        if(task.contains("Debug")){
+            android{
+                defaultPublishConfig "debug"
+            }
+
+        }else if(task.contains("Release")){
+            android{
+                defaultPublishConfig "release"
+            }
+        }
+    }
+
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-
     implementation 'com.android.support:appcompat-v7:26.1.0'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.1'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     implementation 'pub.devrel:easypermissions:0.4.2'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'com.google.code.gson:gson:2.8.2'
-    implementation 'com.squareup.okhttp3:okhttp:3.7.0'
-    implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.5.1'
+    implementation 'com.squareup.okhttp3:okhttp:3.10.0'
+    api 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-alpha-14'
 }
 repositories {
     mavenCentral()

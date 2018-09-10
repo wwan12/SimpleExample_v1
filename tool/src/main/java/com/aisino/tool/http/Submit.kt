@@ -4,7 +4,9 @@ import android.os.Handler
 import android.util.JsonToken
 import okhttp3.*
 import android.util.Xml
+import com.aisino.tool.DEBUG
 import com.aisino.tool.log
+import com.aisino.tool.loge
 import com.google.gson.stream.JsonReader
 import org.xmlpull.v1.XmlPullParser
 import java.io.*
@@ -19,7 +21,7 @@ import java.util.concurrent.TimeUnit
  * Created by lenovo on 2017/11/14.
  */
 
-var cookjar: CookieJar = object : CookieJar {
+val cookjar: CookieJar = object : CookieJar {
     override fun saveFromResponse(url: HttpUrl, cookies: List<Cookie>) {
         cookieStore.put(url.host(), cookies)
     }
@@ -30,6 +32,14 @@ var cookjar: CookieJar = object : CookieJar {
     }
 }
 val cookieStore = HashMap<String, List<Cookie>>()//cookie缓存
+/**
+ * 正式访问前缀
+ */
+var RELEASEAPI = ""
+/**
+ * debug访问前缀
+ */
+var DEBUGAPI=""
 
 class Submit {
     //可配置属性
@@ -39,7 +49,7 @@ class Submit {
     var returnType = ReturnType.JSON
     var downloadPath = System.currentTimeMillis().toString() + ".jpg"
     var outTime = 5L//单位为秒
-    private val toUI=Handler()
+    private val toUI = Handler()
     val _params: MutableMap<String, Any> = mutableMapOf()
     val _fileParams: MutableMap<String, String> = mutableMapOf()
     val _headers: MutableMap<String, String> = mutableMapOf()
@@ -71,9 +81,9 @@ class Submit {
 //    }
 
 
-   fun run() {
-       tryInit()
-   }
+    fun run() {
+        tryInit()
+    }
 
 
     private fun tryInit(): Unit { //检查配置单
@@ -87,8 +97,14 @@ class Submit {
             return
         }
         if (url == "") return
+        if (DEBUG()){
+            url = DEBUGAPI + url
+            "DEBUGAPI->$url".loge("api")
+        }else{
+            url = RELEASEAPI + url
+        }
 
-        tag=method.name
+        tag = method.name
 
         when (method) {//分类请求
             Method.GET -> get()
@@ -116,7 +132,7 @@ class Submit {
     fun fail(fail: (failMsg: String) -> Unit): Unit {
         _fail = fail
     }
-    
+
 //    private fun test(): Unit {//测试方法
 //        toUI.postDelayed({
 ////            if (){
@@ -138,7 +154,6 @@ class Submit {
         if (_params.size > 0) {
             url = url.substring(0, url.length - 1)
         }
-        (":"+url).log(tag)
         val request = Request.Builder().url(url).build()
         val call = okHttpClient.build().newCall(request)
         call.enqueue(object : Callback {
@@ -157,7 +172,7 @@ class Submit {
         val build = FormBody.Builder()
         for (p in _params) {
             build.add(p.key, p.value.toString())
-            (p.key+"-"+p.value.toString()).log("post")
+            (p.key + "-" + p.value.toString()).log("post")
         }
         val body = build.build()
         val request = Request.Builder().url(url).post(body).build()
@@ -206,7 +221,6 @@ class Submit {
     }
 
     private fun upFile(): Unit {
-        url.log(tag)
         val mOkHttpClient = OkHttpClient.Builder().cookieJar(cookjar).connectTimeout(outTime, TimeUnit.SECONDS)
         val build = MultipartBody.Builder().setType(MultipartBody.FORM)
         for (p in _params) {
@@ -245,7 +259,7 @@ class Submit {
             }
 
             override fun onResponse(call: Call, response: Response) {
-                val inputStream = response.body().byteStream()
+                val inputStream = response.body()!!.byteStream()
                 var fileOutputStream = FileOutputStream(File(downloadPath))
                 val buffer = ByteArray(2048)
                 var len = 0
@@ -267,24 +281,24 @@ class Submit {
     }
 
     private fun successCall(response: Response): Unit {
-        toUI.post{
+        toUI.post {
             if (response.code() != 200) {
                 _fail("请求失败:" + response.code())
-            }else{
+            } else {
                 response.request().url().toString().log("successCall")
                 when (returnType) {
                     ReturnType.JSON -> {
-                        var jsonString = response.body().string()
+                        var jsonString = response.body()!!.string()
                         jsonString.log("successCall")
                         pullJson(jsonString)
                     }
                     ReturnType.XML -> {
 //                    val s = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<ROOT><RESULT><CODE>9999</CODE><POS><PO>1111</PO><PO>2222</PO></POS><CONTENT>java.lang.NullPointerException\ncom.aisino.heb.xlg.web.servlet.XlgServlet.doPost(XlgServlet.java:135)</CONTENT></RESULT></ROOT>".byteInputStream()
-                        pullXML(response.body().byteStream())
+                        pullXML(response.body()!!.byteStream())
 //                    pullXML(s)
                     }
                     ReturnType.STRING -> {
-                        _response.put(ReturnType.STRING.name, response.body().string())
+                        _response.put(ReturnType.STRING.name, response.body()!!.string())
                     }
                 }
                 _success()
@@ -294,7 +308,7 @@ class Submit {
 
     //- 入参
     operator fun String.minus(value: String?) {
-        if (value!=null){
+        if (value != null) {
             _params.put(this, value)
         }
 
@@ -367,14 +381,14 @@ class Submit {
             JsonToken.BOOLEAN.name -> {
                 target.put(loopName, reader.nextBoolean())
             }
-            JsonToken.STRING.name->{
+            JsonToken.STRING.name -> {
                 target.put(loopName, reader.nextString())
             }
-            JsonToken.NULL.name->{
+            JsonToken.NULL.name -> {
                 target.put(loopName, "")
                 reader.skipValue()
             }
-            JsonToken.NUMBER.name->{
+            JsonToken.NUMBER.name -> {
                 target.put(loopName, reader.nextLong().toString())
             }
             else -> {
@@ -432,7 +446,7 @@ class Submit {
         var result: E?
         if (target.containsKey(key)) {
             return target[key] as E
-        }//第一层
+        }//找到了就直接返回
         for (res in target) {
             if (res.value is MutableMap<*, *>) {
                 result = loopAny<E>(key, res.value as MutableMap<String, Any>)

@@ -1,9 +1,22 @@
 package com.aisino.tool.http
 
-import com.aisino.tool.DEBUG
-
 /**
  * Created by lenovo on 2017/11/14.
+ *
+ * Http.get {
+ *url = "login"
+ *"kotlin"-"1.6"//添加参数
+ *请求开始
+ *start {  }
+ *请求成功
+ *success {
+ *getAny<ArrayList<String>>("ids")//取出集合ids
+ *!"id"//取出STRING参数id
+ *"user".."id"//取出userJOBJ对象中STRING参数id
+ *}
+ *请求失败
+ *fail { failMsg -> Toast.makeText(this@NetWorkActivity, failMsg, Toast.LENGTH_SHORT).show() }
+ *}
  */
 object Http {
 
