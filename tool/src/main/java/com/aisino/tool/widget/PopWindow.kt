@@ -2,10 +2,15 @@ package com.aisino.tool.widget
 
 import android.app.Activity
 import android.content.ComponentCallbacks
+import android.graphics.Bitmap
 import android.view.View
 import android.widget.*
 import com.aisino.tool.R
 import java.lang.Comparable
+import java.text.FieldPosition
+import android.support.v4.view.ViewPager
+import android.view.ViewGroup
+
 
 fun Activity.openUnterTheViewListWindow(view: View,data: ArrayList<String>,itemRun:(i: Int)->Unit):PopupWindow{
     // 将布局文件转换成View对象，popupview 内容视图
@@ -58,5 +63,46 @@ fun ImageView.showFullWindow(): PopupWindow {
         }
     }
     mPopupWindow.showAsDropDown(this)
+    return mPopupWindow
+}
+
+fun Activity.showGrallery(position:Int,imgs:List<Bitmap>): PopupWindow {
+    val views=ArrayList<View>()
+    for (img in imgs){
+        val newImg= ImageView(this)
+        newImg.setImageBitmap(img)
+        newImg.layoutParams= ViewGroup.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT)
+        newImg.scaleType=ImageView.ScaleType.FIT_CENTER
+        views.add(newImg)
+    }
+    val mPopView= this.layoutInflater.inflate(R.layout.image_full_window, null)
+    val viewPager = mPopView.findViewById(R.id.pager) as ViewPager
+    val myPagerAdapter = ImageAdapter(views)
+    viewPager.adapter = myPagerAdapter
+    viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+        override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+
+        }
+
+        override fun onPageSelected(position: Int) {
+
+        }
+
+        override fun onPageScrollStateChanged(state: Int) {
+
+        }
+    })
+    viewPager.currentItem=position
+    val mPopupWindow = PopupWindow(mPopView,
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.MATCH_PARENT)
+    // 点击popuwindow外让其消失
+    mPopupWindow.setOutsideTouchable(true)
+    mPopView.setOnClickListener{
+        if (mPopupWindow.isShowing()) {
+            mPopupWindow.dismiss();
+        }
+    }
+    mPopupWindow.showAsDropDown(views[position])
     return mPopupWindow
 }
