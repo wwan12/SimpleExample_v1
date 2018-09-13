@@ -10,6 +10,7 @@ import com.aisino.tool.R
 
 /**
  * Created by lenovo on 2017/12/11.
+ * 创建一个前台服务
  */
 class ShowService(run: () -> Unit, text: String, icon: Int,layoutId:Int) : Service() {
     var _run: () -> Unit = {}

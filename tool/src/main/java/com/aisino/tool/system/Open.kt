@@ -21,28 +21,7 @@ import android.content.pm.PackageManager.NameNotFoundException
 /**
  * Created by lenovo on 2018/2/26.
  */
-//打开APK程序代码
-fun Activity.installApk(file: File) {
-    Log.e("OpenFile", file.name)
-    val intent = Intent()
-    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-    intent.action = android.content.Intent.ACTION_VIEW
-    intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive")
-    this.startActivity(intent)
-}
 
-@SuppressLint("MissingPermission")
-fun Activity.openCall(phone: String) {
-    val uri = Uri.parse("tel:" + phone.trim())
-    this.startActivity(Intent(Intent.ACTION_CALL, uri))
-}
-
-/**
- * 关闭输入法
- */
-fun Activity.closeInput() {
-    this.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
-}
 
 
 

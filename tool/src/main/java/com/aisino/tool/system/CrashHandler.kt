@@ -9,7 +9,7 @@ import java.io.*
 import java.util.*
 
 /**
- * <p>文件描述：<p>
+ * <p>文件描述： 捕获没有被应用捕获的异常<p>
  * <p>作者：Administrator<p>
  * <p>创建时间：2018/8/16/016<p>
  * <p>更改时间：2018/8/16/016<p>

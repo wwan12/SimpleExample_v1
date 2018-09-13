@@ -111,7 +111,7 @@ fun Activity.openCamera() :Uri{
 }
 
 
-//读取uri
+//读取相册获取的图片uri
 fun Uri.handleImageOnKitKat(activity: Activity): Bitmap? {
     var imagePath: String? = null
 //        val uri = Uri.parse(uriString)

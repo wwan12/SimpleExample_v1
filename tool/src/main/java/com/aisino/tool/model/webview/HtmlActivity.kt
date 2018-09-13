@@ -15,6 +15,7 @@ import android.view.View
 import android.webkit.SslErrorHandler
 import android.content.Intent
 import android.net.Uri
+import android.os.Parcelable
 import android.widget.*
 import com.aisino.tool.R
 import com.aisino.tool.ani.CircularAnim
@@ -30,24 +31,27 @@ class HtmlActivity : AppCompatActivity() {
     //    https://dqy.he-n-tax.gov.cn:8090/dqy/login_sjd.jsp
 //
 //        protected val mBaseUrl = "http://75.16.40.202:8080/wdqy/login_sjd.jsp"
-    private val protocol = "https://"
-    private val mBaseUrl = "dqy.he-n-tax.gov.cn:8090/dqy/"
-    private val mStartUrl: String = "login_sjd.jsp"
+//    private val protocol = "https://"
+    private var mBaseUrl = ""
+    private var errorUrl: String? = null
+    private var build:HtmlBuild?=null
+    private var isSingle=false
+    //    private val mStartUrl: String = "login_sjd.jsp"
     private lateinit var webView: WebView
-    private lateinit var errorLl:LinearLayout
-    private lateinit var errorImg:ImageView
-    private lateinit var errorText:TextView
+    private lateinit var errorLl: LinearLayout
+    private lateinit var errorImg: ImageView
+    private lateinit var errorText: TextView
     val NAME = "NAME"
-    val imgResList = ArrayList<String>().apply {
-//        add("${mBaseUrl}sjd/tzgg/tzggxq.action?")
+//    val imgResList = ArrayList<String>().apply {
+        //        add("${mBaseUrl}sjd/tzgg/tzggxq.action?")
 //        add("${mBaseUrl}sjd/zcsd/zcsdxq.action?")
 //        add("${mBaseUrl}sjd/fxts/fxtsxq.action?")
 //        add("${mBaseUrl}sjd/Zdsxbg/Zdsxbgxq.action?")
 //        add("${mBaseUrl}qyd/sssqs/sssqsck.action?")
-    }
+//    }
 
     val newLoad = ArrayList<String>().apply {
-//        add("hd.chinatax.gov.cn/guoshui/main.jsp")
+        //        add("hd.chinatax.gov.cn/guoshui/main.jsp")
 //        add("12366.bjnsr.gov.cn/")
 //        add("12366.chinatax.gov.cn/")
     }
@@ -60,6 +64,9 @@ class HtmlActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_html)
+        mBaseUrl = intent.getStringExtra("URL")
+        errorUrl = intent.getStringExtra("ERRORURL")
+        isSingle=intent.getBooleanExtra("ISSINGLE",false)
         init()
 //        bindAlias()
 //        Toast.makeText(this, PushManager.getInstance().getClientid(applicationContext) + "_a", Toast.LENGTH_LONG).show()
@@ -69,11 +76,11 @@ class HtmlActivity : AppCompatActivity() {
 
 
     private fun init() {
-        webView= findViewById(R.id.main_web)
-        errorLl=findViewById(R.id.error_ll)
-        errorImg=findViewById(R.id.error_img)
-        errorText=findViewById(R.id.error_text)
-        dialog.fullActivity(this,webView)
+        webView = findViewById(R.id.main_web)
+        errorLl = findViewById(R.id.error_ll)
+        errorImg = findViewById(R.id.error_img)
+        errorText = findViewById(R.id.error_text)
+        dialog.fullActivity(this, webView)
         webView.settings.cacheMode = WebSettings.LOAD_DEFAULT// 不加载缓存
         webView.settings.setRenderPriority(WebSettings.RenderPriority.HIGH)
         webView.settings.javaScriptEnabled = true
@@ -94,7 +101,7 @@ class HtmlActivity : AppCompatActivity() {
         errorLl.setOnClickListener({
             webView.visibility = View.VISIBLE
             errorLl.visibility = View.GONE
-            webView.loadUrl(protocol + mBaseUrl + mStartUrl)
+            webView.loadUrl(mBaseUrl)
             needClearHistory = true
 
         })
@@ -106,7 +113,6 @@ class HtmlActivity : AppCompatActivity() {
                 if (message?.indexOf("||") != -1) {
                     getPreferences(Context.MODE_PRIVATE).edit().putString(NAME, message).commit()
                     result?.confirm()
-//                    Log.i("bbbb", message)
                     return true
                 }
                 Toast.makeText(this@HtmlActivity, message, Toast.LENGTH_SHORT).show()
@@ -127,18 +133,20 @@ class HtmlActivity : AppCompatActivity() {
                 if (url.indexOf("${mBaseUrl}zhuxiaosjd.action") != -1) {//注销
                     needClearHistory = true
                 }
-
-                if (url.indexOf("${mBaseUrl}err404.html") == -1) {//404
+//                if (errorUrl != null) {
+//                    if (url.indexOf(errorUrl!!) == -1) {//404
 //                    dialog.setLoadingBuilder(LOAD_TYPE.SINGLE_CIRCLE)
 //                            .setLoadingColor(Color.BLUE)//设置图标颜色
 //                            .setHintText("请稍等")//设置文本文字
 //                            .setHintTextSize(16f) // 设置字体大小
 //                            .setHintTextColor(Color.GRAY)  // 设置字体颜色
 //                            .show()
-                } else {
-                    webView.visibility = View.GONE
-                    errorLl.visibility = View.VISIBLE
-                }
+//                    } else {
+//                        webView.visibility = View.GONE
+//                        errorLl.visibility = View.VISIBLE
+//                    }
+//                }
+
                 for (u in newLoad) {//打开外部网站
                     if (url.indexOf(u) != -1) {
                         val intent = Intent()
@@ -149,7 +157,6 @@ class HtmlActivity : AppCompatActivity() {
                         webView.stopLoading()
                     }
                 }
-//                Log.i("aaaa", "start" + url);
                 super.onPageStarted(view, url, favicon)
             }
 
@@ -158,21 +165,21 @@ class HtmlActivity : AppCompatActivity() {
                 if (needClearHistory) {
                     webView.clearHistory()
                     needClearHistory = false
-                    setName()
+//                    setName()
                 }
+                imgReset()
 
-                if (url.indexOf(mStartUrl) != -1) {
-                    setName()
-                }
+//                if (url.indexOf(mStartUrl) != -1) {
+//                    setName()
+//                }
 
-                for (i in imgResList) {
-                    if (url.indexOf(i) != -1) {
-                        imgReset()
-                    }
-                }
+//                for (i in imgResList) {
+//                    if (url.indexOf(i) != -1) {
+//                        imgReset()
+//                    }
+//                }
 //                dialog.hide()
 //                dialog.cancel()
-//                Log.i("aaaa", "finish" + url)
 
             }
 
@@ -202,7 +209,7 @@ class HtmlActivity : AppCompatActivity() {
 //            }
         }
 
-        webView.loadUrl(protocol + mBaseUrl + mStartUrl)
+        webView.loadUrl(mBaseUrl)
 
     }
 
@@ -268,18 +275,17 @@ class HtmlActivity : AppCompatActivity() {
 //
 //    }
 
-    override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
-        if (event.action == KeyEvent.ACTION_DOWN) {
-            if (keyCode == KeyEvent.KEYCODE_BACK && webView.canGoBack()) {
+    override fun onBackPressed() {
+        super.onBackPressed()
+        if (isSingle){
+            if ( webView.canGoBack()) {
                 //表示按返回键时的操作
                 webView.goBack()   //后退
                 //webview.goForward();//前进
-                return true
             } else {
                 canFinish()
             }
         }
-        return false
     }
 
     private fun canFinish() {
@@ -299,7 +305,7 @@ class HtmlActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         webView.destroy()
-//        System.exit(0)
-
     }
 }
+
+data class HtmlBuild(var isSingle:Boolean, var chengImageSize:Boolean,var newLoad:List<String>)

@@ -10,11 +10,8 @@ import android.graphics.*
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.util.LruCache
+import java.io.*
 
-import java.io.ByteArrayOutputStream
-import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
 import java.net.URL
 
 /**
@@ -41,73 +38,24 @@ import java.net.URL
  *
  *
  */
-/**
- * 初始化lrucache,最少使用最先移除,LruCache来缓存图片，
- * 当存储Image的大小大于LruCache设定的值，系统自动释放内存，
- */
-private var mMemoryCache: LruCache<String, Bitmap>? = null
 
-fun Activity.initLru() {
-    val memory = (Runtime.getRuntime().maxMemory() / 1024).toInt()
-    val cacheSize = memory / 8
-    mMemoryCache = object : LruCache<String, Bitmap>(cacheSize) {
-        override fun sizeOf(key: String, value: Bitmap): Int {
-            // return value.getByteCount() / 1024;
-            return value.height * value.rowBytes
-        }
-    }
-}
 
-// ---lrucache----------------------------------------------------
 /**
- * 添加图片到lrucache
- *
- * @param key
+ * 把batmap 转file
  * @param bitmap
+ * @param filepath
  */
-@Synchronized
-fun Activity.addBitmapToMemCache(key: String?, bitmap: Bitmap?) {
-    if (getBitmapFromMemCache(key) == null) {
-        if ((key != null) and (bitmap != null)) {
-            mMemoryCache!!.put(key, bitmap)
-        }
+fun Bitmap.saveBitmapFile(filepath: String): File {
+    val file = File(filepath)//将要保存图片的路径
+    try {
+        val bos = BufferedOutputStream(FileOutputStream(file))
+        this.compress(Bitmap.CompressFormat.JPEG, 100, bos)
+        bos.flush()
+        bos.close()
+    } catch (e: IOException) {
+        e.printStackTrace()
     }
-}
-
-/**
- * 清除缓存
- */
-fun Activity.clearMemCache() {
-    if (mMemoryCache != null) {
-        if (mMemoryCache!!.size() > 0) {
-            mMemoryCache!!.evictAll()
-        }
-        mMemoryCache = null
-    }
-}
-
-/**
- * 移除缓存
- */
-@Synchronized
-fun Activity.removeMemCache(key: String?) {
-    if (key != null) {
-        if (mMemoryCache != null) {
-            val bm = mMemoryCache!!.remove(key)
-            bm?.recycle()
-        }
-    }
-}
-
-/**
- * 从lrucache里读取图片
- * @param key
- * @return
- */
-fun Activity.getBitmapFromMemCache(key: String?): Bitmap? {
-    return if (key != null) {
-        mMemoryCache!!.get(key)
-    } else null
+    return file
 }
 
 /**
@@ -236,21 +184,21 @@ private fun calculateInSampleSize(options: BitmapFactory.Options, reqWidth: Int,
  * @param reqHeight
  * @return
  */
-fun Activity.decodeSampledBitmapFromResource(res: Resources, resId: Int, reqWidth: Int, reqHeight: Int): Bitmap {
+fun Activity.decodeSampledBitmapFromResource(resId: Int, reqWidth: Int, reqHeight: Int): Bitmap {
     // 首先设置 inJustDecodeBounds=true 来获取图片尺寸
     val options = BitmapFactory.Options()
     /**
      * inJustDecodeBounds属性设置为true，decodeResource()方法就不会生成Bitmap对象，而仅仅是读取该图片的尺寸和类型信息：
      */
     options.inJustDecodeBounds = true
-    BitmapFactory.decodeResource(res, resId, options)
+    BitmapFactory.decodeResource(this.resources, resId, options)
 
     // 计算 inSampleSize 的值
     options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight)
 
     // 根据计算出的 inSampleSize 来解码图片生成Bitmap
     options.inJustDecodeBounds = false
-    return BitmapFactory.decodeResource(res, resId, options)
+    return BitmapFactory.decodeResource(this.resources, resId, options)
 }
 
 /**
@@ -286,7 +234,7 @@ fun Bitmap.compressBmpToFile(file: File) {
  * @param srcPath
  * @return
  */
-fun Activity.compressImageFromFile(srcPath: String, pixWidth: Float, pixHeight: Float): Bitmap {
+fun File.compressImageFromFile(pixWidth: Float, pixHeight: Float): Bitmap {
     val options = BitmapFactory.Options()
     options.inJustDecodeBounds = true// 只读边,不读内容
     var bitmap:Bitmap
@@ -308,7 +256,7 @@ fun Activity.compressImageFromFile(srcPath: String, pixWidth: Float, pixHeight: 
     options.inPurgeable = true// 同时设置才会有效
     options.inInputShareable = true// 。当系统内存不够时候图片自动被回收
 
-    bitmap = BitmapFactory.decodeFile(srcPath, options)
+    bitmap = BitmapFactory.decodeFile(this.absolutePath, options)
     // return compressBmpFromBmp(bitmap);//原来的方法调用了这个方法企图进行二次压缩
     // 其实是无效的,大家尽管尝试
     return bitmap

@@ -12,6 +12,7 @@ import android.support.v7.widget.DialogTitle
 
 /**
  * Created by lenovo on 2017/12/11.
+ * 推送一个前台通知
  */
 fun Activity.showNotifictionIcon(id:Int,icon:Int,title: String,text :String,tick:String) {
     val builder = NotificationCompat.Builder(this)
