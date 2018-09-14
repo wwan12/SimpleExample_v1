@@ -20,6 +20,7 @@ import android.widget.*
 import com.aisino.tool.R
 import com.aisino.tool.ani.CircularAnim
 import com.aisino.tool.ani.LoadAnim
+import com.aisino.tool.toast
 
 
 /**
@@ -36,12 +37,40 @@ class HtmlActivity : AppCompatActivity() {
     private var errorUrl: String? = null
     private var build:HtmlBuild?=null
     private var isSingle=false
+    private var isAutoStyle=false
     //    private val mStartUrl: String = "login_sjd.jsp"
     private lateinit var webView: WebView
     private lateinit var errorLl: LinearLayout
     private lateinit var errorImg: ImageView
     private lateinit var errorText: TextView
     val NAME = "NAME"
+    private val jsChangeStyle = "javascript:function myFunction(){\n" +
+            "var \$jquery = jQuery.noConflict();\n" +
+            "var content=\$jquery('.article');\n" +
+            "\$jquery('body').empty();\n" +
+            "content.css({\n" +
+            "background:\"#fff\",\n" +
+            "position:\"absolute\",\n" +
+            "top:\"0\",left:\"0\",\n" +
+            "});\n" +
+            "\$jquery('body').append(content);\n" +
+            "\$jquery(\"div\").removeAttr(\"class\").removeAttr(\"style\").removeAttr(\"id\");\n" +
+            "\$jquery(\"a\").removeAttr(\"class\").removeAttr(\"style\").removeAttr(\"id\");\n" +
+            "\$jquery(\"h1\").removeAttr(\"class\").removeAttr(\"style\").removeAttr(\"id\");\n" +
+            "\$jquery(\"h2\").removeAttr(\"class\").removeAttr(\"style\").removeAttr(\"id\");\n" +
+            "\$jquery(\"h3\").removeAttr(\"class\").removeAttr(\"style\").removeAttr(\"id\");\n" +
+            "\$jquery(\"h4\").removeAttr(\"class\").removeAttr(\"style\").removeAttr(\"id\");\n" +
+            "\$jquery(\"h5\").removeAttr(\"class\").removeAttr(\"style\").removeAttr(\"id\");\n" +
+            "\$jquery(\"h6\").removeAttr(\"class\").removeAttr(\"style\").removeAttr(\"id\");\n" +
+            "\$jquery(\"img\").removeAttr(\"class\").removeAttr(\"style\").removeAttr(\"id\");\n" +
+            "\$jquery(\"img\").css({width: \"100%\",height:\"100%\",objecFit:\"cover\"});\n" +
+            "\$jquery(\"h1\").css({paddingBottom: \"0.3em\",fontSize:\"2em\",borderBottom:\"1px solid #eaecef\"});\n" +
+            "\$jquery(\"h2\").css({paddingBottom: \"0.3em\",fontSize:\"1.5em\",borderBottom:\"1px solid #eaecef\"});\n" +
+            "\$jquery(\"h3\").css({fontSize:\"1.25em\"});\n" +
+            "\$jquery(\"h4\").css({fontSize:\"1em\"});\n" +
+            "\$jquery(\"h5\").css({fontSize:\"0.875em\"});\n" +
+            "\$jquery(\"h6\").css({fontSize:\"0.85em\"});\n}"
+
 //    val imgResList = ArrayList<String>().apply {
         //        add("${mBaseUrl}sjd/tzgg/tzggxq.action?")
 //        add("${mBaseUrl}sjd/zcsd/zcsdxq.action?")
@@ -67,6 +96,7 @@ class HtmlActivity : AppCompatActivity() {
         mBaseUrl = intent.getStringExtra("URL")
         errorUrl = intent.getStringExtra("ERRORURL")
         isSingle=intent.getBooleanExtra("ISSINGLE",false)
+        isAutoStyle=intent.getBooleanExtra("ISAUTOSTYLE",false)
         init()
 //        bindAlias()
 //        Toast.makeText(this, PushManager.getInstance().getClientid(applicationContext) + "_a", Toast.LENGTH_LONG).show()
@@ -81,12 +111,18 @@ class HtmlActivity : AppCompatActivity() {
         errorImg = findViewById(R.id.error_img)
         errorText = findViewById(R.id.error_text)
         dialog.fullActivity(this, webView)
+        webView.settings.setDefaultFontSize(22)
+        webView.settings.setMinimumFontSize(16)//设置 WebView 支持的最小字体大小，默认为 8
         webView.settings.cacheMode = WebSettings.LOAD_DEFAULT// 不加载缓存
         webView.settings.setRenderPriority(WebSettings.RenderPriority.HIGH)
         webView.settings.javaScriptEnabled = true
         webView.settings.domStorageEnabled = true
         webView.settings.setAppCacheMaxSize(1024 * 1024 * 8)
         webView.settings.setDomStorageEnabled(true);//设置适应HTML5的一些方法
+        webView.settings.setBlockNetworkImage(false)//是否阻塞加载网络图片  协议http or https
+        webView.settings.setAllowFileAccess(true) //允许加载本地文件html  file协议, 这可能会造成不安全 , 建议重写关闭
+        webView.settings.setAllowFileAccessFromFileURLs(false) //通过 file url 加载的 Javascript 读取其他的本地文件 .建议关闭
+        webView.settings.setAllowUniversalAccessFromFileURLs(false)//允许通过 file url 加载的 Javascript 可以访问其他的源，包括其他的文件和 http，https 等其他的源
 //        val appCachePath = applicationContext.cacheDir.absolutePath
 //        main_web.settings.setAppCachePath(appCachePath)
 //        main_web.settings.setAppCacheEnabled(true)
@@ -105,21 +141,25 @@ class HtmlActivity : AppCompatActivity() {
             needClearHistory = true
 
         })
-        //        htmlBinding.mainWeb.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
-        //        htmlBinding.mainWeb.getSettings().setLoadWithOverviewMode(true);
 
         webView.webChromeClient = object : WebChromeClient() {
             override fun onJsAlert(view: WebView?, url: String?, message: String?, result: JsResult?): Boolean {
-                if (message?.indexOf("||") != -1) {
-                    getPreferences(Context.MODE_PRIVATE).edit().putString(NAME, message).commit()
-                    result?.confirm()
-                    return true
-                }
-                Toast.makeText(this@HtmlActivity, message, Toast.LENGTH_SHORT).show()
-                compatible(message)
+                message?.toast(this@HtmlActivity)
                 result?.confirm()
                 return true
             }
+
+            var isNeedExe = true
+            override fun onProgressChanged(view: WebView?, newProgress: Int) {
+                if (newProgress > 95 && isNeedExe&&isAutoStyle) {
+                    isNeedExe = !isNeedExe
+                    webView.loadUrl(jsChangeStyle)
+                    webView.loadUrl("javascript:myFunction()")
+                }
+                super.onProgressChanged(view, newProgress)
+
+            }
+
         }
 
         webView.webViewClient = object : WebViewClient() {
@@ -160,6 +200,8 @@ class HtmlActivity : AppCompatActivity() {
                 super.onPageStarted(view, url, favicon)
             }
 
+
+
             override fun onPageFinished(view: WebView, url: String) {//加载完成
                 super.onPageFinished(view, url)
                 if (needClearHistory) {
@@ -168,18 +210,6 @@ class HtmlActivity : AppCompatActivity() {
 //                    setName()
                 }
                 imgReset()
-
-//                if (url.indexOf(mStartUrl) != -1) {
-//                    setName()
-//                }
-
-//                for (i in imgResList) {
-//                    if (url.indexOf(i) != -1) {
-//                        imgReset()
-//                    }
-//                }
-//                dialog.hide()
-//                dialog.cancel()
 
             }
 
@@ -193,7 +223,6 @@ class HtmlActivity : AppCompatActivity() {
 
             override fun onReceivedHttpError(view: WebView?, request: WebResourceRequest?, errorResponse: WebResourceResponse?) {
                 super.onReceivedHttpError(view, request, errorResponse)
-//                Log.i("aaaa", "httperror")
             }
 
             override fun onReceivedSslError(view: WebView, handler: SslErrorHandler, error: SslError) {
@@ -244,36 +273,6 @@ class HtmlActivity : AppCompatActivity() {
                 "}" +
                 "})()")
     }
-
-    fun compatible(msg: String?): Unit {
-        when (msg) {
-            "用户名或密码错误" -> {
-//                dialog.dismiss()
-//                dialog.cancel()
-            }
-        }
-    }
-
-//    private fun unBindAlias() {
-//        val editText = EditText(this)
-//        AlertDialog.Builder(this).setTitle(R.string.unbind_alias).setView(editText)
-//                .setPositiveButton(android.R.string.ok) { dialog, which ->
-//                    val alias = editText.editableText.toString()
-//                    if (alias.length > 0) {
-//                        PushManager.getInstance().unBindAlias(this, alias, false)
-////                        Log.d(TAG, "unbind alias = " + editText.editableText.toString())
-//                    }
-//                }.setNegativeButton(android.R.string.cancel, null).show()
-//    }
-
-//    private fun bindAlias() {
-//        val alias = getPreferences(Context.MODE_PRIVATE).getString(NAME, "")
-//            if (alias.length > 0) {
-//                PushManager.getInstance().bindAlias(this, alias)
-////                            Log.d(TAG, "bind alias = " + editText.editableText.toString())
-//            }
-//
-//    }
 
     override fun onBackPressed() {
         super.onBackPressed()

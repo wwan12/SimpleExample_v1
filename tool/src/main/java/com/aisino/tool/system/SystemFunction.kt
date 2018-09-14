@@ -60,11 +60,13 @@ fun Activity.closeInput() {
 
 /**
  * 打开应用内网页
+ * isAutoStyle自动适配（性能会受到较大影响）
  */
-fun Activity.openHtml(url:String,errorUrl:String="",isSingle:Boolean): Unit {
+fun Activity.openHtml(url:String,errorUrl:String="",isSingle:Boolean=false,isAutoStyle:Boolean=false): Unit {
     val ins=Intent(this,HtmlActivity::class.java)
     ins.putExtra("URL",url)
     ins.putExtra("ERRORURL",errorUrl)
     ins.putExtra("ISSINGLE",isSingle)
+    ins.putExtra("ISAUTOSTYLE",isAutoStyle)
     this.startActivity(ins)
 }
