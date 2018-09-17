@@ -1,25 +1,19 @@
 package com.aisino.tool.model.webview
 
-import android.app.AlertDialog
-import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.view.KeyEvent
 import android.webkit.*
 import android.webkit.WebView
 import android.graphics.Bitmap
-import android.graphics.Color
 import android.net.http.SslError
 import android.view.View
 import android.webkit.SslErrorHandler
 import android.content.Intent
 import android.net.Uri
-import android.os.Parcelable
 import android.widget.*
 import com.aisino.tool.R
 import com.aisino.tool.ani.CircularAnim
-import com.aisino.tool.ani.LoadAnim
 import com.aisino.tool.toast
 
 
@@ -43,7 +37,6 @@ class HtmlActivity : AppCompatActivity() {
     private lateinit var errorLl: LinearLayout
     private lateinit var errorImg: ImageView
     private lateinit var errorText: TextView
-    val NAME = "NAME"
     private val jsChangeStyle = "javascript:function myFunction(){\n" +
             "var \$jquery = jQuery.noConflict();\n" +
             "var content=\$jquery('.article');\n" +
@@ -170,9 +163,6 @@ class HtmlActivity : AppCompatActivity() {
             }
 
             override fun onPageStarted(view: WebView, url: String, favicon: Bitmap?) {//开始加载
-                if (url.indexOf("${mBaseUrl}zhuxiaosjd.action") != -1) {//注销
-                    needClearHistory = true
-                }
 //                if (errorUrl != null) {
 //                    if (url.indexOf(errorUrl!!) == -1) {//404
 //                    dialog.setLoadingBuilder(LOAD_TYPE.SINGLE_CIRCLE)
@@ -242,16 +232,16 @@ class HtmlActivity : AppCompatActivity() {
 
     }
 
-    fun setName(): Unit {
-        var name = getPreferences(Context.MODE_PRIVATE).getString(NAME, "")
-        if (name.length > 2) {
-            name = name.substring(2, name.length)
-        }
-        webView.loadUrl("javascript:(function()\n" +
-                " {\n" +
-                "    document.getElementById(\"yhmc\").value = \"${name}\";\n" +
-                " })()")
-    }
+//    fun setName(): Unit {
+//        var name = getPreferences(Context.MODE_PRIVATE).getString(NAME, "")
+//        if (name.length > 2) {
+//            name = name.substring(2, name.length)
+//        }
+//        webView.loadUrl("javascript:(function()\n" +
+//                " {\n" +
+//                "    document.getElementById(\"yhmc\").value = \"${name}\";\n" +
+//                " })()")
+//    }
 
     /**
      * 对图片进行重置大小，宽度就是手机屏幕宽度，高度根据宽度比便自动缩放
