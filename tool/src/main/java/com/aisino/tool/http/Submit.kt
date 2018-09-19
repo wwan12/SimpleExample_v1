@@ -192,7 +192,7 @@ class Submit {
         })
     }
 
-    private fun upImage(): Unit {
+    private fun upImage() {
         val mOkHttpClient = OkHttpClient.Builder().cookieJar(cookjar).connectTimeout(outTime, TimeUnit.SECONDS)
         val build = MultipartBody.Builder().setType(MultipartBody.FORM)
         url.log(tag)
@@ -223,7 +223,7 @@ class Submit {
         })
     }
 
-    private fun upFile(): Unit {
+    private fun upFile(){
         val mOkHttpClient = OkHttpClient.Builder().cookieJar(cookjar).connectTimeout(outTime, TimeUnit.SECONDS)
         val build = MultipartBody.Builder().setType(MultipartBody.FORM)
         for (p in _params) {
