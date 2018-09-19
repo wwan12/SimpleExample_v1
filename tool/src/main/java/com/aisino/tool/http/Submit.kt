@@ -39,7 +39,7 @@ var RELEASEAPI = ""
 /**
  * debug访问前缀
  */
-var DEBUGAPI=""
+var DEBUGAPI = ""
 
 class Submit {
     //可配置属性
@@ -49,17 +49,19 @@ class Submit {
     var returnType = ReturnType.JSON
     var downloadPath = System.currentTimeMillis().toString() + ".jpg"
     var outTime = 5L//单位为秒
-    private val toUI = Handler()
+    var isRetry = false
     val _params: MutableMap<String, Any> = mutableMapOf()
     val _fileParams: MutableMap<String, String> = mutableMapOf()
     val _headers: MutableMap<String, String> = mutableMapOf()
     val _response: MutableMap<String, Any> = mutableMapOf()
-
+    var submitTime=0L
+    private val toUI = Handler()
     private var _start: () -> Unit = {}
-    private var _success: () -> Unit = {}
+    private var _success: (SuccessData) -> Unit = {}
     private var _fail: (String) -> Unit = {}
 
     private var isError = false
+
 
     //    var cookjar: CookieJar
 //    val cookieStore = HashMap<String, List<Cookie>>()//cookie缓存
@@ -87,6 +89,7 @@ class Submit {
 
 
     private fun tryInit(): Unit { //检查配置单
+        submitTime=System.currentTimeMillis()
         when (returnType) {
             ReturnType.JSON -> {
             }
@@ -97,10 +100,10 @@ class Submit {
             return
         }
         if (url == "") return
-        if (DEBUG()){
+        if (DEBUG()) {
             url = DEBUGAPI + url
             "DEBUGAPI->$url".loge("api")
-        }else{
+        } else {
             url = RELEASEAPI + url
         }
 
@@ -125,7 +128,7 @@ class Submit {
 
     }
 
-    fun success(success: () -> Unit): Unit {
+    fun success(success: (SuccessData) -> Unit): Unit {
         _success = success
     }
 
@@ -301,7 +304,7 @@ class Submit {
                         _response.put(ReturnType.STRING.name, response.body()!!.string())
                     }
                 }
-                _success()
+                _success(SuccessData(url,_response).apply { this.submitTime=submitTime })
             }
         }
     }
@@ -457,5 +460,16 @@ class Submit {
         }
 
         return null
+    }
+
+    /**
+     * 重启请求
+     */
+    fun retrySubmit(): Unit {
+        if(isRetry){
+            tryInit()
+        }else{
+            return
+        }
     }
 }

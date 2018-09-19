@@ -1,5 +1,18 @@
 package com.aisino.danmuku;
 
+import cn.jzvd.JZVideoPlayer;
+import cn.jzvd.JZVideoPlayerStandard;
+
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
+
+import java.io.IOException;
+import java.net.URL;
+
+
 /**
  * 文件描述：
  * 作者：Administrator
@@ -7,12 +20,40 @@ package com.aisino.danmuku;
  * 更改时间：2018/8/29/029
  * 版本号：1
  */
-public class VideoActivity {
+public class VideoActivity extends AppCompatActivity {
     public static final int HTTP_TYPE = 0;
     public static final int LOCAL_TYPE = 1;
+    public static final String PATH = "0";
+    public static final String TYPE = "1";
+    public static final String TITLE = "2";
+    public static final String IMAGE_LOCAL = "3";
+    public static final String IMAGE_HTTP = "4";
+    private String title;
 
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_video);
+        JZVideoPlayerStandard jzVideoPlayerStandard = (JZVideoPlayerStandard) findViewById(R.id.videoplayer);
 
-    //    2.Add JZVideoPlayer in your layout:
+        if (getIntent().getIntExtra(TYPE, HTTP_TYPE) == HTTP_TYPE) {
+
+        }
+        if (getIntent().getStringExtra(IMAGE_HTTP)==null){
+            jzVideoPlayerStandard.thumbImageView.setImageResource(getIntent().getIntExtra(IMAGE_LOCAL, 0));
+        }else {
+            try {
+                Bitmap bitmap = BitmapFactory.decodeStream(new URL(getIntent().getStringExtra(IMAGE_HTTP)).openStream());
+                jzVideoPlayerStandard.thumbImageView.setImageBitmap(bitmap);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
+        jzVideoPlayerStandard.setUp(getIntent().getStringExtra(PATH), JZVideoPlayerStandard.SCREEN_WINDOW_NORMAL, getIntent().getStringExtra(TITLE));
+    }
+
+//    2.Add JZVideoPlayer in your layout:
 //
 //    <cn.jzvd.JZVideoPlayerStandard
 //    android:id="@+id/videoplayer"
@@ -20,25 +61,22 @@ public class VideoActivity {
 //    android:layout_height="200dp"/>
 //    3.Set the video uri, video thumb url and video title:
 //
-//    JZVideoPlayerStandard jzVideoPlayerStandard = (JZVideoPlayerStandard) findViewById(R.id.videoplayer);
-//    jzVideoPlayerStandard.setUp("http://jzvd.nathen.cn/c6e3dc12a1154626b3476d9bf3bd7266/6b56c5f0dc31428083757a45764763b0-5287d2089db37e62345123a1be272f8b.mp4",
-//    JZVideoPlayerStandard.SCREEN_WINDOW_NORMAL,
-//    "饺子闭眼睛");
-//    jzVideoPlayerStandard.thumbImageView.setImage("http://p.qpic.cn/videoyun/0/2449_43b6f696980311e59ed467f22794e792_1/640");
-//    4.In Activity:
+
+    //    4.In Activity:
 //
-//    @Override
-//    public void onBackPressed() {
-//        if (JZVideoPlayer.backPress()) {
-//            return;
-//        }
-//        super.onBackPressed();
-//    }
-//    @Override
-//    protected void onPause() {
-//        super.onPause();
-//        JZVideoPlayer.releaseAllVideos();
-//    }
+    @Override
+    public void onBackPressed() {
+        if (JZVideoPlayer.backPress()) {
+            return;
+        }
+        super.onBackPressed();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        JZVideoPlayer.releaseAllVideos();
+    }
 //    5.In AndroidManifest.xml:
 //
 //    <activity

@@ -70,3 +70,7 @@ fun Activity.openHtml(url:String,errorUrl:String="",isSingle:Boolean=false,isAut
     ins.putExtra("ISAUTOSTYLE",isAutoStyle)
     this.startActivity(ins)
 }
+inline fun <reified T : Activity> Context.startActivity() {
+    val intent = Intent(this, T::class.java)
+    startActivity(intent)
+}

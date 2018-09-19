@@ -36,6 +36,7 @@ class StreamActivity : AppCompatActivity() {
         runStack(_pause)
     }
 
+
     override fun onRestart() {
         super.onRestart()
         runStack(_restart)
@@ -77,7 +78,7 @@ class StreamActivity : AppCompatActivity() {
 
     protected fun showLoad(): Unit {
         val load: AlertDialog.Builder = AlertDialog.Builder(this)
-        val la: LoadAnim = LoadAnim(this)
+        val la = LoadAnim(this)
         load.setView(la)
         loadLog = load.show()
     }

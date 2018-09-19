@@ -5,13 +5,10 @@ package com.aisino.tool.bitmap
  */
 
 import android.app.Activity
-import android.content.res.Resources
 import android.graphics.*
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
-import android.util.LruCache
 import java.io.*
-
 import java.net.URL
 
 /**
