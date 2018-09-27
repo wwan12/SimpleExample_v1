@@ -9,9 +9,12 @@ import com.aisino.tool.R
 import java.lang.Comparable
 import java.text.FieldPosition
 import android.support.v4.view.ViewPager
+import android.view.KeyEvent
 import android.view.ViewGroup
 
-
+/**
+ * 显示一个在当前view下方的listpopwindow
+ */
 fun Activity.openUnterTheViewListWindow(view: View,data: ArrayList<String>,itemRun:(i: Int)->Unit):PopupWindow{
     // 将布局文件转换成View对象，popupview 内容视图
     val mPopView = this.layoutInflater.inflate(R.layout.under_the_view_window, null)
@@ -24,12 +27,21 @@ fun Activity.openUnterTheViewListWindow(view: View,data: ArrayList<String>,itemR
     mPopupWindow.setOutsideTouchable(true)
     val list= mPopView.findViewById<ListView>(R.id.under_the_view_list)
     list.adapter=ArrayAdapter(this,android.R.layout.simple_list_item_1,data)
-
+    mPopView.setOnKeyListener { view, i, keyEvent ->
+        if (i == KeyEvent.KEYCODE_BACK) {//返回自动关闭pop
+            if (mPopupWindow.isShowing()) {
+                mPopupWindow.dismiss();
+                return@setOnKeyListener true
+            }
+        }
+        return@setOnKeyListener false
+    }
     mPopupWindow.setOnDismissListener {
 //        val params = this.getWindow().getAttributes()
 //        params.alpha = 1f
 //        this.getWindow().setAttributes(params)
     }
+
     if (mPopupWindow.isShowing()) {
         mPopupWindow.dismiss();
     } else {
@@ -46,6 +58,9 @@ fun Activity.openUnterTheViewListWindow(view: View,data: ArrayList<String>,itemR
     return mPopupWindow
 }
 
+/**
+ * 将当前imageview放大到全屏显示
+ */
 fun ImageView.showFullWindow(): PopupWindow {
     // 将布局文件转换成View对象，popupview 内容视图
     val mPopView = (this.context as Activity).layoutInflater.inflate(R.layout.image_full_window, null)
@@ -55,6 +70,15 @@ fun ImageView.showFullWindow(): PopupWindow {
             LinearLayout.LayoutParams.MATCH_PARENT)
     // 点击popuwindow外让其消失
     mPopupWindow.setOutsideTouchable(true)
+    mPopView.setOnKeyListener { view, i, keyEvent ->
+        if (i == KeyEvent.KEYCODE_BACK) {//返回自动关闭pop
+            if (mPopupWindow.isShowing()) {
+                mPopupWindow.dismiss()
+                return@setOnKeyListener true
+            }
+        }
+        return@setOnKeyListener false
+    }
     val view= mPopView.findViewById<ImageView>(R.id.show_full_window)
    view.setImageDrawable( this.drawable)
     view.setOnClickListener{
@@ -66,6 +90,9 @@ fun ImageView.showFullWindow(): PopupWindow {
     return mPopupWindow
 }
 
+/**
+ * 显示一个可以左右滑动的画廊
+ */
 fun Activity.showGrallery(position:Int,imgs:List<Bitmap>): PopupWindow {
     val views=ArrayList<View>()
     for (img in imgs){
@@ -77,6 +104,7 @@ fun Activity.showGrallery(position:Int,imgs:List<Bitmap>): PopupWindow {
     }
     val mPopView= this.layoutInflater.inflate(R.layout.image_full_window, null)
     val viewPager = mPopView.findViewById(R.id.pager) as ViewPager
+
     val myPagerAdapter = ImageAdapter(views)
     viewPager.adapter = myPagerAdapter
     viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
@@ -102,6 +130,15 @@ fun Activity.showGrallery(position:Int,imgs:List<Bitmap>): PopupWindow {
         if (mPopupWindow.isShowing()) {
             mPopupWindow.dismiss();
         }
+    }
+    mPopView.setOnKeyListener { view, i, keyEvent ->
+        if (i == KeyEvent.KEYCODE_BACK) {//返回自动关闭pop
+            if (mPopupWindow.isShowing()) {
+                mPopupWindow.dismiss()
+                return@setOnKeyListener true
+            }
+        }
+        return@setOnKeyListener false
     }
     mPopupWindow.showAsDropDown(views[position])
     return mPopupWindow
