@@ -3,14 +3,14 @@ package com.aisino.tool.widget
 import android.app.Activity
 import android.content.ComponentCallbacks
 import android.graphics.Bitmap
-import android.view.View
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.widget.*
 import com.aisino.tool.R
 import java.lang.Comparable
 import java.text.FieldPosition
 import android.support.v4.view.ViewPager
-import android.view.KeyEvent
-import android.view.ViewGroup
+import android.view.*
 
 /**
  * 显示一个在当前view下方的listpopwindow
@@ -142,4 +142,59 @@ fun Activity.showGrallery(position:Int,imgs:List<Bitmap>): PopupWindow {
     }
     mPopupWindow.showAsDropDown(views[position])
     return mPopupWindow
+}
+
+/**
+ * 显示一个2级菜单
+ */
+fun showSecondLevelPop(context: Activity, leftList: List<String>, rightList: List<List<String>>,itemRun:(left:String,right:String,i: Int)->Unit) {
+    val linearLayout = LinearLayout(context)
+    linearLayout.orientation = LinearLayout.HORIZONTAL
+    linearLayout.setBackgroundColor(Color.WHITE)
+    val pop = PopupWindow(linearLayout,
+            WindowManager.LayoutParams.WRAP_CONTENT,
+            WindowManager.LayoutParams.WRAP_CONTENT,
+            true)
+    pop.setBackgroundDrawable(ColorDrawable(0xffffff))//支持点击Back虚拟键退出
+    val lpLeft = LinearLayout.LayoutParams(WindowManager.LayoutParams.WRAP_CONTENT,
+            WindowManager.LayoutParams.WRAP_CONTENT).apply { weight = 1f }
+    val lpRifght = LinearLayout.LayoutParams(WindowManager.LayoutParams.WRAP_CONTENT,
+            WindowManager.LayoutParams.WRAP_CONTENT).apply { weight = 2f }
+    val leftView = ListView(context)
+    leftView.layoutParams = lpLeft
+    val rightView = ListView(context)
+    rightView.layoutParams = lpRifght
+    leftView.adapter = ArrayAdapter(context, android.R.layout.simple_list_item_1, leftList)
+    val cacheRight = java.util.ArrayList<String>()
+    cacheRight.addAll(rightList[0])
+    rightView.adapter = ArrayAdapter(context, android.R.layout.simple_list_item_1, cacheRight)
+    linearLayout.addView(leftView)
+    linearLayout.addView(rightView)
+    val text = StringBuffer()
+    text.append(leftList[0])
+    leftView.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
+        cacheRight.clear()
+        cacheRight.addAll(rightList[position])
+        (rightView.adapter as BaseAdapter).notifyDataSetChanged()
+        text.delete(0, text.length)
+        text.append(leftList[position])
+    }
+    rightView.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
+        if (pop.isShowing) {
+            pop.dismiss()
+        }
+        itemRun(text.toString(),cacheRight[position],position)
+    }
+    pop.setOnDismissListener {
+        if (pop.isShowing) {
+            pop.dismiss()
+        }
+        val params = context.window.attributes
+        params.alpha = 1f
+        context.window.attributes = params
+    }
+    val params = context.window.attributes
+    params.alpha = 0.7f
+    context.window.attributes = params
+    pop.showAtLocation(context.currentFocus, Gravity.CENTER, 0, 0)
 }
