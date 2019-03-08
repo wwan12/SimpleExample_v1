@@ -5,11 +5,22 @@ package com.aisino.tool.bitmap
  */
 
 import android.app.Activity
+import android.content.Context
 import android.graphics.*
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import java.io.*
 import java.net.URL
+import android.graphics.Bitmap
+import android.view.WindowManager
+import android.graphics.RectF
+import android.graphics.BitmapFactory
+import android.text.Layout
+import android.text.StaticLayout
+import android.graphics.Typeface
+import android.text.TextPaint
+import java.nio.channels.FileChannel
+
 
 /**
  * Android根据设备屏幕尺寸和dpi的不同，给系统分配的单应用程序内存大小也不同，具体如下表
@@ -279,5 +290,176 @@ fun Bitmap.toRoundCorner(pixels: Int): Bitmap {
     paint.xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_IN)
     canvas.drawBitmap(this, rect, rect, paint)
     return output
+}
+
+
+/**
+ * 给图片加水印，网上
+ * 右下角
+ * @param src       原图
+ * @param watermark 水印
+ * @return 加水印的原图
+ */
+fun Bitmap.WaterMask(context: Context, watermark: Bitmap): Bitmap {
+    var src = this
+    var watermark = watermark
+    val w = this.width
+    val h = this.height
+
+    // 设置原图想要的大小
+    val wm = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+    val newWidth = wm.defaultDisplay.width
+//    val newWidth = ScreenUtils.getScreenWidth()
+    val newHeight = h * (newWidth / w)
+    // 计算缩放比例
+    val scaleWidth = newWidth / w
+    val scaleHeight = newHeight / h
+    val matrix = Matrix()
+    matrix.postScale(scaleWidth.toFloat(), scaleHeight.toFloat())
+    src = Bitmap.createBitmap(src, 0, 0, w, h, matrix, true)
+
+    //根据bitmap缩放水印图片
+    val w1 = (w / 5).toFloat()
+    val h1 = w1 / 5
+    //获取原始水印图片的宽、高
+    var w2 = watermark.width
+    var h2 = watermark.height
+
+    //计算缩放的比例
+    val scalewidth = w1 / w2
+    val scaleheight = h1 / h2
+
+    val matrix1 = Matrix()
+    matrix1.postScale(0.4.toFloat(), 0.4.toFloat())
+
+    watermark = Bitmap.createBitmap(watermark, 0, 0, w2, h2, matrix1, true)
+    //获取新的水印图片的宽、高
+    w2 = watermark.width
+    h2 = watermark.height
+
+    val result = Bitmap.createBitmap(src.width, src.height, Bitmap.Config.ARGB_8888)// 创建一个新的和SRC长度宽度一样的位图
+    val cv = Canvas(result)
+    //在canvas上绘制原图和新的水印图
+    cv.drawBitmap(src, 0f, 0f, null)
+    //水印图绘制在画布的右下角，距离右边和底部都为20
+    cv.drawBitmap(watermark, src.width - w2 - 20f, src.height - h2 - 20f, null)
+    cv.save()
+    cv.restore()
+
+    return result
+}
+
+/**
+ * 左下角添加水印（多行，图标 + 文字）
+ * 参考资料：
+ * Android 对Canvas的translate方法总结    https://blog.csdn.net/u013681739/article/details/49588549
+ * @param photo
+ */
+fun Bitmap.addWaterMark(context: Context, textList: List<String>, iconIdList: List<Int>, isShowIcon: Boolean): Bitmap? {
+    var newBitmap:Bitmap? = null
+    var photo=this
+    try {
+        val srcWidth = photo.width
+        val srcHeight = photo.height
+        val unitHeight = if (srcHeight > srcWidth) srcWidth / 30 else srcHeight / 25
+        var marginBottom = unitHeight
+        //创建一个bitmap
+        if (!newBitmap!!.isMutable) {
+            newBitmap = this.copy(context.cacheDir.path)
+        }
+        //将该图片作为画布
+        val canvas = Canvas(newBitmap)
+
+        // 设置画笔
+        val textPaint = TextPaint(Paint.ANTI_ALIAS_FLAG or Paint.DEV_KERN_TEXT_FLAG)
+        textPaint.textSize = unitHeight.toFloat()// 字体大小
+        textPaint.typeface = Typeface.DEFAULT// 采用默认的宽度
+        textPaint.color = Color.WHITE// 采用的颜色v
+
+        val bounds = Rect()
+        val gText = "hello world!"
+        textPaint.getTextBounds(gText, 0, gText.length, bounds)
+
+        val iconWidth = bounds.height()//图片宽度
+        val maxTextWidth = srcWidth - unitHeight * 3 - iconWidth//最大文字宽度
+
+        for (i in textList.indices.reversed()) {
+            val text = textList[i]
+            val iconId = iconIdList[i]
+
+            canvas.save()//锁画布(为了保存之前的画布状态)
+
+            //文字处理
+            val layout = StaticLayout(text, textPaint, maxTextWidth, Layout.Alignment.ALIGN_NORMAL,
+                    1.0f, 0.0f, true) // 确定换行
+            //在画布上绘制水印图片
+            if (isShowIcon) {
+                val watermark = BitmapFactory.decodeResource(context.resources, iconId)
+                val iconHeight = iconWidth * (watermark.height * 1000 / watermark.width) / 1000//维持图片宽高比例，也可以简单粗暴 iconHeight = iconWidth;
+                //图片相对文字位置居中
+                val rectF = RectF(unitHeight.toFloat(), (srcHeight - marginBottom - layout.height / 2 - iconHeight / 2).toFloat(), (unitHeight + iconWidth).toFloat(), (srcHeight - marginBottom - layout.height / 2 + iconHeight / 2).toFloat())
+                canvas.drawBitmap(watermark, null, rectF, null)//限定图片显示范围
+            }
+
+            //绘制文字
+            canvas.translate(if (isShowIcon) unitHeight + iconWidth + unitHeight.toFloat() else unitHeight.toFloat(), srcHeight - layout.height - marginBottom.toFloat()) // 设定画布位置
+            layout.draw(canvas) // 绘制水印
+
+            //marginBottom 更新
+            marginBottom = marginBottom + (unitHeight + layout.height)
+            canvas.restore()//把当前画布返回（调整）到上一个save()状态之前
+        }
+        // 保存
+        canvas.save()
+        // 存储
+        canvas.restore()
+
+    } catch (e: Exception) {
+        e.printStackTrace()
+        return newBitmap
+    }
+
+    return newBitmap
+}
+
+/**
+ * 根据原位图生成一个新的位图，并将原位图所占空间释放
+ *
+ * @param srcBmp 原位图
+ * @return 新位图
+ */
+fun Bitmap.copy(path:String): Bitmap {
+    var destBmp: Bitmap? = null
+    try {
+        // 创建一个临时文件
+        val file = File(path + "temppic/tmp.txt")
+        if (file.exists()) {// 临时文件 ， 用一次删一次
+            file.delete()
+        }
+        file.getParentFile().mkdirs()
+        val randomAccessFile = RandomAccessFile(file, "rw")
+        val width = this.width
+        val height = this.height
+        val channel = randomAccessFile.getChannel()
+        val map = channel.map(FileChannel.MapMode.READ_WRITE, 0, width * height * 4L)
+        // 将位图信息写进buffer
+        this.copyPixelsToBuffer(map)
+        // 释放原位图占用的空间
+        this.recycle()
+        // 创建一个新的位图
+        destBmp = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+        map.position(0)
+        // 从临时缓冲中拷贝位图信息
+        destBmp!!.copyPixelsFromBuffer(map)
+        channel.close()
+        randomAccessFile.close()
+        file.delete()
+    } catch (ex: Exception) {
+        ex.printStackTrace()
+        destBmp = null
+        return this
+    }
+
+    return destBmp
 }
 

@@ -14,6 +14,8 @@ import android.net.Uri
 import android.widget.*
 import com.aisino.tool.R
 import com.aisino.tool.ani.CircularAnim
+import com.aisino.tool.system.CAMERA_REQUEST
+import com.aisino.tool.system.openCamera
 import com.aisino.tool.toast
 
 
@@ -34,6 +36,8 @@ class HtmlActivity : AppCompatActivity() {
     private var isAutoStyle=false
     //    private val mStartUrl: String = "login_sjd.jsp"
     private lateinit var webView: WebView
+    private var uploadMessageAboveL:ValueCallback<Array<Uri>>?=null
+    private var cUri:Uri?=null
     private lateinit var errorLl: LinearLayout
     private lateinit var errorImg: ImageView
     private lateinit var errorText: TextView
@@ -153,6 +157,18 @@ class HtmlActivity : AppCompatActivity() {
 
             }
 
+            override fun onShowFileChooser(webView: WebView, filePathCallback: ValueCallback<Array<Uri>>, fileChooserParams: FileChooserParams): Boolean {
+                uploadMessageAboveL = filePathCallback
+                //调用系统相机或者相册
+                cUri= openCamera()
+                return true
+            }
+
+            override fun onGeolocationPermissionsShowPrompt(origin: String?, callback: GeolocationPermissions.Callback?) {
+                callback?.invoke(origin, true, false)
+                super.onGeolocationPermissionsShowPrompt(origin, callback)
+            }
+
         }
 
         webView.webViewClient = object : WebViewClient() {
@@ -242,6 +258,34 @@ class HtmlActivity : AppCompatActivity() {
 //                "    document.getElementById(\"yhmc\").value = \"${name}\";\n" +
 //                " })()")
 //    }
+
+    fun setCook(key:String,v:String): Unit {
+        webView.loadUrl("javascript:(function()\n" +
+                " {\n" +
+                "      document.cookie=\"${key}=\"+\"${v}\";\n" +
+                " })()")
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if ( uploadMessageAboveL == null) {
+            return
+        }
+        //取消拍照或者图片选择时,返回null,否则<input file> 就是没有反应
+        if (resultCode != RESULT_OK) {
+            if (uploadMessageAboveL != null) {
+                uploadMessageAboveL?.onReceiveValue(null);
+                uploadMessageAboveL = null;
+            }
+        }
+        //拍照成功和选取照片时
+        if (requestCode== CAMERA_REQUEST) {
+            if (uploadMessageAboveL != null) {
+                uploadMessageAboveL?.onReceiveValue(arrayOf<Uri>(cUri!!))
+                uploadMessageAboveL = null;
+            }
+        }
+    }
 
     /**
      * 对图片进行重置大小，宽度就是手机屏幕宽度，高度根据宽度比便自动缩放

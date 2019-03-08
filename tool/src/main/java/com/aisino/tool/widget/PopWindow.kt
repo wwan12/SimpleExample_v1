@@ -147,7 +147,7 @@ fun Activity.showGrallery(position:Int,imgs:List<Bitmap>): PopupWindow {
 /**
  * 显示一个2级菜单
  */
-fun showSecondLevelPop(context: Activity, leftList: List<String>, rightList: List<List<String>>,itemRun:(left:String,right:String,i: Int)->Unit) {
+fun showSecondLevelPop(context: Activity, listMap: Map<String, List<String>>, tv: TextView) {
     val linearLayout = LinearLayout(context)
     linearLayout.orientation = LinearLayout.HORIZONTAL
     linearLayout.setBackgroundColor(Color.WHITE)
@@ -156,34 +156,63 @@ fun showSecondLevelPop(context: Activity, leftList: List<String>, rightList: Lis
             WindowManager.LayoutParams.WRAP_CONTENT,
             true)
     pop.setBackgroundDrawable(ColorDrawable(0xffffff))//支持点击Back虚拟键退出
-    val lpLeft = LinearLayout.LayoutParams(WindowManager.LayoutParams.WRAP_CONTENT,
-            WindowManager.LayoutParams.WRAP_CONTENT).apply { weight = 1f }
-    val lpRifght = LinearLayout.LayoutParams(WindowManager.LayoutParams.WRAP_CONTENT,
-            WindowManager.LayoutParams.WRAP_CONTENT).apply { weight = 2f }
+    val lp = LinearLayout.LayoutParams(WindowManager.LayoutParams.WRAP_CONTENT,
+            WindowManager.LayoutParams.WRAP_CONTENT)
+    val linep = LinearLayout.LayoutParams(2,
+            WindowManager.LayoutParams.MATCH_PARENT)
+    lp.weight = 1f
     val leftView = ListView(context)
-    leftView.layoutParams = lpLeft
+    leftView.layoutParams = lp
+    val line = TextView(context)
+    line.setBackgroundColor(Color.BLACK)
+    line.layoutParams = linep
+
     val rightView = ListView(context)
-    rightView.layoutParams = lpRifght
-    leftView.adapter = ArrayAdapter(context, android.R.layout.simple_list_item_1, leftList)
+    lp.weight = 2f
+    rightView.layoutParams = lp
+    val leftList = java.util.ArrayList<String>()
+    val rightList = java.util.ArrayList<List<String>>()
+    for ((key, value) in listMap) {
+        leftList.add(key)
+        rightList.add(value)
+    }
+    leftView.adapter = ArrayAdapter(context, R.layout.item_left, R.id.left_text, leftList)
     val cacheRight = java.util.ArrayList<String>()
     cacheRight.addAll(rightList[0])
-    rightView.adapter = ArrayAdapter(context, android.R.layout.simple_list_item_1, cacheRight)
+    rightView.adapter = ArrayAdapter(context, android.R.layout.simple_spinner_item, cacheRight)
+    rightView.setPadding(36, 24, 36, 24)
+    //        rightView.setDividerHeight(2);
+    //        rightView.setDivider(new ColorDrawable(Color.BLACK));
+    rightView.setBackgroundColor(Color.LTGRAY)
+    leftView.setBackgroundColor(Color.WHITE)
+    linearLayout.setBackgroundColor(Color.LTGRAY)
     linearLayout.addView(leftView)
+    linearLayout.addView(line)
     linearLayout.addView(rightView)
     val text = StringBuffer()
     text.append(leftList[0])
+    leftView.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+        override fun onGlobalLayout() {
+            leftView.getChildAt(0).setBackgroundColor(Color.LTGRAY)
+            leftView.viewTreeObserver.removeOnGlobalLayoutListener(this)
+        }
+    })
     leftView.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
         cacheRight.clear()
         cacheRight.addAll(rightList[position])
         (rightView.adapter as BaseAdapter).notifyDataSetChanged()
         text.delete(0, text.length)
         text.append(leftList[position])
+        for (i in 0 until parent.count) {
+            parent.getChildAt(i).setBackgroundColor(Color.WHITE)
+        }
+        view.setBackgroundColor(Color.LTGRAY)
     }
     rightView.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
         if (pop.isShowing) {
             pop.dismiss()
         }
-        itemRun(text.toString(),cacheRight[position],position)
+        tv.text = text.toString() + "-" + cacheRight[position]
     }
     pop.setOnDismissListener {
         if (pop.isShowing) {
@@ -196,5 +225,5 @@ fun showSecondLevelPop(context: Activity, leftList: List<String>, rightList: Lis
     val params = context.window.attributes
     params.alpha = 0.7f
     context.window.attributes = params
-    pop.showAtLocation(context.currentFocus, Gravity.CENTER, 0, 0)
+    pop.showAtLocation(tv, Gravity.CENTER, 0, 0)
 }
