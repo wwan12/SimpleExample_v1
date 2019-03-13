@@ -85,17 +85,6 @@ private constructor() : Thread.UncaughtExceptionHandler {
             return true
         }
         ex.localizedMessage ?: return false
-//使用Toast来显示异常信息
-//        object : Thread() {
-//            override fun run() {
-//                Looper.prepare()
-//                //保存错误报告文件
-////                StringToFile(mContext!!).writeToFile(ex.message!!,msg)
-////                LogToFile.w("my", msg)
-//                //这句话可以先注释掉，这是我单独写的一个log写入类,下面已提供了该类**
-//                Looper.loop()
-//            }
-//        }.start()
         //收集设备信息
         collectCrashDeviceInfo(mContext)
         //保存错误报告文件

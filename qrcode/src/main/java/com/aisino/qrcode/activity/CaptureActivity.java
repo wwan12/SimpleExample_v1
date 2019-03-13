@@ -224,9 +224,9 @@ public final class CaptureActivity extends AppCompatActivity implements SurfaceH
     private void displayFrameworkBugMessageAndExit() {
         // camera error
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(getString(R.string.zxing_bar_name));
-        builder.setMessage("Camera error");
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        builder.setTitle("");
+        builder.setMessage("相机发生错误");
+        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {

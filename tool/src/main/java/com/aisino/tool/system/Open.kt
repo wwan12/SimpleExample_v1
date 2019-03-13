@@ -79,10 +79,10 @@ fun  Activity.getAppName(context:Context  ):String?{
 /*
 * 获取程序的权限
 */
-fun Activity.getAllPermissions(context: Context): Array<String>? {
+fun Activity.getAllPermissions(): Array<String> {
     try {
         //包管理操作管理类
-        val pm = context.packageManager
+        val pm = this.packageManager
         val packinfo = pm.getPackageInfo(this.packageName, PackageManager.GET_PERMISSIONS)
         //获取到所有的权限
         return packinfo.requestedPermissions
@@ -90,7 +90,7 @@ fun Activity.getAllPermissions(context: Context): Array<String>? {
         e.printStackTrace()
     }
 
-    return null
+    return emptyArray()
 }
 
 /**
@@ -99,10 +99,10 @@ fun Activity.getAllPermissions(context: Context): Array<String>? {
  * @param packname
  * @return
  */
-fun Activity.getAppSignature(context: Context): String? {
+fun Activity.getAppSignature(): String {
     try {
         //包管理操作管理类
-        val pm = context.packageManager
+        val pm = this.packageManager
         val packinfo = pm.getPackageInfo(this.packageName, PackageManager.GET_SIGNATURES)
         //获取当前应用签名
         return packinfo.signatures[0].toCharsString()
@@ -110,7 +110,7 @@ fun Activity.getAppSignature(context: Context): String? {
         e.printStackTrace()
     }
 
-    return null
+    return ""
 }
 
 

@@ -1,12 +1,16 @@
 package com.aisino.simpleexample
 
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import com.aisino.tool.service.showNotifictionIcon
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlin.collections.ArrayList
 import com.aisino.tool.system.CrashHandler
+import com.aisino.tool.system.signPermissions
+import android.content.pm.PackageInfo
 
 
 
@@ -18,15 +22,10 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        // Example of a call to a native method
-
-//        Toast.showToast_w(this,"aaaaa")
         showNotifictionIcon(0,R.mipmap.ic_launcher,"ceshi","sd","asc")
        example_list.createButtons(this,exampleList,null)
         // 异常处理，不需要处理时注释掉这两句即可！
        CrashHandler.openCrashHandler?.init(applicationContext)
-
     }
 
     init {

@@ -12,24 +12,29 @@ import pub.devrel.easypermissions.EasyPermissions
  */
 
 
-fun Activity.signPermissions(perms: Array<String>) {
+fun Activity.signPermissions(p:String="",allSign: () -> Unit={}) {
+    var perms:Array<String>
+    if (p.equals("")){
+         perms= this.getAllPermissions()
+    }else{
+        perms= emptyArray()
+        perms.plus(p)
+    }
     if (EasyPermissions.hasPermissions(this, *perms)) {
-        // Already have permission, do the thing
-        // ...
+        // 权限全部通过
+        allSign()
     } else {
-        // Do not have permissions, request them now
+        // 有权限被拒绝
         EasyPermissions.requestPermissions(this, "运行需要权限，拒绝可能导致有些功能无法正常运行", 0, *perms)
     }
 }
 
-fun Activity.checkPermission(perms: Array<String>): Unit {
-    for (perm in perms) {
+fun Activity.checkPermission(perm: String,go: () -> Unit,fail: () -> Unit): Unit {
         if (ContextCompat.checkSelfPermission(this, perm) == PackageManager.PERMISSION_GRANTED) {
-
+            go()
         }else{
-            EasyPermissions.requestPermissions(this, "运行需要权限，拒绝可能导致有些功能无法正常运行", 0, *perms)
+            fail()
         }
-    }
 }
 
 
