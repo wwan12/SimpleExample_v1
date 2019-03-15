@@ -78,7 +78,7 @@ class ToolActivity : AppCompatActivity() {
     }
 
     fun permissions(): Unit {
-        signPermissions(arrayOf(Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE))
+        signPermissions()
     }
 
     var actReust = { requestCode: Int, resultCode: Int, data: Intent? -> }

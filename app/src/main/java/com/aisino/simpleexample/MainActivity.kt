@@ -1,18 +1,15 @@
 package com.aisino.simpleexample
 
-import android.content.Intent
-import android.content.pm.PackageManager
+import android.Manifest
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import com.aisino.tool.service.showNotifictionIcon
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlin.collections.ArrayList
 import com.aisino.tool.system.CrashHandler
-import com.aisino.tool.system.signPermissions
-import android.content.pm.PackageInfo
-
-
+import com.aisino.tool.http.Http
+import com.aisino.tool.model.update.UpdateChecker
+import com.aisino.tool.system.getVersionCode
 
 
 class MainActivity : AppCompatActivity() {
@@ -26,6 +23,14 @@ class MainActivity : AppCompatActivity() {
        example_list.createButtons(this,exampleList,null)
         // 异常处理，不需要处理时注释掉这两句即可！
        CrashHandler.openCrashHandler?.init(applicationContext)
+        Http.post{
+            url = "接口路径"
+            success {   if ((!"version").toInt()>getVersionCode()){
+                UpdateChecker.checkForDialog(this@MainActivity,"提示文字","新安装包下载路径")//提示框更新
+//                UpdateChecker.checkForNotification(this@MainActivity,"提示文字","新安装包下载路径")//推送更新使用一个就可以
+            } }//请求成功
+        }
+
     }
 
     init {

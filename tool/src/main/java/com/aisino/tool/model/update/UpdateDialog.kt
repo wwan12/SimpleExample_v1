@@ -10,7 +10,6 @@ import com.aisino.tool.R
 
 internal object UpdateDialog {
 
-
     fun show(context: Context, content: String, downloadUrl: String) {
         if (isContextValid(context)) {
             AlertDialog.Builder(context)

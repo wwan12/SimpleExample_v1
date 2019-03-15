@@ -1,7 +1,6 @@
 package com.aisino.tool.model.update
 
 import android.content.Context
-import android.util.Log
 
 object UpdateChecker {
 

@@ -19,6 +19,7 @@ fun Activity.signPermissions(p:String="",allSign: () -> Unit={}) {
     }else{
         perms= emptyArray()
         perms.plus(p)
+
     }
     if (EasyPermissions.hasPermissions(this, *perms)) {
         // 权限全部通过

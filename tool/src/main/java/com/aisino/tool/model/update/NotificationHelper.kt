@@ -15,7 +15,6 @@ import com.aisino.tool.R
 
 /**
  *
- * @since 2018-04-07 16:49
  */
 class NotificationHelper(base: Context) : ContextWrapper(base) {
 
@@ -42,9 +41,7 @@ class NotificationHelper(base: Context) : ContextWrapper(base) {
         }
 
     init {
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-
             val mChannel = NotificationChannel(CHANNEL_ID, "应用更新", NotificationManager.IMPORTANCE_LOW)
             mChannel.description = "应用有新版本"
             mChannel.enableLights(true) //是否在桌面icon右上角展示小红点
