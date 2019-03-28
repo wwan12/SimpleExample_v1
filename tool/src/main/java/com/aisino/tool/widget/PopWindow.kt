@@ -1,16 +1,14 @@
 package com.aisino.tool.widget
 
 import android.app.Activity
-import android.content.ComponentCallbacks
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.widget.*
 import com.aisino.tool.R
-import java.lang.Comparable
-import java.text.FieldPosition
 import android.support.v4.view.ViewPager
 import android.view.*
+import com.aisino.tool.widget.adapter.ImageAdapter
 
 /**
  * 显示一个在当前view下方的listpopwindow

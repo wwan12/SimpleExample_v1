@@ -2,28 +2,22 @@ package com.aisino.tool.system
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.app.ActivityManager
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.LocationManager
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
-import android.net.Uri
 import android.os.Build
 import android.provider.Settings
 import android.telephony.TelephonyManager
-import android.util.Log
 import android.view.WindowManager
-import java.io.File
 import android.content.pm.PackageManager.NameNotFoundException
 
 /**
+ * 获取系统数据
  * Created by lenovo on 2018/2/26.
  */
-
-
-
 
 /**
  * 获取当前程序的版本号
@@ -64,9 +58,9 @@ fun Activity.getVersionName(): String {
  * @param packname
  * @return
  */
-fun  Activity.getAppName(context:Context  ):String?{
+fun  Activity.getAppName():String?{
     //包管理操作管理类
-    val pm = context.getPackageManager()
+    val pm = this.getPackageManager()
     try {
         val info = pm.getApplicationInfo(this.packageName, 0)
         return info.loadLabel(pm).toString();
@@ -95,8 +89,6 @@ fun Activity.getAllPermissions(): Array<String> {
 
 /**
  * 获取程序的签名
- * @param context
- * @param packname
  * @return
  */
 fun Activity.getAppSignature(): String {
@@ -127,6 +119,20 @@ fun Activity.getIMEICode(): String {
                 Settings.System.ANDROID_ID)
     }
     return IMEI
+}
+
+/**
+ * @param slotId  slotId为卡槽Id，它的值为 0、1；
+ * @return
+ */
+fun Activity.getIMEI( slotId: Int): String {
+    try {
+        val manager = this.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+        val method = manager.javaClass.getMethod("getImei", Int::class.javaPrimitiveType)
+        return method.invoke(manager, slotId) as String
+    } catch (e: Exception) {
+        return ""
+    }
 }
 
 fun Activity.getOperator(): String {

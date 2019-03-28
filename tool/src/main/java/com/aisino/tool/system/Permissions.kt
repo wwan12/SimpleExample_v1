@@ -2,6 +2,7 @@ package com.aisino.tool.system
 
 import android.app.Activity
 import android.content.pm.PackageManager
+import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 
 import pub.devrel.easypermissions.EasyPermissions
@@ -11,16 +12,11 @@ import pub.devrel.easypermissions.EasyPermissions
  * EasyPermissions
  */
 
-
-fun Activity.signPermissions(p:String="",allSign: () -> Unit={}) {
-    var perms:Array<String>
-    if (p.equals("")){
-         perms= this.getAllPermissions()
-    }else{
-        perms= emptyArray()
-        perms.plus(p)
-
-    }
+/**
+ * 申请全部权限
+ */
+fun Activity.signPermissions(allSign: () -> Unit={}) {
+    var perms:Array<String> = this.getAllPermissions()
     if (EasyPermissions.hasPermissions(this, *perms)) {
         // 权限全部通过
         allSign()
@@ -30,12 +26,26 @@ fun Activity.signPermissions(p:String="",allSign: () -> Unit={}) {
     }
 }
 
-fun Activity.checkPermission(perm: String,go: () -> Unit,fail: () -> Unit): Unit {
-        if (ContextCompat.checkSelfPermission(this, perm) == PackageManager.PERMISSION_GRANTED) {
-            go()
-        }else{
-            fail()
-        }
+/**
+ * 单个权限申请
+ */
+fun Activity.signPermission(perms:Array<String>,sign: () -> Unit={}) {
+    if (EasyPermissions.hasPermissions(this, *perms)) {
+        sign()
+    } else {
+        ActivityCompat.requestPermissions(this, perms,0);
+    }
+}
+
+/**
+ * 检查权限
+ */
+fun Activity.checkPermission(perms:Array<String>,go: () -> Unit,fail: () -> Unit): Unit {
+    if (EasyPermissions.hasPermissions(this, *perms)) {
+        go()
+    } else {
+        fail()
+    }
 }
 
 

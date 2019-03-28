@@ -32,6 +32,7 @@ class ToolActivity : AppCompatActivity() {
         tools.add("Permissions")
         tools.add("Camera")
         tools.add("Gallery")
+        tools.add("List")
     }
 
     fun openTool(view: View, type: String): Unit {
@@ -47,6 +48,7 @@ class ToolActivity : AppCompatActivity() {
             tools[1] -> permissions()
             tools[2] -> camera()
             tools[3] -> gallery()
+            tools[4] -> list()
         }
     }
 
@@ -105,6 +107,10 @@ class ToolActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    fun list(): Unit {
+        startActivity(Intent(this,TestViewActivity::class.java))
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

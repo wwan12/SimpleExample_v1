@@ -12,8 +12,6 @@ import android.widget.EditText
  * 版本号：1
  *
  */
-class InputExtend {
-}
 
 /**
  * 设置为会记计数 1，000，000

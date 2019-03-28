@@ -1,8 +1,10 @@
 package com.aisino.simpleexample
 
-import android.Manifest
+import android.content.Context
+import android.location.LocationManager
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.telephony.TelephonyManager
 import com.aisino.tool.service.showNotifictionIcon
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlin.collections.ArrayList
@@ -23,15 +25,19 @@ class MainActivity : AppCompatActivity() {
        example_list.createButtons(this,exampleList,null)
         // 异常处理，不需要处理时注释掉这两句即可！
        CrashHandler.openCrashHandler?.init(applicationContext)
-        Http.post{
-            url = "接口路径"
-            success {   if ((!"version").toInt()>getVersionCode()){
-                UpdateChecker.checkForDialog(this@MainActivity,"提示文字","新安装包下载路径")//提示框更新
-//                UpdateChecker.checkForNotification(this@MainActivity,"提示文字","新安装包下载路径")//推送更新使用一个就可以
-            } }//请求成功
-        }
-
+        var updateurl=""
+//        Http.post{
+//            url = "https://blog.csdn.net/zybieku/article/details/52925928"
+//            success {
+//                updateurl=!"cflj"
+//                if ((!"version").toInt()>getVersionCode()){
+//                    UpdateChecker.checkForDialog(this@MainActivity,"提示文字",updateurl)//提示框更新
+////                UpdateChecker.checkForNotification(this@MainActivity,"提示文字","新安装包下载路径")//推送更新使用一个就可以
+//            } }//请求成功
+//        }
     }
+
+
 
     init {
         exampleList.add("Animation")

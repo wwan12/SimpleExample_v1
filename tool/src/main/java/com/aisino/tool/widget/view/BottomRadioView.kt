@@ -1,4 +1,4 @@
-package com.aisino.tool.widget
+package com.aisino.tool.widget.view
 
 import android.content.Context
 import android.view.Gravity

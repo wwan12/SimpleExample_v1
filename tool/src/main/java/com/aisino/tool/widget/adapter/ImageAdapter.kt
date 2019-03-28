@@ -1,4 +1,4 @@
-package com.aisino.tool.widget
+package com.aisino.tool.widget.adapter
 
 import android.support.v4.view.PagerAdapter
 import android.view.View

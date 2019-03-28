@@ -1,7 +1,6 @@
-package com.overwork.pension.other
+package com.aisino.tool.widget.view
 
 import android.content.Context
-import android.support.v4.view.ViewCompat
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.widget.ListView
@@ -9,7 +8,7 @@ import android.widget.ListView
 /**
  * 可以滑动子控件的listview
  */
-class ListViewAddScorll : ListView {
+class InScorllListView : ListView {
 
     constructor(context: Context) : super(context) {
 
@@ -39,5 +38,12 @@ class ListViewAddScorll : ListView {
         }
         return superIntecept
     }
+
+    public override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        val expandSpec = MeasureSpec.makeMeasureSpec(Integer.MAX_VALUE shr 2,
+                MeasureSpec.AT_MOST)
+        super.onMeasure(widthMeasureSpec, expandSpec)
+    }
+
 
 }

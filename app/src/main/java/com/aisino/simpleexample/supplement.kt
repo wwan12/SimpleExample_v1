@@ -36,3 +36,4 @@ fun setupListener(context: Context, view: View, type: String) {
         context.startActivity(intent)
     }
 }
+
