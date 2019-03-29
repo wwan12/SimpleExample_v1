@@ -77,9 +77,7 @@ class HtmlActivity : AppCompatActivity() {
 //    }
 
     val newLoad = ArrayList<String>().apply {
-        //        add("hd.chinatax.gov.cn/guoshui/main.jsp")
-//        add("12366.bjnsr.gov.cn/")
-//        add("12366.chinatax.gov.cn/")
+
     }
 
     var needClearHistory = false
@@ -95,9 +93,6 @@ class HtmlActivity : AppCompatActivity() {
         isSingle=intent.getBooleanExtra("ISSINGLE",false)
         isAutoStyle=intent.getBooleanExtra("ISAUTOSTYLE",false)
         init()
-//        bindAlias()
-//        Toast.makeText(this, PushManager.getInstance().getClientid(applicationContext) + "_a", Toast.LENGTH_LONG).show()
-//        toWebView()
 
     }
 
@@ -179,20 +174,6 @@ class HtmlActivity : AppCompatActivity() {
             }
 
             override fun onPageStarted(view: WebView, url: String, favicon: Bitmap?) {//开始加载
-//                if (errorUrl != null) {
-//                    if (url.indexOf(errorUrl!!) == -1) {//404
-//                    dialog.setLoadingBuilder(LOAD_TYPE.SINGLE_CIRCLE)
-//                            .setLoadingColor(Color.BLUE)//设置图标颜色
-//                            .setHintText("请稍等")//设置文本文字
-//                            .setHintTextSize(16f) // 设置字体大小
-//                            .setHintTextColor(Color.GRAY)  // 设置字体颜色
-//                            .show()
-//                    } else {
-//                        webView.visibility = View.GONE
-//                        errorLl.visibility = View.VISIBLE
-//                    }
-//                }
-
                 for (u in newLoad) {//打开外部网站
                     if (url.indexOf(u) != -1) {
                         val intent = Intent()
@@ -235,13 +216,6 @@ class HtmlActivity : AppCompatActivity() {
                 //      super.onReceivedSslError(view, handler, error);//      一定要注释掉！
                 handler.proceed()
             }
-
-//            override fun doUpdateVisitedHistory(view: WebView?, url: String?, isReload: Boolean) {
-//                super.doUpdateVisitedHistory(view, url, isReload)
-//                if (needClearHistory) {
-//                    main_web.clearHistory();//清除历史记录
-//                }
-//            }
         }
 
         webView.loadUrl(mBaseUrl)

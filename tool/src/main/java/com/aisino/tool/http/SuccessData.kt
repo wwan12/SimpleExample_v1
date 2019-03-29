@@ -12,12 +12,25 @@ class SuccessData (url:String,data: MutableMap<String,Any>){
     val params=mutableMapOf<String,Any>()
     val data= mutableMapOf<String,Any>()
     var url=""
-    var submitTime=0L
+    var submitTime=""
     var retryCount=0
     init {
         this.url=url
         this.data.putAll(data)
     }
+
+    fun logParams(): Unit {
+        
+    }
+
+    fun logCallBack(): Unit {
+        
+    }
+
+    fun logAll(): Unit {
+        
+    }
+    
     operator fun <E>get(key:String): E{
         return loopAny<E>(key, data) as E
     }
@@ -38,4 +51,5 @@ class SuccessData (url:String,data: MutableMap<String,Any>){
 
         return null
     }
+    
 }

@@ -27,8 +27,9 @@ class StreamActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mApplication=application
-
+        if (mApplication==null){
+            mApplication=application
+        }
     }
 
     override fun onPause() {

@@ -7,6 +7,7 @@ import android.util.Xml
 import com.aisino.tool.DEBUG
 import com.aisino.tool.log
 import com.aisino.tool.loge
+import com.aisino.tool.system.DateAndTime
 import com.google.gson.stream.JsonReader
 import org.xmlpull.v1.XmlPullParser
 import java.io.*
@@ -54,11 +55,10 @@ class Submit {
     val _fileParams: MutableMap<String, String> = mutableMapOf()
     val _headers: MutableMap<String, String> = mutableMapOf()
     val _response: MutableMap<String, Any> = mutableMapOf()
-    var submitTime=0L
     private val toUI = Handler()
     private var _start: () -> Unit = {}
     private var _success: (SuccessData) -> Unit = {}
-    private var _fail: (String) -> Unit = {}
+    private var _fail: (FailData) -> Unit = {}
 
     private var isError = false
 
@@ -89,7 +89,6 @@ class Submit {
 
 
     private fun tryInit(): Unit { //检查配置单
-        submitTime=System.currentTimeMillis()
         when (returnType) {
             ReturnType.JSON -> {
             }
@@ -132,7 +131,7 @@ class Submit {
         _success = success
     }
 
-    fun fail(fail: (failMsg: String) -> Unit): Unit {
+    fun fail(fail: (FailData) -> Unit): Unit {
         _fail = fail
     }
 
@@ -195,7 +194,6 @@ class Submit {
     private fun upImage() {
         val mOkHttpClient = OkHttpClient.Builder().cookieJar(cookjar).connectTimeout(outTime, TimeUnit.SECONDS)
         val build = MultipartBody.Builder().setType(MultipartBody.FORM)
-        url.log(tag)
         for (p in _params) {
             if (p.value is File) {
                 build.addFormDataPart(p.key, (p.value as File).name, RequestBody.create(MediaType.parse("image/png"), p.value as File))
@@ -272,6 +270,7 @@ class Submit {
                 }
                 fileOutputStream.flush()
                 fileOutputStream.close()
+                successCall(response)
             }
         })
     }
@@ -279,14 +278,14 @@ class Submit {
 
     private fun failCall(failMsg: String): Unit {
         toUI.post {
-            _fail(failMsg)
+            _fail(FailData(url,failMsg).apply { this.submitTime=DateAndTime.nowDateTime })
         }
     }
 
     private fun successCall(response: Response): Unit {
         toUI.post {
             if (response.code() != 200) {
-                _fail("请求失败:" + response.code())
+                _fail(FailData(url,"请求失败:" + response.code()).apply { this.submitTime=DateAndTime.nowDateTime })
             } else {
                 response.request().url().toString().log("successCall")
                 when (returnType) {
@@ -304,7 +303,7 @@ class Submit {
                         _response.put(ReturnType.STRING.name, response.body()!!.string())
                     }
                 }
-                _success(SuccessData(url,_response).apply { this.submitTime=submitTime })
+                _success(SuccessData(url,_response).apply { this.submitTime=DateAndTime.nowDateTime })
             }
         }
     }
