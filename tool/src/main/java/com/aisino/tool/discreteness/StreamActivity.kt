@@ -23,7 +23,7 @@ class StreamActivity : AppCompatActivity() {
     val _result: ArrayList<(requestCode: Int, resultCode: Int, data: Intent?) -> Unit> = ArrayList()
     val _pause: ArrayList<() -> Unit> = ArrayList()
     val _restart: ArrayList<() -> Unit> = ArrayList()
-    lateinit var loadLog: AlertDialog
+    var loadLog: AlertDialog?=null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,17 +78,14 @@ class StreamActivity : AppCompatActivity() {
 
 
     protected fun showLoad(): Unit {
-        val load: AlertDialog.Builder = AlertDialog.Builder(this)
-        val la = LoadAnim(this)
-        load.setView(la)
+        val load = AlertDialog.Builder(this)
+        load.setView(LoadAnim(this))
         loadLog = load.show()
     }
 
     protected fun hideLoad(): Unit {
-        if (loadLog != null && loadLog.isShowing) {
-            loadLog.dismiss()
+        if (loadLog != null && loadLog?.isShowing!!) {
+            loadLog?.dismiss()
         }
     }
-
-
 }

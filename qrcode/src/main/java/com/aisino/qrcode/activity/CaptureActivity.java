@@ -105,18 +105,8 @@ public final class CaptureActivity extends AppCompatActivity implements SurfaceH
     @Override
     protected void onResume() {
         super.onResume();
-
-        // CameraManager must be initialized here, not in onCreate(). This is
-        // necessary because we don't
-        // want to open the camera driver and measure the screen size if we're
-        // going to show the help on
-        // first launch. That led to bugs where the scanning rectangle was the
-        // wrong size and partially
-        // off screen.
         cameraManager = new CameraManager(getApplication());
-
         handler = null;
-
         if (isHasSurface) {
             // The activity was paused but not stopped, so the surface still
             // exists. Therefore

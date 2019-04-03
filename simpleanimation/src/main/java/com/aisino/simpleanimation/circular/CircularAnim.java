@@ -44,7 +44,6 @@ public class CircularAnim {
         void onAnimationEnd();
     }
 
-    @SuppressLint("NewApi")
     public static class VisibleBuilder {
 
         private View mAnimView, mTriggerView;
@@ -156,7 +155,6 @@ public class CircularAnim {
             try {
                 Animator anim = ViewAnimationUtils.createCircularReveal(
                         mAnimView, rippleCX, rippleCY, mStartRadius, mEndRadius);
-
 
                 mAnimView.setVisibility(View.VISIBLE);
                 anim.setDuration(mDurationMills);

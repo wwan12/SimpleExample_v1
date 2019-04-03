@@ -99,7 +99,7 @@ fun Activity.openCamera() :Uri{
     val f = File(this.filesDir.path, imgName)
     val contentUri: Uri
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-        contentUri = FileProvider.getUriForFile(this, "com.aisino.tool.fileProvider", f)
+        contentUri = FileProvider.getUriForFile(this, this.applicationInfo.packageName+".fileProvider", f)
         //            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
     } else {
         contentUri = Uri.fromFile(f)

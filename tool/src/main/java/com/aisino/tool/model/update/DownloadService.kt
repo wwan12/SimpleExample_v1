@@ -61,25 +61,21 @@ class DownloadService : IntentService("DownloadService") {
             byteread = ins.read(buffer)
         }
         // 下载完成
-        installAPk(this, apkFile)
+        installAPK(this, apkFile)
         notificationHelper.cancel()
         try {
-            out?.close()
+            out.close()
             ins?.close()
         } catch (ignored: IOException) {
             ignored.printStackTrace()
         }
-
-
     }
 
-    fun installAPk(context: Context, apkFile: File) {
+    fun installAPK(context: Context, apkFile: File) {
         val intent = Intent(Intent.ACTION_VIEW)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
-            val uri = FileProvider.getUriForFile(context,  "com.aisino.tool.fileProvider", apkFile)
-
+            val uri = FileProvider.getUriForFile(context,  this.applicationInfo.packageName+".fileProvider", apkFile)
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
             intent.setDataAndType(uri, "application/vnd.android.package-archive")
         } else {

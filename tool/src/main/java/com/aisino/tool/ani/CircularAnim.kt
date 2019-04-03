@@ -4,6 +4,7 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.os.Build
 import android.view.View
 import android.view.ViewAnimationUtils
 import android.view.ViewGroup
@@ -41,7 +42,6 @@ class CircularAnim {
         fun onAnimationEnd()
     }
 
-    @SuppressLint("NewApi")
     class VisibleBuilder(private val mAnimView: View, private val isShow: Boolean) {
         private var mTriggerView: View? = null
 
@@ -53,7 +53,6 @@ class CircularAnim {
         private var mOnAnimationEndListener: OnAnimationEndListener? = null
 
         init {
-
             if (isShow) {
                 mStartRadius = MINI_RADIUS + 0f
             } else {
@@ -87,11 +86,9 @@ class CircularAnim {
             return this
         }
 
-//        @JvmOverloads
         fun go(onAnimationEndListener: OnAnimationEndListener? = null) {
             mOnAnimationEndListener = onAnimationEndListener
 
-            // 版本判断
             if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.LOLLIPOP) {
                 doOnEnd()
                 return
@@ -180,8 +177,7 @@ class CircularAnim {
 
     }
 
-    @SuppressLint("NewApi")
-    class FullActivityBuilder(private val mActivity: Activity, private val mTriggerView: View) {
+    class FullActivityBuilder(val mActivity: Activity, val mTriggerView: View) {
         private var mStartRadius = MINI_RADIUS.toFloat()
         private var mColorOrImageRes = colorOrImageRes
         private var mDurationMills: Long? = null
@@ -264,7 +260,7 @@ class CircularAnim {
                             if (mActivity.isFinishing) return@Runnable
                             try {
                                 val anim = ViewAnimationUtils.createCircularReveal(view, cx, cy,
-                                        finalRadius.toFloat(), mStartRadius)
+                                            finalRadius.toFloat(), mStartRadius)
                                 anim.duration = finalDuration
                                 anim.addListener(object : AnimatorListenerAdapter() {
                                     override fun onAnimationEnd(animation: Animator) {
