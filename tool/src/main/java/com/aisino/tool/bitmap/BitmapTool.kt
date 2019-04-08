@@ -21,7 +21,6 @@ import android.graphics.Typeface
 import android.text.TextPaint
 import java.nio.channels.FileChannel
 
-
 /**
  * Android根据设备屏幕尺寸和dpi的不同，给系统分配的单应用程序内存大小也不同，具体如下表
  *
@@ -46,7 +45,6 @@ import java.nio.channels.FileChannel
  *
  *
  */
-
 
 /**
  * 把batmap 转file

@@ -4,6 +4,8 @@ import android.content.Context
 import android.util.Log
 import android.widget.Toast
 
+
+
 /**
  * Created by lenovo on 2017/11/14.
  * 开发用
@@ -54,5 +56,4 @@ private fun getMethodName(): String {
 private fun getLineNumber(): Int {
     return Thread.currentThread().stackTrace[2].lineNumber
 }
-
 

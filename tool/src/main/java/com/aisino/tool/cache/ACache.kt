@@ -101,14 +101,14 @@ class ACache private constructor(cacheDir: File, max_size: Long, max_count: Int)
         if (!file.exists())
             return null
         var removeFile = false
-        var `in`: BufferedReader? = null
+        var inb: BufferedReader? = null
         try {
-            `in` = BufferedReader(FileReader(file))
+            inb = BufferedReader(FileReader(file))
             var readString = ""
             var currentLine:String?=""
             do {
                 readString += currentLine
-                currentLine = `in`.readLine()
+                currentLine = inb.readLine()
             }while (currentLine!= null)
             if (!Utils.isDue(readString)) {
                 return Utils.clearDateInfo(readString)
@@ -120,13 +120,12 @@ class ACache private constructor(cacheDir: File, max_size: Long, max_count: Int)
             e.printStackTrace()
             return null
         } finally {
-            if (`in` != null) {
+            if (inb != null) {
                 try {
-                    `in`.close()
+                    inb.close()
                 } catch (e: IOException) {
                     e.printStackTrace()
                 }
-
             }
             if (removeFile)
                 remove(key)

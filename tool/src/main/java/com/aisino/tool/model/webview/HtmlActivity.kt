@@ -11,9 +11,11 @@ import android.view.View
 import android.webkit.SslErrorHandler
 import android.content.Intent
 import android.net.Uri
+import android.support.v7.app.AlertDialog
 import android.widget.*
 import com.aisino.tool.R
 import com.aisino.tool.ani.CircularAnim
+import com.aisino.tool.ani.LoadAnim
 import com.aisino.tool.system.CAMERA_REQUEST
 import com.aisino.tool.system.openCamera
 import com.aisino.tool.toast
@@ -41,6 +43,8 @@ class HtmlActivity : AppCompatActivity() {
     private lateinit var errorLl: LinearLayout
     private lateinit var errorImg: ImageView
     private lateinit var errorText: TextView
+    private var loadLog: AlertDialog?=null
+
     private val jsChangeStyle = "javascript:function myFunction(){\n" +
             "var \$jquery = jQuery.noConflict();\n" +
             "var content=\$jquery('.article');\n" +
@@ -126,6 +130,14 @@ class HtmlActivity : AppCompatActivity() {
             CookieManager.getInstance().setAcceptCookie(true)
         }
 
+        webView.addJavascriptInterface(object : Object(){
+            @JavascriptInterface
+            fun jsAndroid(msg : String){
+
+            }
+            //第二个参数可以自己随便设置，在html里会用到
+        },"androids")
+
         errorLl.setOnClickListener({
             webView.visibility = View.VISIBLE
             errorLl.visibility = View.GONE
@@ -184,6 +196,7 @@ class HtmlActivity : AppCompatActivity() {
                         webView.stopLoading()
                     }
                 }
+                showLoad()
                 super.onPageStarted(view, url, favicon)
             }
 
@@ -197,7 +210,7 @@ class HtmlActivity : AppCompatActivity() {
 //                    setName()
                 }
                 imgReset()
-
+                hideLoad()
             }
 
             override fun onReceivedError(view: WebView?, request: WebResourceRequest?, error: WebResourceError?) {//加载失败
@@ -306,6 +319,19 @@ class HtmlActivity : AppCompatActivity() {
             } else {
                 overTime = 0L
             }
+        }
+    }
+
+
+    protected fun showLoad(): Unit {
+        val load = AlertDialog.Builder(this)
+        load.setView(LoadAnim(this))
+        loadLog = load.show()
+    }
+
+    protected fun hideLoad(): Unit {
+        if (loadLog != null && loadLog?.isShowing!!) {
+            loadLog?.dismiss()
         }
     }
 

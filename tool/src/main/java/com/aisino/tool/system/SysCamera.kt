@@ -141,7 +141,6 @@ private fun getImagePath(activity: Activity, uri: Uri, selection: String?): Stri
             val num = cursor.getColumnIndex(MediaStore.Images.Media.DATA)
             path = cursor.getString(num)
         }
-
         cursor.close()
     }
     return path
@@ -159,14 +158,10 @@ fun Uri.getCameraImg(activity: Activity): Bitmap? {
         val dar = Drawable.createFromResourceStream(if (sCompatUseCorrectStreamDensity) activity.resources else null, null, stream, null)
         return dar.drawable2Bitmap()
     } catch (e: Exception) {
-
+        e.printStackTrace()
     } finally {
         if (stream != null) {
-            try {
-                stream.close()
-            } catch (e: IOException) {
-            }
-
+            stream.close()
         }
     }
     return null

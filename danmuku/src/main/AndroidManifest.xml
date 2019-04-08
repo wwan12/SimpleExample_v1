@@ -2,6 +2,6 @@
     package="com.aisino.danmuku" >
 
     <application>
-        <activity android:name=".VideoActivity" />
+        <activity android:name=".VideoActivity" android:screenOrientation="landscape" />
     </application>
 </manifest>

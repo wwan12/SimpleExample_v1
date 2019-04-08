@@ -79,8 +79,6 @@ class CircularAnim {
             mDurationMills = durationMills
             return this
         }
-
-        @Deprecated("") //You can use method - go(OnAnimationEndListener onAnimationEndListener).
         fun onAnimationEndListener(onAnimationEndListener: OnAnimationEndListener): VisibleBuilder {
             mOnAnimationEndListener = onAnimationEndListener
             return this
