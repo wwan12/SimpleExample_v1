@@ -56,7 +56,7 @@ class NetWorkActivity : AppCompatActivity() {
                         "user".."id"//取出userJOBJ对象中STRING参数id
                     }
                     //请求失败
-                    fail { failMsg -> Toast.makeText(this@NetWorkActivity, failMsg, Toast.LENGTH_SHORT).show() }
+                    fail { failMsg -> Toast.makeText(this@NetWorkActivity, failMsg.failMsg, Toast.LENGTH_SHORT).show() }
                 }
                 1 -> Http.post {
                     url = title_network.text.toString()
