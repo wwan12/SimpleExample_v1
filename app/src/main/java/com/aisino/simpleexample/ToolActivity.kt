@@ -10,6 +10,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import com.aisino.tool.cache.ACache
 import com.aisino.tool.log
+import com.aisino.tool.model.webview.HtmlActivity
 import com.aisino.tool.system.*
 import com.aisino.tool.toast
 import kotlinx.android.synthetic.main.activity_tool.*
@@ -33,6 +34,7 @@ class ToolActivity : AppCompatActivity() {
         tools.add("Camera")
         tools.add("Gallery")
         tools.add("List")
+        tools.add("WebView")
     }
 
     fun openTool(view: View, type: String): Unit {
@@ -49,6 +51,7 @@ class ToolActivity : AppCompatActivity() {
             tools[2] -> camera()
             tools[3] -> gallery()
             tools[4] -> list()
+            tools[5] -> webview()
         }
     }
 
@@ -116,5 +119,8 @@ class ToolActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         actReust(requestCode, resultCode, data)
+    }
+    fun webview(): Unit {
+        startActivity(Intent(this,HtmlActivity::class.java))
     }
 }

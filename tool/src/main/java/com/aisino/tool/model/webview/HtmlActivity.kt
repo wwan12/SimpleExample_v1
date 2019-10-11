@@ -119,6 +119,8 @@ class HtmlActivity : AppCompatActivity() {
         webView.settings.setAllowFileAccess(true) //允许加载本地文件html  file协议, 这可能会造成不安全 , 建议重写关闭
         webView.settings.setAllowFileAccessFromFileURLs(false) //通过 file url 加载的 Javascript 读取其他的本地文件 .建议关闭
         webView.settings.setAllowUniversalAccessFromFileURLs(false)//允许通过 file url 加载的 Javascript 可以访问其他的源，包括其他的文件和 http，https 等其他的源
+        webView.settings.textZoom=100
+
 //        val appCachePath = applicationContext.cacheDir.absolutePath
 //        main_web.settings.setAppCachePath(appCachePath)
 //        main_web.settings.setAppCacheEnabled(true)
@@ -251,6 +253,21 @@ class HtmlActivity : AppCompatActivity() {
                 " {\n" +
                 "      document.cookie=\"${key}=\"+\"${v}\";\n" +
                 " })()")
+    }
+
+    fun setTextSize(key:String,v:String): Unit {
+        webView.loadUrl("javascript:(function htmlFontSize(){\n" +
+                "    var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);\n" +
+                "    var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);\n" +
+                "    var width = w > h ? h : w;\n" +
+                "    width = width > 720 ? 720 : width\n" +
+                "    var fz = ~~(width*100000/36)/10000\n" +
+                "    document.getElementsByTagName(\"html\")[0].style.cssText = 'font-size: ' + fz +\"px\";\n" +
+                "    var realfz = ~~(+window.getComputedStyle(document.getElementsByTagName(\"html\")[0]).fontSize.replace('px','')*10000)/10000\n" +
+                "    if (fz !== realfz) {\n" +
+                "        document.getElementsByTagName(\"html\")[0].style.cssText = 'font-size: ' + fz * (fz / realfz) +\"px\";\n" +
+                "    }\n" +
+                "})()")
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

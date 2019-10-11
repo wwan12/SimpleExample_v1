@@ -8,6 +8,7 @@ import com.aisino.tool.DEBUG
 import com.aisino.tool.log
 import com.aisino.tool.loge
 import com.aisino.tool.system.DateAndTime
+import com.google.gson.Gson
 import com.google.gson.stream.JsonReader
 import org.xmlpull.v1.XmlPullParser
 import java.io.*
@@ -276,6 +277,7 @@ class Submit {
     }
 
 
+
     private fun failCall(failMsg: String): Unit {
         toUI.post {
             _fail(FailData(url,failMsg).apply { this.submitTime=DateAndTime.nowDateTime })
@@ -303,7 +305,9 @@ class Submit {
                         _response.put(ReturnType.STRING.name, response.body()!!.string())
                     }
                 }
-                _success(SuccessData(url,_response).apply { this.submitTime=DateAndTime.nowDateTime })
+                _success(SuccessData(url,_response).apply {
+                    this.params.putAll(params)
+                    this.submitTime=DateAndTime.nowDateTime })
             }
         }
     }

@@ -59,7 +59,8 @@ class NetWorkActivity : AppCompatActivity() {
                     fail { failMsg -> Toast.makeText(this@NetWorkActivity, failMsg.failMsg, Toast.LENGTH_SHORT).show() }
                 }
                 1 -> Http.post {
-                    url = title_network.text.toString()
+                    url ="https://api.weixin.qq.com/card/invoice/seturl?access_token={24_z8k5hT2kD9PSAqClZ3qmpYFioCazGMi2dFOKR8a3xXeIPtEMn-4wTv3KhsaT7p-YC73AI6TRPucFZWJ5iz5C-Bsl1jSvyfGARXXKr1-wUosEQbz3M2U6W2PaxscJXNjAFAUIY}"
+                   "{"-"}"
                 }
                 2 -> Http.upfile {
                     url = title_network.text.toString()

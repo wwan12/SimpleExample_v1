@@ -98,11 +98,16 @@ fun Activity.openCamera() :Uri{
     val imgName = year.toString() + "_" + month + "_" + day + "(" + System.currentTimeMillis() + ").jpg"
     val f = File(this.filesDir.path, imgName)
     val contentUri: Uri
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N||Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP_MR1) {
         contentUri = FileProvider.getUriForFile(this, this.applicationInfo.packageName+".fileProvider", f)
         //            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
     } else {
         contentUri = Uri.fromFile(f)
+    }
+    if ( getDeviceBrand().toUpperCase().contains("VIVO")||getDeviceBrand().toUpperCase().contains("OPPO")){
+        intent.putExtra(MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA, contentUri)
+    }else{
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, contentUri)
     }
     intent.putExtra(MediaStore.EXTRA_OUTPUT, contentUri)
     intent.putExtra("return-data", false)
@@ -110,7 +115,9 @@ fun Activity.openCamera() :Uri{
     return  contentUri
 }
 
-
+fun getDeviceBrand(): String {
+    return android.os.Build.BRAND
+}
 //读取相册获取的图片uri
 fun Uri.handleImageOnKitKat(activity: Activity): Bitmap? {
     var imagePath: String? = null

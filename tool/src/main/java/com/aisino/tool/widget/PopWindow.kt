@@ -17,7 +17,6 @@ fun Activity.openUnterTheViewListWindow(view: View,data: ArrayList<String>,itemR
     // 将布局文件转换成View对象，popupview 内容视图
     val mPopView = this.layoutInflater.inflate(R.layout.under_the_view_window, null)
     // 将转换的View放置到 新建一个popuwindow对象中
-
     val mPopupWindow = PopupWindow(mPopView,
             LinearLayout.LayoutParams.WRAP_CONTENT,
             LinearLayout.LayoutParams.WRAP_CONTENT)
