@@ -4,7 +4,7 @@ import android.app.Application
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.view.View
 import com.aisino.tool.ani.CircularAnim
 import com.aisino.tool.ani.LoadAnim

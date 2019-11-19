@@ -6,8 +6,8 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.widget.*
 import com.aisino.tool.R
-import android.support.v4.view.ViewPager
 import android.view.*
+import androidx.viewpager.widget.ViewPager
 import com.aisino.tool.widget.adapter.ImageAdapter
 
 /**

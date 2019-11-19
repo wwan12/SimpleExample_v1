@@ -3,11 +3,11 @@ package com.aisino.simpleexample
 import android.Manifest
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.AppCompatButton
+import androidx.appcompat.app.AppCompatActivity
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
+import androidx.appcompat.widget.AppCompatButton
 import com.aisino.tool.cache.ACache
 import com.aisino.tool.log
 import com.aisino.tool.model.webview.HtmlActivity

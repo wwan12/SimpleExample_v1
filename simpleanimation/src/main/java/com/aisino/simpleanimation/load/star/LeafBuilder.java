@@ -8,7 +8,7 @@ import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.support.annotation.FloatRange;
+import androidx.annotation.FloatRange;
 import android.util.Log;
 import android.view.animation.DecelerateInterpolator;
 

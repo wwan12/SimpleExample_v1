@@ -1,7 +1,9 @@
 package com.aisino.tool.model.update
 
+
 import android.app.NotificationChannel
 import android.app.NotificationManager
+
 import android.app.PendingIntent
 import android.content.Context
 import android.content.ContextWrapper
@@ -9,7 +11,8 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Build
-import android.support.v4.app.NotificationCompat
+import androidx.core.app.NotificationCompat
+
 
 import com.aisino.tool.R
 
@@ -82,7 +85,7 @@ class NotificationHelper(base: Context) : ContextWrapper(base) {
     }
 
     private fun getNofity(text: String): NotificationCompat.Builder {
-        return NotificationCompat.Builder(applicationContext, CHANNEL_ID)
+        return NotificationCompat.Builder(applicationContext)
                 .setTicker(getString(R.string.android_auto_update_notify_ticker))
                 .setContentTitle("应用更新")
                 .setContentText(text)

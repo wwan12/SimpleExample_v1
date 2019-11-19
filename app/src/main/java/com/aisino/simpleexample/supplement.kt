@@ -2,11 +2,11 @@ package com.aisino.simpleexample
 
 import android.content.Context
 import android.content.Intent
-import android.support.v7.widget.AppCompatButton
 import android.util.TypedValue
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import androidx.appcompat.widget.AppCompatButton
 
 /**
  * Created by lenovo on 2017/11/30.

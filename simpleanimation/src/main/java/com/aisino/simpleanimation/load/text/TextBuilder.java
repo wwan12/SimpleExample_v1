@@ -7,7 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.Paint;
-import android.support.annotation.FloatRange;
+import androidx.annotation.FloatRange;
 import android.text.TextUtils;
 import android.view.animation.AccelerateInterpolator;
 

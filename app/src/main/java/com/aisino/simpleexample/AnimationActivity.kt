@@ -1,13 +1,13 @@
 package com.aisino.simpleexample
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_animation.*
 
 /**
  * Created by lenovo on 2017/11/30.
  */
-class AnimationActivity:AppCompatActivity(){
+class AnimationActivity: AppCompatActivity(){
     val aniList=ArrayList<String>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

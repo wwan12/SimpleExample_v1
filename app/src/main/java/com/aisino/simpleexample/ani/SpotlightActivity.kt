@@ -2,7 +2,7 @@ package com.aisino.simpleexample.ani
 
 import android.graphics.PointF
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.view.View
 import android.view.animation.DecelerateInterpolator
 import android.widget.TextView

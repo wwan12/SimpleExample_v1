@@ -1,13 +1,11 @@
 package com.aisino.tool.service
 
 import android.app.Activity
-import android.content.Context.NOTIFICATION_SERVICE
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.support.v4.app.NotificationCompat
-import android.support.v7.widget.DialogTitle
+import androidx.core.app.NotificationCompat
 
 
 /**

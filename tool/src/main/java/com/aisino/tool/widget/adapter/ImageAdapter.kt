@@ -1,9 +1,9 @@
 package com.aisino.tool.widget.adapter
 
-import android.support.v4.view.PagerAdapter
+
 import android.view.View
 import android.view.ViewGroup
-
+import androidx.viewpager.widget.PagerAdapter
 
 
 /**
@@ -14,7 +14,7 @@ import android.view.ViewGroup
  * 版本号：1
  *
  */
-class ImageAdapter(val views: List<View>):PagerAdapter() {
+class ImageAdapter(val views: List<View>): PagerAdapter() {
     override fun isViewFromObject(arg0: View, arg1: Any): Boolean {
         return arg0 === arg1
     }

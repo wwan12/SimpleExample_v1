@@ -2,7 +2,7 @@ package com.aisino.independentmodule.link
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.widget.TextView
 import android.content.IntentFilter
 import android.app.PendingIntent

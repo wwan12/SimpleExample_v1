@@ -6,7 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.Paint;
-import android.support.annotation.FloatRange;
+import androidx.annotation.FloatRange;
 
 import com.aisino.simpleanimation.load.ZLoadingBuilder;
 

@@ -1,10 +1,9 @@
 package com.aisino.simpleexample
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.view.View
 import android.widget.LinearLayout
-import com.aisino.tool.widget.view.RefreshListView
 
 class TestViewActivity: AppCompatActivity() {
 
@@ -12,6 +11,6 @@ class TestViewActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         val layout: LinearLayout=LinearLayout(this)
         setContentView(layout)
-        layout.addView(RefreshListView(this))
+     //   layout.addView(RefreshListView(this))
     }
 }

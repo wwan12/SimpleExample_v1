@@ -2,7 +2,7 @@ package com.aisino.simpleexample
 
 import android.content.Context
 import android.location.LocationManager
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.telephony.TelephonyManager
 import com.aisino.tool.service.showNotifictionIcon

@@ -6,7 +6,6 @@ import android.app.Service
 import android.content.Intent
 import android.os.IBinder
 import android.widget.RemoteViews
-import com.aisino.tool.R
 
 /**
  * Created by lenovo on 2017/12/11.

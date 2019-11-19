@@ -2,8 +2,9 @@ package com.aisino.simpleanimation.spotlight;
 
 import android.app.Activity;
 import android.graphics.PointF;
-import android.support.annotation.LayoutRes;
 import android.view.View;
+
+import androidx.annotation.LayoutRes;
 
 /**
  * Target

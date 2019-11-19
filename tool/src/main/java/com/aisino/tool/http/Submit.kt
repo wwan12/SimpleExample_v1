@@ -4,7 +4,7 @@ import android.os.Handler
 import android.util.JsonToken
 import okhttp3.*
 import android.util.Xml
-import com.aisino.tool.DEBUG
+import com.aisino.tool.BuildConfig.DEBUG
 import com.aisino.tool.log
 import com.aisino.tool.loge
 import com.aisino.tool.system.DateAndTime
@@ -16,8 +16,9 @@ import okhttp3.RequestBody
 import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
 import okhttp3.Cookie
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import java.util.concurrent.TimeUnit
-
+import okhttp3.RequestBody.Companion.asRequestBody
 
 /**
  * Created by lenovo on 2017/11/14.
@@ -25,11 +26,11 @@ import java.util.concurrent.TimeUnit
 
 val cookjar: CookieJar = object : CookieJar {
     override fun saveFromResponse(url: HttpUrl, cookies: List<Cookie>) {
-        cookieStore.put(url.host(), cookies)
+        cookieStore.put(url.host, cookies)
     }
 
     override fun loadForRequest(url: HttpUrl): List<Cookie> {
-        val cookies = cookieStore[url.host()]
+        val cookies = cookieStore[url.host]
         return cookies ?: ArrayList()
     }
 }
@@ -100,7 +101,7 @@ class Submit {
             return
         }
         if (url == "") return
-        if (DEBUG()) {
+        if (DEBUG) {
             url = DEBUGAPI + url
             "DEBUGAPI->$url".loge("api")
         } else {
@@ -197,7 +198,7 @@ class Submit {
         val build = MultipartBody.Builder().setType(MultipartBody.FORM)
         for (p in _params) {
             if (p.value is File) {
-                build.addFormDataPart(p.key, (p.value as File).name, RequestBody.create(MediaType.parse("image/png"), p.value as File))
+                build.addFormDataPart(p.key, (p.value as File).name,( p.value as File).asRequestBody("image/png".toMediaTypeOrNull() ))//RequestBody.create("image/png".toMediaTypeOrNull(), p.value as File)
             } else {
                 build.addFormDataPart(p.key, p.value.toString())
             }
@@ -227,7 +228,7 @@ class Submit {
         val build = MultipartBody.Builder().setType(MultipartBody.FORM)
         for (p in _params) {
             if (p.value is File) {
-                build.addFormDataPart(p.key, (p.value as File).name, RequestBody.create(MediaType.parse("file/*"), p.value as File))
+                build.addFormDataPart(p.key, (p.value as File).name,( p.value as File).asRequestBody("file/*".toMediaTypeOrNull()) )//MediaType.parse("file/*")
             } else {
                 build.addFormDataPart(p.key, p.value.toString())
             }
@@ -261,13 +262,13 @@ class Submit {
             }
 
             override fun onResponse(call: Call, response: Response) {
-                val inputStream = response.body()!!.byteStream()
-                var fileOutputStream = FileOutputStream(File(downloadPath))
+                val inputStream = response.body?.byteStream()
+                val fileOutputStream = FileOutputStream(File(downloadPath))
                 val buffer = ByteArray(2048)
                 var len = 0
                 while (len != -1) {
                     fileOutputStream.write(buffer, 0, len)
-                    len = inputStream.read(buffer)
+                    len = inputStream!!.read(buffer)
                 }
                 fileOutputStream.flush()
                 fileOutputStream.close()
@@ -286,23 +287,23 @@ class Submit {
 
     private fun successCall(response: Response): Unit {
         toUI.post {
-            if (response.code() != 200) {
-                _fail(FailData(url,"请求失败:" + response.code()).apply { this.submitTime=DateAndTime.nowDateTime })
+            if (response.code != 200) {
+                _fail(FailData(url,"请求失败:" + response.code).apply { this.submitTime=DateAndTime.nowDateTime })
             } else {
-                response.request().url().toString().log("successCall")
+                response.request.url.toString().log("successCall")
                 when (returnType) {
                     ReturnType.JSON -> {
-                        var jsonString = response.body()!!.string()
-                        jsonString.log("successCall")
-                        pullJson(jsonString)
+                        var jsonString = response.body?.string()
+                        jsonString?.log("successCall")
+                        pullJson(jsonString!!)
                     }
                     ReturnType.XML -> {
 //                    val s = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<ROOT><RESULT><CODE>9999</CODE><POS><PO>1111</PO><PO>2222</PO></POS><CONTENT>java.lang.NullPointerException\ncom.aisino.heb.xlg.web.servlet.XlgServlet.doPost(XlgServlet.java:135)</CONTENT></RESULT></ROOT>".byteInputStream()
-                        pullXML(response.body()!!.byteStream())
+                        pullXML(response.body!!.byteStream())
 //                    pullXML(s)
                     }
                     ReturnType.STRING -> {
-                        _response.put(ReturnType.STRING.name, response.body()!!.string())
+                        _response.put(ReturnType.STRING.name, response.body!!.string())
                     }
                 }
                 _success(SuccessData(url,_response).apply {
@@ -332,7 +333,7 @@ class Submit {
 
     // .. 复杂取参
     operator fun <E> String.rangeTo(tag: String): E {
-        val c = _response[this] as MutableMap<String, Any>
+        val c = _response[this] as MutableMap<*, *>
         return c[tag] as E
     }
 

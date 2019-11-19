@@ -2,7 +2,7 @@ package com.aisino.tool.model.webview
 
 import android.os.Build
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.webkit.*
 import android.webkit.WebView
 import android.graphics.Bitmap
@@ -102,10 +102,10 @@ class HtmlActivity : AppCompatActivity() {
 
 
     private fun init() {
-        webView = findViewById(R.id.main_web)
-        errorLl = findViewById(R.id.error_ll)
-        errorImg = findViewById(R.id.error_img)
-        errorText = findViewById(R.id.error_text)
+        webView = findViewById(R.id.main_web) as WebView
+        errorLl = findViewById(R.id.error_ll) as LinearLayout
+        errorImg = findViewById(R.id.error_img) as ImageView
+        errorText = findViewById(R.id.error_text) as TextView
         dialog.fullActivity(this, webView)
         webView.settings.setDefaultFontSize(22)
         webView.settings.setMinimumFontSize(16)//设置 WebView 支持的最小字体大小，默认为 8

@@ -10,7 +10,7 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PathMeasure;
 import android.graphics.RectF;
-import android.support.annotation.FloatRange;
+import androidx.annotation.FloatRange;
 import android.view.animation.DecelerateInterpolator;
 
 import com.aisino.simpleanimation.load.ZLoadingBuilder;

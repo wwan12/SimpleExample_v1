@@ -11,16 +11,14 @@ import android.net.Uri
 import android.os.Build
 import android.provider.DocumentsContract
 import android.provider.MediaStore
-import android.support.v4.content.FileProvider
 import android.view.Gravity
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.PopupWindow
+import androidx.core.content.FileProvider
 import com.aisino.tool.R
 import com.aisino.tool.bitmap.drawable2Bitmap
-import com.aisino.tool.log
 import java.io.File
-import java.io.IOException
 import java.io.InputStream
 import java.util.*
 

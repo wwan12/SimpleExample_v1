@@ -10,8 +10,10 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
+import androidx.appcompat.widget.AppCompatButton;
+
 //录音按钮核心类，包括点击、响应、与弹出对话框交互等操作。
-public class AudioRecordButton extends android.support.v7.widget.AppCompatButton
+public class AudioRecordButton extends AppCompatButton
         implements AudioManager.AudioStageListener {
     //三个对话框的状态常量
     private static final int STATE_NORMAL = 1;

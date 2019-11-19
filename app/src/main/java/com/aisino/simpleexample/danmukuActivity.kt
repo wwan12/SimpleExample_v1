@@ -1,7 +1,7 @@
 package com.aisino.simpleexample
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 
 /**
  * Created by lenovo on 2017/12/6.
