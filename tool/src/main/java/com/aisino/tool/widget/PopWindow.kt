@@ -10,6 +10,10 @@ import android.view.*
 import androidx.viewpager.widget.ViewPager
 import com.aisino.tool.widget.adapter.ImageAdapter
 
+
+
+
+
 /**
  * 显示一个在当前view下方的listpopwindow
  */
@@ -51,6 +55,48 @@ fun Activity.openUnterTheViewListWindow(view: View,data: ArrayList<String>,itemR
     list.setOnItemClickListener{ adapterView: AdapterView<*>, view1: View, i: Int, l: Long ->
         itemRun(i)
         mPopupWindow.dismiss()
+    }
+    return mPopupWindow
+}
+
+/**
+ * 显示一个在当前
+ */
+fun Activity.openAnyViewWindowCenter(layoutId: Int):PopupWindow{
+    // 将布局文件转换成View对象，popupview 内容视图
+    val mPopView = this.layoutInflater.inflate(layoutId, null)
+    // 将转换的View放置到 新建一个popuwindow对象中
+    val mPopupWindow = PopupWindow(mPopView,
+            LinearLayout.LayoutParams.WRAP_CONTENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT)
+    // 点击popuwindow外让其消失
+    mPopupWindow.setOutsideTouchable(true)
+    mPopView.setOnKeyListener { view, i, keyEvent ->
+        if (i == KeyEvent.KEYCODE_BACK) {//返回自动关闭pop
+            if (mPopupWindow.isShowing()) {
+                mPopupWindow.dismiss();
+                return@setOnKeyListener true
+            }
+        }
+        return@setOnKeyListener false
+    }
+    mPopupWindow.setOnDismissListener {
+        val params = this.getWindow().getAttributes()
+        params.alpha = 1f
+        this.getWindow().setAttributes(params)
+    }
+
+    if (mPopupWindow.isShowing()) {
+        mPopupWindow.dismiss();
+    } else {
+        // 设置PopupWindow 显示的形式 底部或者下拉等
+        // 在某个位置显示
+     //   mPopupWindow.showAsDropDown(view,0,0)
+        // 作为下拉视图显示
+        val params = this.getWindow().getAttributes()
+        params.alpha = 0.7f
+        this.getWindow().setAttributes(params)
+         mPopupWindow.showAtLocation(mPopView, Gravity.CENTER, 0, 0);
     }
     return mPopupWindow
 }

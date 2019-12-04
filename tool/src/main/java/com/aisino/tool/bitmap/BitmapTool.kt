@@ -19,7 +19,9 @@ import android.text.Layout
 import android.text.StaticLayout
 import android.graphics.Typeface
 import android.text.TextPaint
+import android.widget.ImageView
 import java.nio.channels.FileChannel
+import kotlin.concurrent.thread
 
 /**
  * Android根据设备屏幕尺寸和dpi的不同，给系统分配的单应用程序内存大小也不同，具体如下表
@@ -51,7 +53,7 @@ import java.nio.channels.FileChannel
  * @param bitmap
  * @param filepath
  */
-fun Bitmap.saveBitmapFile(filepath: String): File {
+fun Bitmap.saveBitmapFile(filepath: String): File? {
     val file = File(filepath)//将要保存图片的路径
     try {
         val bos = BufferedOutputStream(FileOutputStream(file))
@@ -60,6 +62,7 @@ fun Bitmap.saveBitmapFile(filepath: String): File {
         bos.close()
     } catch (e: IOException) {
         e.printStackTrace()
+        return null
     }
     return file
 }
@@ -70,16 +73,14 @@ fun Bitmap.saveBitmapFile(filepath: String): File {
  * @param imageUrl
  * @return
  */
-fun Activity.downloadBitmap(imageUrl: String): Bitmap? {
+fun Activity.downloadBitmap(imageUrl: String,imageView: ImageView){
     var bitmap: Bitmap? = null
-    try {
-        bitmap = BitmapFactory.decodeStream(URL(imageUrl).openStream())
-        return bitmap
-    } catch (e: Exception) {
-        e.printStackTrace()
-        return null
-    }
-
+        thread(start = true) {
+            bitmap = BitmapFactory.decodeStream(URL(imageUrl).openStream())
+            runOnUiThread {
+                imageView.setImageBitmap(bitmap)
+            }
+        }
 }
 
 /**
@@ -154,6 +155,33 @@ fun Bitmap.setBitmapSize( newWidth: Int, newHeight: Int): Bitmap {
     matrix.postScale(scaleWidth, scaleHeight)
     return Bitmap.createBitmap(this, 0, 0, width, height, matrix, true)
 }
+
+/**
+ * 保持比例缩放图片
+ *
+ * @param bitmap
+ * req 长边长度
+ * @return
+ */
+fun Bitmap.setBitmapSize(req: Int): Bitmap {
+    if (this.width==0||this.height==0){
+        return this
+    }
+    var h=0
+    var w=0
+    if (this.width>this.height){
+        h= (this.height / (this.width.toDouble()/req)).toInt()
+        w=req
+    }else{
+        w= (this.width / (this.height.toDouble()/req)).toInt()
+        h=req
+    }
+    w=w-w%4
+    h=h-h%4
+    ("width:"+w+"height:"+h).loge("size")
+   return this.setBitmapSize(w,h)
+}
+
 
 /**
  * 计算图片的缩放大小 如果==1，表示没变化，==2，表示宽高都缩小一倍 ----------------------------------------------------------------------------

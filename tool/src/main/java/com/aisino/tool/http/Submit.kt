@@ -8,17 +8,17 @@ import com.aisino.tool.BuildConfig.DEBUG
 import com.aisino.tool.log
 import com.aisino.tool.loge
 import com.aisino.tool.system.DateAndTime
-import com.google.gson.Gson
 import com.google.gson.stream.JsonReader
 import org.xmlpull.v1.XmlPullParser
 import java.io.*
-import okhttp3.RequestBody
 import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
 import okhttp3.Cookie
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import java.util.concurrent.TimeUnit
 import okhttp3.RequestBody.Companion.asRequestBody
+import com.google.gson.JsonArray
+import org.json.JSONArray
 
 /**
  * Created by lenovo on 2017/11/14.
@@ -47,12 +47,14 @@ var DEBUGAPI = ""
 class Submit {
     //可配置属性
     var url = ""
+    var cacheUrl=""
     var tag = ""
     var method = Method.GET
     var returnType = ReturnType.JSON
     var downloadPath = System.currentTimeMillis().toString() + ".jpg"
-    var outTime = 5L//单位为秒
-    var isRetry = false
+    var outTime = 4L//单位为秒
+    //出错是否重启请求
+    var isRetry = true
     val _params: MutableMap<String, Any> = mutableMapOf()
     val _fileParams: MutableMap<String, String> = mutableMapOf()
     val _headers: MutableMap<String, String> = mutableMapOf()
@@ -103,13 +105,12 @@ class Submit {
         if (url == "") return
         if (DEBUG) {
             url = DEBUGAPI + url
-            "DEBUGAPI->$url".loge("api")
         } else {
             url = RELEASEAPI + url
         }
 
         tag = method.name
-
+        cacheUrl=url
         when (method) {//分类请求
             Method.GET -> get()
 
@@ -149,16 +150,17 @@ class Submit {
 
     private fun get(): Unit {
         val okHttpClient = OkHttpClient.Builder().cookieJar(cookjar).connectTimeout(outTime, TimeUnit.SECONDS)
-        if (url.length > 0 && !url.substring(url.length - 1, url.length).equals("?")) {
-            url = url + "?"
+        if (cacheUrl.length > 0 && !cacheUrl.substring(cacheUrl.length - 1, cacheUrl.length).equals("?")&&_params.size>0) {
+            cacheUrl = cacheUrl + "?"
         }
         for (p in _params) {
-            url = url + p.key + "=" + p.value + "&"
+            cacheUrl = cacheUrl + p.key + "=" + p.value + "&"
         }
         if (_params.size > 0) {
-            url = url.substring(0, url.length - 1)
+            cacheUrl = cacheUrl.substring(0, cacheUrl.length - 1)
         }
-        val request = Request.Builder().url(url).build()
+        "DEBUGAPI->$cacheUrl".loge("api")
+        val request = Request.Builder().url(cacheUrl).build()
         val call = okHttpClient.build().newCall(request)
         call.enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
@@ -174,12 +176,13 @@ class Submit {
     private fun post(): Unit {
         val okHttpClient = OkHttpClient.Builder().cookieJar(cookjar).connectTimeout(outTime, TimeUnit.SECONDS)
         val build = FormBody.Builder()
+        url.log("post")
         for (p in _params) {
             build.add(p.key, p.value.toString())
             (p.key + "-" + p.value.toString()).log("post")
         }
         val body = build.build()
-        val request = Request.Builder().url(url).post(body).build()
+        val request = Request.Builder().url(cacheUrl).post(body).build()
         val call = okHttpClient.build().newCall(request)
         call.enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
@@ -208,7 +211,7 @@ class Submit {
 
         val request = Request.Builder()
 //                .header("Authorization", "Client-ID " + "...")
-                .url(url)
+                .url(cacheUrl)
                 .post(requestBody)
                 .build()
 
@@ -238,7 +241,7 @@ class Submit {
 
         val request = Request.Builder()
 //                .header("Authorization", "Client-ID " + "...")
-                .url(url)
+                .url(cacheUrl)
                 .post(requestBody)
                 .build()
 
@@ -255,7 +258,7 @@ class Submit {
 
     private fun download(): Unit {
         val mOkHttpClient = OkHttpClient.Builder().cookieJar(cookjar).connectTimeout(outTime, TimeUnit.SECONDS)
-        val request = Request.Builder().url(url).build()
+        val request = Request.Builder().url(cacheUrl).build()
         mOkHttpClient.build().newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 failCall(e.toString())
@@ -281,35 +284,42 @@ class Submit {
 
     private fun failCall(failMsg: String): Unit {
         toUI.post {
+            failMsg.log("failCall")
             _fail(FailData(url,failMsg).apply { this.submitTime=DateAndTime.nowDateTime })
+            retrySubmit()
         }
     }
 
     private fun successCall(response: Response): Unit {
+
         toUI.post {
             if (response.code != 200) {
-                _fail(FailData(url,"请求失败:" + response.code).apply { this.submitTime=DateAndTime.nowDateTime })
-            } else {
-                response.request.url.toString().log("successCall")
-                when (returnType) {
-                    ReturnType.JSON -> {
-                        var jsonString = response.body?.string()
-                        jsonString?.log("successCall")
-                        pullJson(jsonString!!)
-                    }
-                    ReturnType.XML -> {
-//                    val s = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<ROOT><RESULT><CODE>9999</CODE><POS><PO>1111</PO><PO>2222</PO></POS><CONTENT>java.lang.NullPointerException\ncom.aisino.heb.xlg.web.servlet.XlgServlet.doPost(XlgServlet.java:135)</CONTENT></RESULT></ROOT>".byteInputStream()
-                        pullXML(response.body!!.byteStream())
-//                    pullXML(s)
-                    }
-                    ReturnType.STRING -> {
-                        _response.put(ReturnType.STRING.name, response.body!!.string())
-                    }
-                }
-                _success(SuccessData(url,_response).apply {
-                    this.params.putAll(params)
-                    this.submitTime=DateAndTime.nowDateTime })
+                response.request.url.toString().log("failCall"+"code:"+response.code)
+                failCall("请求失败:" + response.code)
+             //   _fail(FailData(url,"请求失败:" + response.code).apply { this.submitTime=DateAndTime.nowDateTime })
+                return@post
             }
+        }
+        response.request.url.toString().log("successCall")
+        when (returnType) {
+            ReturnType.JSON -> {
+                var jsonString = response.body?.string()
+                jsonString?.log("successCall")
+                pullJson(jsonString!!)
+            }
+            ReturnType.XML -> {
+//                    val s = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<ROOT><RESULT><CODE>9999</CODE><POS><PO>1111</PO><PO>2222</PO></POS><CONTENT>java.lang.NullPointerException\ncom.aisino.heb.xlg.web.servlet.XlgServlet.doPost(XlgServlet.java:135)</CONTENT></RESULT></ROOT>".byteInputStream()
+                pullXML(response.body!!.byteStream())
+//                    pullXML(s)
+            }
+            ReturnType.STRING -> {
+                _response.put(ReturnType.STRING.name, response.body!!.string())
+            }
+        }
+        toUI.post {
+            _success(SuccessData(url,_response).apply {
+                this.params.putAll(params)
+                this.submitTime=DateAndTime.nowDateTime })
         }
     }
 
@@ -322,8 +332,10 @@ class Submit {
     }
 
     //- 入参
-    operator fun String.minus(value: File) {
-        _params.put(this, value)
+    operator fun String.minus(value: File?) {
+        if (value!=null){
+            _params.put(this, value)
+        }
     }
 
     // ！ 简单取参 单key
@@ -339,8 +351,12 @@ class Submit {
 
 
     private fun pullJson(jsonData: String): Unit {
+        if (jsonData.startsWith("[")){
+            _response.put("array", JSONArray(jsonData))
+            return
+        }
         val reader = JsonReader(StringReader(jsonData))
-        reader.beginObject()
+            reader.beginObject()
         while (reader.hasNext()) {
             val jName = reader.nextName()
             loopJson(jName, reader, _response)

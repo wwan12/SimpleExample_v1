@@ -57,3 +57,15 @@ private fun getLineNumber(): Int {
     return Thread.currentThread().stackTrace[2].lineNumber
 }
 
+class If{
+    fun I(b: Boolean): If {
+        return this
+    }
+    fun S(e:()->Unit): If {
+        return this
+    }
+    fun E(e:()->Unit): If {
+        return this
+    }
+}
+
