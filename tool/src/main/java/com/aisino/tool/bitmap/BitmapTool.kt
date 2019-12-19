@@ -20,6 +20,7 @@ import android.text.StaticLayout
 import android.graphics.Typeface
 import android.text.TextPaint
 import android.widget.ImageView
+import com.aisino.tool.log
 import java.nio.channels.FileChannel
 import kotlin.concurrent.thread
 
@@ -178,7 +179,7 @@ fun Bitmap.setBitmapSize(req: Int): Bitmap {
     }
     w=w-w%4
     h=h-h%4
-    ("width:"+w+"height:"+h).loge("size")
+    ("width:"+w+"height:"+h).log("size")
    return this.setBitmapSize(w,h)
 }
 

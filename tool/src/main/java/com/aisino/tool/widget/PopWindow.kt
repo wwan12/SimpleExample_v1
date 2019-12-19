@@ -11,8 +11,11 @@ import androidx.viewpager.widget.ViewPager
 import com.aisino.tool.widget.adapter.ImageAdapter
 
 
-
-
+//mPopupWindow.setFocusable(true) edit
+//1、如果想让软键盘顶起popup，则设置成
+//setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+//2、如果不想让软键盘顶起popup，则设置成
+//setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
 /**
  * 显示一个在当前view下方的listpopwindow
