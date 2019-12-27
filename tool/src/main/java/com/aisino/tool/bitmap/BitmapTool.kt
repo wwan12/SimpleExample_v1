@@ -74,14 +74,14 @@ fun Bitmap.saveBitmapFile(filepath: String): File? {
  * @param imageUrl
  * @return
  */
-fun Activity.downloadBitmap(imageUrl: String,imageView: ImageView){
+fun ImageView.downloadBitmap(imageUrl: String){
     var bitmap: Bitmap? = null
-        thread(start = true) {
-            bitmap = BitmapFactory.decodeStream(URL(imageUrl).openStream())
-            runOnUiThread {
-                imageView.setImageBitmap(bitmap)
-            }
+    thread(start = true) {
+        bitmap = BitmapFactory.decodeStream(URL(imageUrl).openStream())
+        (this.context as Activity).runOnUiThread {
+            this.setImageBitmap(bitmap)
         }
+    }
 }
 
 /**
