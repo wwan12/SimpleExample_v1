@@ -56,5 +56,11 @@ object Http {
         sub.run()
     }
 
+    var test = fun(function: HashMap<String,Submit.TestResult>.() -> Unit) {
+        val h = HashMap<String,Submit.TestResult>()
+        h.function()
+        testResult.putAll(h)
+    }
+
 }
 

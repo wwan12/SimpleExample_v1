@@ -18,3 +18,4 @@ enum class ReturnType{
     FILE,
     IMAGE
 }
+

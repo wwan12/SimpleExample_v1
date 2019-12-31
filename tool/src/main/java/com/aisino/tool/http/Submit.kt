@@ -35,6 +35,8 @@ val cookjar: CookieJar = object : CookieJar {
     }
 }
 val cookieStore = HashMap<String, List<Cookie>>()//cookie缓存
+//url : result
+val testResult=HashMap<String,Submit.TestResult>()
 /**
  * 正式访问前缀
  */
@@ -102,15 +104,21 @@ class Submit {
         if (isError) {
             return
         }
-        if (url == "") return
+        if (url .equals("") ){
+            "url为空".loge("http")
+            return
+        }
+        tag = method.name
+        cacheUrl=url
+        _start()
         if (DEBUG) {
             url = DEBUGAPI + url
+            if (testResult.containsKey(url)){
+                testSuccessCall(testResult[url]!!)
+            }
         } else {
             url = RELEASEAPI + url
         }
-
-        tag = method.name
-        cacheUrl=url
         when (method) {//分类请求
             Method.GET -> get()
 
@@ -122,7 +130,7 @@ class Submit {
 
             Method.FILE -> upFile()
         }
-        _start()
+
     }
 
     fun start(start: () -> Unit): Unit {//检查参数
@@ -323,6 +331,42 @@ class Submit {
         }
     }
 
+    /**
+     * 测试回调
+     */
+    private fun testSuccessCall(response: TestResult): Unit {
+        toUI.post {
+            if (response.code != 200) {
+                response.url.toString().log("failCall"+"code:"+response.code)
+                failCall("请求失败:" + response.code)
+                //   _fail(FailData(url,"请求失败:" + response.code).apply { this.submitTime=DateAndTime.nowDateTime })
+                return@post
+            }
+        }
+        response.url.toString().log("successCall")
+        when (returnType) {
+            ReturnType.JSON -> {
+                var jsonString = response.result
+                jsonString?.log("successCall")
+                pullJson(jsonString!!)
+            }
+            ReturnType.XML -> {
+//                    val s = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<ROOT><RESULT><CODE>9999</CODE><POS><PO>1111</PO><PO>2222</PO></POS><CONTENT>java.lang.NullPointerException\ncom.aisino.heb.xlg.web.servlet.XlgServlet.doPost(XlgServlet.java:135)</CONTENT></RESULT></ROOT>".byteInputStream()
+                pullXML(response.result.byteInputStream())
+//                    pullXML(s)
+            }
+            ReturnType.STRING -> {
+                _response.put(ReturnType.STRING.name, response.result)
+            }
+        }
+        toUI.post {
+            _success(SuccessData(url,_response).apply {
+                this.params.putAll(params)
+                this.submitTime=DateAndTime.nowDateTime })
+        }
+    }
+
+
     //- 入参
     operator fun String.minus(value: String?) {
         if (value != null) {
@@ -492,4 +536,6 @@ class Submit {
             return
         }
     }
+
+    data class TestResult(val code:Int ,val url:String, val result:String,val waitTime:Long)
 }
