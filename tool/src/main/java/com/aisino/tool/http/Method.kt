@@ -8,7 +8,9 @@ enum class Method {
     POST,
     IMAGE,
     FILE,
-    DOWNLOAD
+    DOWNLOAD,
+    SOCKET,
+    SOCKETSEND
 }
 
 enum class ReturnType{

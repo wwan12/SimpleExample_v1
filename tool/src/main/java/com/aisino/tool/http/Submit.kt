@@ -1,6 +1,7 @@
 package com.aisino.tool.http
 
 import android.os.Handler
+import android.os.Looper
 import android.util.JsonToken
 import okhttp3.*
 import android.util.Xml
@@ -18,7 +19,11 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import java.util.concurrent.TimeUnit
 import okhttp3.RequestBody.Companion.asRequestBody
 import com.google.gson.JsonArray
+import okio.ByteString
 import org.json.JSONArray
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 /**
  * Created by lenovo on 2017/11/14.
@@ -37,6 +42,21 @@ val cookjar: CookieJar = object : CookieJar {
 val cookieStore = HashMap<String, List<Cookie>>()//cookie缓存
 //url : result
 val testResult=HashMap<String,Submit.TestResult>()
+
+private var socket: WebSocket?=null
+
+
+private val socketCalls=ArrayList<Submit.SocketCall>()
+
+private var _socketCall: (SuccessData) -> Unit = {
+    for (sc in socketCalls){
+        sc.call(it)
+        if (!sc.save){
+            socketCalls.remove(sc)
+        }
+    }
+}
+
 /**
  * 正式访问前缀
  */
@@ -57,17 +77,18 @@ class Submit {
     var outTime = 4L//单位为秒
     //出错是否重启请求
     var isRetry = true
-    val _params: MutableMap<String, Any> = mutableMapOf()
-    val _fileParams: MutableMap<String, String> = mutableMapOf()
-    val _headers: MutableMap<String, String> = mutableMapOf()
-    val _response: MutableMap<String, Any> = mutableMapOf()
-    private val toUI = Handler()
+    private val _params: MutableMap<String, Any> = mutableMapOf()
+  //  val _fileParams: MutableMap<String, String> = mutableMapOf()
+ //   val _headers: MutableMap<String, String> = mutableMapOf()
+    private val _response: MutableMap<String, Any> = mutableMapOf()
+    lateinit private var toUI:Handler
     private var _start: () -> Unit = {}
     private var _success: (SuccessData) -> Unit = {}
+    private var _socketOpen: () -> Unit = {}
     private var _fail: (FailData) -> Unit = {}
 
-    private var isError = false
-
+    var beat:SocketHeart?=null
+    var socketSave=false//是否保留长连接回调
 
     //    var cookjar: CookieJar
 //    val cookieStore = HashMap<String, List<Cookie>>()//cookie缓存
@@ -95,14 +116,16 @@ class Submit {
 
 
     private fun tryInit(): Unit { //检查配置单
+        if (Looper.myLooper() != Looper.getMainLooper()) {
+            Looper.getMainLooper().run { toUI =  Handler()  }
+        } else {
+            toUI= Handler()
+        }
         when (returnType) {
             ReturnType.JSON -> {
             }
             ReturnType.XML -> {
             }
-        }
-        if (isError) {
-            return
         }
         if (url .equals("") ){
             "url为空".loge("http")
@@ -115,6 +138,7 @@ class Submit {
             url = DEBUGAPI + url
             if (testResult.containsKey(url)){
                 testSuccessCall(testResult[url]!!)
+                return
             }
         } else {
             url = RELEASEAPI + url
@@ -129,6 +153,10 @@ class Submit {
             Method.DOWNLOAD -> download()
 
             Method.FILE -> upFile()
+
+            Method.SOCKET ->  socketOpen()
+
+            Method.SOCKETSEND -> socket()
         }
 
     }
@@ -144,6 +172,10 @@ class Submit {
 
     fun fail(fail: (FailData) -> Unit): Unit {
         _fail = fail
+    }
+
+    fun socketOpen(open: () -> Unit): Unit {
+        _socketOpen=open
     }
 
 //    private fun test(): Unit {//测试方法
@@ -264,6 +296,69 @@ class Submit {
         })
     }
 
+
+    private fun socketOpen(): Unit {
+        val mOkHttpClient = OkHttpClient.Builder()
+                .readTimeout(5, TimeUnit.SECONDS)//设置读取超时时间
+                .writeTimeout(5, TimeUnit.SECONDS)//设置写的超时时间
+                .connectTimeout(5, TimeUnit.SECONDS)//设置连接超时时间
+                .build()
+        val request = Request.Builder().url(url).build()
+        mOkHttpClient.newWebSocket(request, object: WebSocketListener(){
+            override fun onOpen(webSocket: WebSocket, response: Response) {
+                super.onOpen(webSocket, response)
+                socket = webSocket
+                ("连接成功").loge("onOpen")
+                if (beat!=null){
+                    val timer = Timer()
+                    timer.schedule(object : TimerTask() {
+                        override fun run() {
+                            socket?.send(beat!!.data)
+                        }
+                    }, beat!!.beat,beat!!.beat)
+                }
+                _socketOpen()
+            }
+
+            override fun onMessage(webSocket: WebSocket, bytes: ByteString) {
+                super.onMessage(webSocket, bytes)
+                ("receive bytes:" + bytes.hex()).loge("onMessage")
+                successCall(bytes.hex())
+            }
+
+            override fun onMessage(webSocket: WebSocket, text: String) {
+                super.onMessage(webSocket, text)
+                ("receive text:" + text ).loge("onMessage")
+                successCall(text)
+
+            }
+
+            override fun onClosed(webSocket: WebSocket, code: Int, reason: String) {
+                super.onClosed(webSocket, code, reason)
+                ("closed:" + reason).loge("onClosed")
+                socket=null
+            }
+
+            override fun onClosing(webSocket: WebSocket, code: Int, reason: String) {
+                super.onClosing(webSocket, code, reason)
+                ("closing:" + reason).loge("onClosing")
+            }
+
+            override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
+                super.onFailure(webSocket, t, response)
+                ("closing:" + t.message).loge("onFailure")
+                failCall(t.message!!)
+            }
+        })
+
+        mOkHttpClient.dispatcher.executorService.shutdown()
+    }
+
+    private fun socket(): Unit {
+        socket?.send(_params["socket"].toString())
+        socketCalls.add(SocketCall(socketSave,_success))
+    }
+
     private fun download(): Unit {
         val mOkHttpClient = OkHttpClient.Builder().cookieJar(cookjar).connectTimeout(outTime, TimeUnit.SECONDS)
         val request = Request.Builder().url(cacheUrl).build()
@@ -299,7 +394,6 @@ class Submit {
     }
 
     private fun successCall(response: Response): Unit {
-
         toUI.post {
             if (response.code != 200) {
                 response.request.url.toString().log("failCall"+"code:"+response.code)
@@ -325,25 +419,48 @@ class Submit {
             }
         }
         toUI.post {
+            _socketCall(SuccessData(url,_response).apply {
+                this.params.putAll(params)
+                this.submitTime=DateAndTime.nowDateTime })
+        }
+    }
+///socket 专用
+    private fun successCall(vback: String){
+        (url+":"+vback).log("successCall")
+        when (returnType) {
+            ReturnType.JSON -> {
+                var jsonString = vback
+                jsonString?.log("successCall")
+                pullJson(jsonString!!)
+            }
+            ReturnType.XML -> {
+//                    val s = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<ROOT><RESULT><CODE>9999</CODE><POS><PO>1111</PO><PO>2222</PO></POS><CONTENT>java.lang.NullPointerException\ncom.aisino.heb.xlg.web.servlet.XlgServlet.doPost(XlgServlet.java:135)</CONTENT></RESULT></ROOT>".byteInputStream()
+                pullXML(vback.byteInputStream())
+//                    pullXML(s)
+            }
+            ReturnType.STRING -> {
+                _response.put(ReturnType.STRING.name,vback)
+            }
+        }
+        toUI.post {
             _success(SuccessData(url,_response).apply {
                 this.params.putAll(params)
                 this.submitTime=DateAndTime.nowDateTime })
         }
     }
 
+
     /**
      * 测试回调
      */
     private fun testSuccessCall(response: TestResult): Unit {
-        toUI.post {
-            if (response.code != 200) {
-                response.url.toString().log("failCall"+"code:"+response.code)
-                failCall("请求失败:" + response.code)
-                //   _fail(FailData(url,"请求失败:" + response.code).apply { this.submitTime=DateAndTime.nowDateTime })
-                return@post
-            }
+        if (response.code != 200) {
+            response.url.toString().log("failCall" + "code:" + response.code)
+            failCall("请求失败:" + response.code)
+            //   _fail(FailData(url,"请求失败:" + response.code).apply { this.submitTime=DateAndTime.nowDateTime })
+            return
         }
-        response.url.toString().log("successCall")
+        response.url.log("successCall")
         when (returnType) {
             ReturnType.JSON -> {
                 var jsonString = response.result
@@ -351,19 +468,16 @@ class Submit {
                 pullJson(jsonString!!)
             }
             ReturnType.XML -> {
-//                    val s = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<ROOT><RESULT><CODE>9999</CODE><POS><PO>1111</PO><PO>2222</PO></POS><CONTENT>java.lang.NullPointerException\ncom.aisino.heb.xlg.web.servlet.XlgServlet.doPost(XlgServlet.java:135)</CONTENT></RESULT></ROOT>".byteInputStream()
                 pullXML(response.result.byteInputStream())
-//                    pullXML(s)
             }
             ReturnType.STRING -> {
                 _response.put(ReturnType.STRING.name, response.result)
             }
         }
-        toUI.post {
-            _success(SuccessData(url,_response).apply {
-                this.params.putAll(params)
-                this.submitTime=DateAndTime.nowDateTime })
-        }
+        _success(SuccessData(url, _response).apply {
+            this.params.putAll(params)
+            this.submitTime = DateAndTime.nowDateTime
+        })
     }
 
 
@@ -395,17 +509,21 @@ class Submit {
 
 
     private fun pullJson(jsonData: String): Unit {
-        if (jsonData.startsWith("[")){
-            _response.put("array", JSONArray(jsonData))
-            return
-        }
+//        if (jsonData.startsWith("[")){
+//            _response.put(JsonToken.BEGIN_ARRAY.name, JSONArray(jsonData))
+//            return
+//        }
         val reader = JsonReader(StringReader(jsonData))
+        if (jsonData.startsWith("[")){
+            loopJson(JsonToken.BEGIN_ARRAY.name, reader, _response)
+        }else{
             reader.beginObject()
-        while (reader.hasNext()) {
-            val jName = reader.nextName()
-            loopJson(jName, reader, _response)
+            while (reader.hasNext()) {
+                val jName = reader.nextName()
+                loopJson(jName, reader, _response)
+            }
+            reader.endObject()
         }
-        reader.endObject()
     }
 
 
@@ -538,4 +656,6 @@ class Submit {
     }
 
     data class TestResult(val code:Int ,val url:String, val result:String,val waitTime:Long)
+    data class SocketHeart(val beat:Long,val data:String)
+    data class SocketCall(val save:Boolean,val call:(SuccessData) -> Unit)
 }

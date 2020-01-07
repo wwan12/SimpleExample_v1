@@ -62,5 +62,19 @@ object Http {
         testResult.putAll(h)
     }
 
+    var socketOpen = fun(function: Submit.() -> Unit) {
+        val sub = Submit()
+        sub.function()
+        sub.method = Method.SOCKET
+       // sub.returnType=ReturnType.STRING
+        sub.run()
+    }
+    var socketSend = fun(function: Submit.() -> Unit) {
+        val sub = Submit()
+        sub.function()
+        sub.method = Method.SOCKETSEND
+       // sub.returnType=ReturnType.STRING
+        sub.run()
+    }
 }
 
