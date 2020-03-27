@@ -490,3 +490,5 @@ fun Bitmap.copy(path:String): Bitmap {
     return destBmp
 }
 
+
+

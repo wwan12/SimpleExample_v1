@@ -21,6 +21,7 @@ import okhttp3.RequestBody.Companion.asRequestBody
 import com.google.gson.JsonArray
 import okio.ByteString
 import org.json.JSONArray
+import java.lang.Exception
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
@@ -419,7 +420,7 @@ class Submit {
             }
         }
         toUI.post {
-            _socketCall(SuccessData(url,_response).apply {
+            _success(SuccessData(url,_response).apply {
                 this.params.putAll(params)
                 this.submitTime=DateAndTime.nowDateTime })
         }
@@ -443,7 +444,7 @@ class Submit {
             }
         }
         toUI.post {
-            _success(SuccessData(url,_response).apply {
+            _socketCall(SuccessData(url,_response).apply {
                 this.params.putAll(params)
                 this.submitTime=DateAndTime.nowDateTime })
         }
@@ -544,16 +545,19 @@ class Submit {
                 val al = ArrayList<MutableMap<String, Any>>()
                 val als = ArrayList<String>()
                 while (reader.hasNext()) {
-                    if (reader.peek().name.equals(JsonToken.STRING.name)) {
-                        als.add(reader.nextString())
-                    } else {
-                        reader.beginObject()
-                        val ba: MutableMap<String, Any> = mutableMapOf()
-                        while (reader.hasNext()) {
-                            loopJson(reader.nextName(), reader, ba)
+                    when(reader.peek().name) {
+                        JsonToken.STRING.name -> als.add(reader.nextString())
+                        JsonToken.NUMBER.name -> als.add(reader.nextInt().toString())
+                        JsonToken.NULL.name -> als.add("")
+                        else -> {
+                            reader.beginObject()
+                            val ba: MutableMap<String, Any> = mutableMapOf()
+                            while (reader.hasNext()) {
+                                loopJson(reader.nextName(), reader, ba)
+                            }
+                            al.add(ba)
+                            reader.endObject()
                         }
-                        al.add(ba)
-                        reader.endObject()
                     }
                 }
                 reader.endArray()
@@ -574,7 +578,11 @@ class Submit {
                 reader.skipValue()
             }
             JsonToken.NUMBER.name -> {
-                target.put(loopName, reader.nextLong().toString())
+                try {
+                    target.put(loopName, reader.nextLong().toString())
+                }catch (e: Exception){
+                    target.put(loopName, reader.nextDouble().toString())
+                }
             }
             else -> {
                 loopName.log("loopElse")
