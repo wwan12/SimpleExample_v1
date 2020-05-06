@@ -1,0 +1,16 @@
+{
+  "buildFiles": [
+    "D:\\AndroidStudioProjects\\SimpleExample_v1\\tool\\CMakeLists.txt"
+  ],
+  "cleanCommands": [
+    "D:\\androidSDK\\cmake\\3.6.4111459\\bin\\cmake.exe --build D:\\AndroidStudioProjects\\SimpleExample_v1\\tool\\.cxx\\cmake\\debug\\armeabi-v7a --target clean"
+  ],
+  "libraries": {
+    "native-lib-Debug-armeabi-v7a": {
+      "artifactName": "native-lib",
+      "buildCommand": "D:\\androidSDK\\cmake\\3.6.4111459\\bin\\cmake.exe --build D:\\AndroidStudioProjects\\SimpleExample_v1\\tool\\.cxx\\cmake\\debug\\armeabi-v7a --target native-lib",
+      "abi": "armeabi-v7a",
+      "output": "D:\\AndroidStudioProjects\\SimpleExample_v1\\tool\\build\\intermediates\\cmake\\debug\\obj\\armeabi-v7a\\libnative-lib.so"
+    }
+  }
+}

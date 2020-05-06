@@ -42,6 +42,7 @@ fun Activity.openCall(phone: String) {
 }
 
 //打开APK程序代码
+@Deprecated("安卓10不可用")
 fun Activity.installApk(file: File) {
     Log.e("OpenFile", file.name)
     val intent = Intent()

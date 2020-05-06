@@ -65,15 +65,20 @@ fun Activity.openUnterTheViewListWindow(view: View,data: ArrayList<String>,itemR
 /**
  * 显示一个在当前
  */
-fun Activity.openAnyViewWindowCenter(layoutId: Int):PopupWindow{
+/**
+ * 显示一个在当前
+ *  LinearLayout.LayoutParams.WRAP_CONTENT
+ */
+fun Activity.openAnyViewWindowCenter(layoutId: Int, width:Int=LinearLayout.LayoutParams.WRAP_CONTENT, height:Int=LinearLayout.LayoutParams.WRAP_CONTENT, gravity: Int=Gravity.CENTER):PopupWindow{
     // 将布局文件转换成View对象，popupview 内容视图
     val mPopView = this.layoutInflater.inflate(layoutId, null)
     // 将转换的View放置到 新建一个popuwindow对象中
     val mPopupWindow = PopupWindow(mPopView,
-            LinearLayout.LayoutParams.WRAP_CONTENT,
-            LinearLayout.LayoutParams.WRAP_CONTENT)
+            width,
+            height)
     // 点击popuwindow外让其消失
     mPopupWindow.setOutsideTouchable(true)
+    mPopupWindow.setFocusable(true)
     mPopView.setOnKeyListener { view, i, keyEvent ->
         if (i == KeyEvent.KEYCODE_BACK) {//返回自动关闭pop
             if (mPopupWindow.isShowing()) {
@@ -94,16 +99,15 @@ fun Activity.openAnyViewWindowCenter(layoutId: Int):PopupWindow{
     } else {
         // 设置PopupWindow 显示的形式 底部或者下拉等
         // 在某个位置显示
-     //   mPopupWindow.showAsDropDown(view,0,0)
+        //   mPopupWindow.showAsDropDown(view,0,0)
         // 作为下拉视图显示
         val params = this.getWindow().getAttributes()
         params.alpha = 0.7f
         this.getWindow().setAttributes(params)
-         mPopupWindow.showAtLocation(mPopView, Gravity.CENTER, 0, 0);
+        mPopupWindow.showAtLocation(mPopView, gravity, 0, 0);
     }
     return mPopupWindow
 }
-
 /**
  * 将当前imageview放大到全屏显示
  */

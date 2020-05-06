@@ -31,7 +31,7 @@ import android.graphics.drawable.Drawable
 import com.aisino.tool.log
 
 /**
- *
+ *ACache.get(this).put(key,value)
  */
 class ACache private constructor(cacheDir: File, max_size: Long, max_count: Int) {
     private val mCache: ACacheManager

@@ -8,6 +8,21 @@ android {
 
     defaultConfig {
         minSdkVersion 21
+        externalNativeBuild {
+            ndk {
+                abiFilters "armeabi-v7a"
+            }
+            cmake {
+                cppFlags "-std=c++11"
+                abiFilters "armeabi-v7a"
+            }
+        }
+    }
+
+    externalNativeBuild {
+        cmake {
+            path 'CMakeLists.txt'
+        }
     }
 
     buildTypes {
@@ -36,14 +51,14 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'androidx.core:core-ktx:1.1.0'
+    implementation 'androidx.core:core-ktx:1.2.0'
     implementation 'pub.devrel:easypermissions:0.4.2'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "com.google.code.gson:gson:2.8.6"
     implementation "com.squareup.okhttp3:okhttp:4.2.2"
     implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0'
     implementation 'com.github.bumptech.glide:glide:4.10.0'
-    implementation 'androidx.core:core:1.1.0'
+    implementation 'androidx.core:core:1.2.0'
 }
 repositories {
     mavenCentral()
