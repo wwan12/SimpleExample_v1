@@ -106,10 +106,12 @@ fun Activity.getAppSignature(): String {
 }
 
 
-@SuppressLint("MissingPermission")
-        /**
+
+/**
  * 获取手机IMEI
  */
+@SuppressLint("MissingPermission")
+@Deprecated("部分手机有权限也拿不到")
 fun Activity.getIMEICode(): String {
     val telephonyManager = this.application
             .getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
@@ -125,6 +127,7 @@ fun Activity.getIMEICode(): String {
  * @param slotId  slotId为卡槽Id，它的值为 0、1；
  * @return
  */
+@Deprecated("部分手机有权限也拿不到")
 fun Activity.getIMEI( slotId: Int): String {
     try {
         val manager = this.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
@@ -153,10 +156,11 @@ fun Activity.openNetworkSettings() {
     this.startActivity(intent)
 }
 
-@SuppressLint("MissingPermission")
-        /**
+
+/**
  * 判断网络连接
  */
+@SuppressLint("MissingPermission")
 fun Activity.isNetworkAvailable(): Boolean {
     val connectivity = this.application.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
     val info = connectivity?.allNetworkInfo

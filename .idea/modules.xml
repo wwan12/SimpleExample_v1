@@ -2,6 +2,13 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/AndroidStudioProjects-SimpleExample_v1.iml" filepath="$PROJECT_DIR$/AndroidStudioProjects-SimpleExample_v1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/AndroidStudioProjects-SimpleExample_v1-app.iml" filepath="$PROJECT_DIR$/app/AndroidStudioProjects-SimpleExample_v1-app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/danmuku/AndroidStudioProjects-SimpleExample_v1-danmuku.iml" filepath="$PROJECT_DIR$/danmuku/AndroidStudioProjects-SimpleExample_v1-danmuku.iml" />
+      <module fileurl="file://$PROJECT_DIR$/independentmodule/AndroidStudioProjects-SimpleExample_v1-independentmodule.iml" filepath="$PROJECT_DIR$/independentmodule/AndroidStudioProjects-SimpleExample_v1-independentmodule.iml" />
+      <module fileurl="file://$PROJECT_DIR$/qrcode/AndroidStudioProjects-SimpleExample_v1-qrcode.iml" filepath="$PROJECT_DIR$/qrcode/AndroidStudioProjects-SimpleExample_v1-qrcode.iml" />
+      <module fileurl="file://$PROJECT_DIR$/simpleanimation/AndroidStudioProjects-SimpleExample_v1-simpleanimation.iml" filepath="$PROJECT_DIR$/simpleanimation/AndroidStudioProjects-SimpleExample_v1-simpleanimation.iml" />
+      <module fileurl="file://$PROJECT_DIR$/tool/AndroidStudioProjects-SimpleExample_v1-tool.iml" filepath="$PROJECT_DIR$/tool/AndroidStudioProjects-SimpleExample_v1-tool.iml" />
       <module fileurl="file://$PROJECT_DIR$/SimpleExample.iml" filepath="$PROJECT_DIR$/SimpleExample.iml" />
       <module fileurl="file://$PROJECT_DIR$/SimpleExample_v1.iml" filepath="$PROJECT_DIR$/SimpleExample_v1.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/SimpleExample_v1-app.iml" filepath="$PROJECT_DIR$/app/SimpleExample_v1-app.iml" />

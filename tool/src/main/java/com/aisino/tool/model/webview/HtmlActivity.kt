@@ -11,8 +11,8 @@ import android.view.View
 import android.webkit.SslErrorHandler
 import android.content.Intent
 import android.net.Uri
-import android.support.v7.app.AlertDialog
 import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import com.aisino.tool.R
 import com.aisino.tool.ani.CircularAnim
 import com.aisino.tool.ani.LoadAnim

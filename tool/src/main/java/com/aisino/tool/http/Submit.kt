@@ -78,6 +78,9 @@ class Submit {
     var outTime = 4L//单位为秒
     //出错是否重启请求
     var isRetry = true
+    //重启最大计数
+    var maxRetryNumber=3
+    private var retryNumber=0
     private val _params: MutableMap<String, Any> = mutableMapOf()
   //  val _fileParams: MutableMap<String, String> = mutableMapOf()
  //   val _headers: MutableMap<String, String> = mutableMapOf()
@@ -510,10 +513,6 @@ class Submit {
 
 
     private fun pullJson(jsonData: String): Unit {
-//        if (jsonData.startsWith("[")){
-//            _response.put(JsonToken.BEGIN_ARRAY.name, JSONArray(jsonData))
-//            return
-//        }
         val reader = JsonReader(StringReader(jsonData))
         if (jsonData.startsWith("[")){
             loopJson(JsonToken.BEGIN_ARRAY.name, reader, _response)
@@ -656,11 +655,15 @@ class Submit {
      * 重启请求
      */
     fun retrySubmit(): Unit {
-        if(isRetry){
-            tryInit()
-        }else{
-            return
-        }
+        toUI.postDelayed({
+            if(isRetry&&retryNumber<maxRetryNumber) {
+                tryInit()
+            }else {
+
+            }
+            retryNumber++
+        },5000)
+
     }
 
     data class TestResult(val code:Int ,val url:String, val result:String,val waitTime:Long)
