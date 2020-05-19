@@ -9,15 +9,26 @@ import com.aisino.tool.R
 
 internal object UpdateDialog {
 
-    fun show(context: Context, content: String, downloadUrl: String) {
+    fun show(context: Context, content: String, downloadUrl: String,force:Boolean,upEnter:()->Unit) {
         if (isContextValid(context)) {
-            AlertDialog.Builder(context)
-                    .setTitle(R.string.android_auto_update_dialog_title)
-                    .setMessage(content)
-                    .setPositiveButton(R.string.android_auto_update_dialog_btn_download) { dialog, id -> goToDownload(context, downloadUrl) }
-                    .setNegativeButton(R.string.android_auto_update_dialog_btn_cancel) { dialog, id -> }
-                    .setCancelable(false)
-                    .show()
+            if (force){
+                val ar= AlertDialog.Builder(context)
+                        .setTitle(R.string.android_auto_update_dialog_title)
+                        .setMessage(content)
+                        .setPositiveButton(R.string.android_auto_update_dialog_btn_download) { dialog, id ->
+                            upEnter()
+                            goToDownload(context, downloadUrl) }
+                        .setCancelable(false)
+                        .show()
+            }else{
+                val ar= AlertDialog.Builder(context)
+                        .setTitle(R.string.android_auto_update_dialog_title)
+                        .setMessage(content)
+                        .setPositiveButton(R.string.android_auto_update_dialog_btn_download) { dialog, id -> goToDownload(context, downloadUrl) }
+                        .setNegativeButton(R.string.android_auto_update_dialog_btn_cancel) { dialog, id -> }
+                        .setCancelable(false)
+                        .show()
+            }
         }
     }
 

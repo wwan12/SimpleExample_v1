@@ -17,5 +17,6 @@
         </provider>
         <activity android:name=".model.webview.HtmlActivity"/>
         <activity android:name=".discreteness.StreamActivity"/>
+        <service android:name=".model.update.DownloadService"/>
     </application>
 </manifest>

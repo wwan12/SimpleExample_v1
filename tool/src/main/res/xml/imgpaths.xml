@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <paths>
-    <files-path path="." name="files" />
+    <root-path path="" name="name" />
 </paths>
