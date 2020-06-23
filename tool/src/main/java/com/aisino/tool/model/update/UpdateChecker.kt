@@ -1,6 +1,7 @@
 package com.aisino.tool.model.update
 
 import android.content.Context
+import android.content.Intent
 
 object UpdateChecker {
 
@@ -19,5 +20,10 @@ object UpdateChecker {
         } else {
 
         }
+    }
+    fun downloadApk(context: Context, downloadUrl: String) {
+        val intent = Intent(context.applicationContext, DownloadService::class.java)
+        intent.putExtra(DownloadService.DOWNLOADURL, downloadUrl)
+        context.startService(intent)
     }
 }
