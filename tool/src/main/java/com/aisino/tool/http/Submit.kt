@@ -5,7 +5,6 @@ import android.os.Looper
 import android.util.JsonToken
 import okhttp3.*
 import android.util.Xml
-import com.aisino.tool.BuildConfig.DEBUG
 import com.aisino.tool.log
 import com.aisino.tool.loge
 import com.aisino.tool.system.DateAndTime
@@ -19,6 +18,7 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import java.util.concurrent.TimeUnit
 import okhttp3.RequestBody.Companion.asRequestBody
 import com.google.gson.JsonArray
+import okhttp3.Headers.Companion.toHeaders
 import okio.ByteString
 import org.json.JSONArray
 import java.lang.Exception
@@ -66,6 +66,7 @@ var RELEASEAPI = ""
  * debug访问前缀
  */
 var DEBUGAPI = ""
+var DEBUG=false
 
 class Submit {
     //可配置属性
@@ -83,7 +84,7 @@ class Submit {
     private var retryNumber=0
     private val _params: MutableMap<String, Any> = mutableMapOf()
   //  val _fileParams: MutableMap<String, String> = mutableMapOf()
- //   val _headers: MutableMap<String, String> = mutableMapOf()
+    private val _headers: MutableMap<String, String> = mutableMapOf()
     private val _response: MutableMap<String, Any> = mutableMapOf()
     lateinit private var toUI:Handler
     private var _start: () -> Unit = {}
@@ -204,7 +205,7 @@ class Submit {
             cacheUrl = cacheUrl.substring(0, cacheUrl.length - 1)
         }
         "DEBUGAPI->$cacheUrl".loge("api")
-        val request = Request.Builder().url(cacheUrl).build()
+        val request = Request.Builder().headers(_headers.toHeaders()) .url(cacheUrl).build()
         val call = okHttpClient.build().newCall(request)
         call.enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
@@ -226,7 +227,7 @@ class Submit {
             (p.key + "-" + p.value.toString()).log("post")
         }
         val body = build.build()
-        val request = Request.Builder().url(cacheUrl).post(body).build()
+        val request = Request.Builder().headers(_headers.toHeaders()).url(cacheUrl).post(body).build()
         val call = okHttpClient.build().newCall(request)
         call.enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
@@ -254,7 +255,7 @@ class Submit {
         val requestBody = build.build()
 
         val request = Request.Builder()
-//                .header("Authorization", "Client-ID " + "...")
+                .headers(_headers.toHeaders())
                 .url(cacheUrl)
                 .post(requestBody)
                 .build()
@@ -284,7 +285,7 @@ class Submit {
         val requestBody = build.build()
 
         val request = Request.Builder()
-//                .header("Authorization", "Client-ID " + "...")
+                .headers(_headers.toHeaders())
                 .url(cacheUrl)
                 .post(requestBody)
                 .build()
@@ -499,13 +500,27 @@ class Submit {
             _params.put(this, value)
         }
     }
+    //- 入参
+    operator fun String.minus(value: Int?) {
+        if (value != null) {
+            _params.put(this, value.toString())
+        }
+    }
+    //.. 添加请求头 Header
+    operator fun String.rangeTo(value: String) {
+        if (value != null) {
+            _headers.put(this, value)
+        }
+    }
 
     // ！ 简单取参 单key
+    @Deprecated("")
     operator fun String.not(): String {
         return _response[this] as String
     }
 
     // .. 复杂取参
+    @Deprecated("")
     operator fun <E> String.rangeTo(tag: String): E {
         val c = _response[this] as MutableMap<*, *>
         return c[tag] as E
