@@ -424,8 +424,8 @@ class Submit {
             }
         }
         toUI.post {
-            _success(SuccessData(url,_response).apply {
-                this.params.putAll(params)
+            _success(SuccessData(url,_params,_response).apply {
+                this.gson=gson
                 this.submitTime=DateAndTime.nowDateTime })
         }
     }
@@ -434,9 +434,9 @@ class Submit {
         (url+":"+vback).log("successCall")
         when (returnType) {
             ReturnType.JSON -> {
-                var jsonString = vback
-                jsonString?.log("successCall")
-                pullJson(jsonString!!)
+                val jsonString = vback
+                jsonString.log("successCall")
+                pullJson(jsonString)
             }
             ReturnType.XML -> {
 //                    val s = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<ROOT><RESULT><CODE>9999</CODE><POS><PO>1111</PO><PO>2222</PO></POS><CONTENT>java.lang.NullPointerException\ncom.aisino.heb.xlg.web.servlet.XlgServlet.doPost(XlgServlet.java:135)</CONTENT></RESULT></ROOT>".byteInputStream()
@@ -446,10 +446,11 @@ class Submit {
             ReturnType.STRING -> {
                 _response.put(ReturnType.STRING.name,vback)
             }
+            else -> {}
         }
         toUI.post {
-            _socketCall(SuccessData(url,_response).apply {
-                this.params.putAll(params)
+            _socketCall(SuccessData(url,_params,_response).apply {
+                this.gson=gson
                 this.submitTime=DateAndTime.nowDateTime })
         }
     }
@@ -479,8 +480,8 @@ class Submit {
                 _response.put(ReturnType.STRING.name, response.result)
             }
         }
-        _success(SuccessData(url, _response).apply {
-            this.params.putAll(params)
+        _success(SuccessData(url,_params,_response).apply {
+            this.gson=gson
             this.submitTime = DateAndTime.nowDateTime
         })
     }
