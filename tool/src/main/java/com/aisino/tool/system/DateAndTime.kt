@@ -41,4 +41,26 @@ object DateAndTime {
                             else SimpleDateFormat("yyyyMMddHHmmss")
                 return sdf.format(Date())
             }
+    //返回开发者指定格式的日期时间字符串
+    fun getFormatTime(date: Date, format: String=""): String {
+        val ft: String = format
+        val sdf = if (!ft.isEmpty()) SimpleDateFormat(ft)
+        else SimpleDateFormat("yyyyMMddHHmmss")
+        return sdf.format(date)
+    }
+
+    fun lastLifeTime(call:(TimerTask)->Unit,tick:Long,total:Long): Unit {
+        var total=total
+        Timer().schedule(object:TimerTask(){
+            override fun run() {
+                if (total<=0){
+                    this.cancel()
+                }else{
+                    call(this)
+                }
+                total-=tick
+            }
+        },tick,total)
+    }
+
 }

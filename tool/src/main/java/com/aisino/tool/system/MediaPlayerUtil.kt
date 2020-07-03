@@ -9,19 +9,21 @@ import android.util.Log
  * author
  * descrip：mp3播放
  */
-object MediaPlayerUtil {
-    var mMediaPlayer: MediaPlayer? = null
-    val mediaPlayer: MediaPlayer?
-        get() {
-            if (null == mMediaPlayer) {
-                mMediaPlayer = MediaPlayer()
-                mMediaPlayer?.setOnCompletionListener {
-                    mMediaPlayer?.release()
-                    mMediaPlayer = null
+class MediaPlayerUtil {
+    companion object{
+       private var mMediaPlayer: MediaPlayer? = null
+        val mediaPlayer: MediaPlayer?
+            get() {
+                if (null == mMediaPlayer) {
+                    mMediaPlayer = MediaPlayer()
+                    mMediaPlayer?.setOnCompletionListener {
+                        mMediaPlayer?.release()
+                        mMediaPlayer = null
+                    }
                 }
+                return mMediaPlayer
             }
-            return mMediaPlayer
-        }
+    }
 
     /**
      * 播放音频
