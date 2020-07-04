@@ -17,19 +17,11 @@
   },
   {
     "level": "INFO",
-    "message": "- CMake found in SDK at \u0027D:\\androidSDK\\cmake\\3.6.4111459\u0027 had version \u00273.6.0\u0027"
+    "message": "- CMake found in SDK at \u0027D:\\androidsdk\\cmake\\3.6.4111459\u0027 had version \u00273.6.0\u0027"
   },
   {
     "level": "INFO",
-    "message": "rebuilding JSON D:\\AndroidStudioProjects\\SimpleExample_v1\\tool\\.cxx\\cmake\\release\\armeabi-v7a\\android_gradle_build.json due to:"
-  },
-  {
-    "level": "INFO",
-    "message": "- expected json D:\\AndroidStudioProjects\\SimpleExample_v1\\tool\\.cxx\\cmake\\release\\armeabi-v7a\\android_gradle_build.json file is not present, will remove stale json folder"
-  },
-  {
-    "level": "INFO",
-    "message": "- missing previous command file D:\\AndroidStudioProjects\\SimpleExample_v1\\tool\\.cxx\\cmake\\release\\armeabi-v7a\\build_command.txt, will remove stale json folder"
+    "message": "rebuilding JSON D:\\andriodprojects\\SimpleExample_v1\\tool\\.cxx\\cmake\\release\\armeabi-v7a\\android_gradle_build.json due to:"
   },
   {
     "level": "INFO",
@@ -37,15 +29,27 @@
   },
   {
     "level": "INFO",
-    "message": "created folder \u0027D:\\AndroidStudioProjects\\SimpleExample_v1\\tool\\.cxx\\cmake\\release\\armeabi-v7a\u0027"
+    "message": "- a dependent build file changed"
   },
   {
     "level": "INFO",
-    "message": "executing cmake Executable : D:\\androidSDK\\cmake\\3.6.4111459\\bin\\cmake.exe\narguments : \n-HD:\\AndroidStudioProjects\\SimpleExample_v1\\tool\n-BD:\\AndroidStudioProjects\\SimpleExample_v1\\tool\\.cxx\\cmake\\release\\armeabi-v7a\n-DANDROID_ABI\u003darmeabi-v7a\n-DANDROID_PLATFORM\u003dandroid-21\n-DCMAKE_LIBRARY_OUTPUT_DIRECTORY\u003dD:\\AndroidStudioProjects\\SimpleExample_v1\\tool\\build\\intermediates\\cmake\\release\\obj\\armeabi-v7a\n-DCMAKE_BUILD_TYPE\u003dRelease\n-DANDROID_NDK\u003dD:\\androidSDK\\ndk\\16.1.4479499\n-DCMAKE_CXX_FLAGS\u003d-std\u003dc++11\n-DCMAKE_TOOLCHAIN_FILE\u003dD:\\androidSDK\\ndk\\16.1.4479499\\build\\cmake\\android.toolchain.cmake\n-DCMAKE_MAKE_PROGRAM\u003dD:\\androidSDK\\cmake\\3.6.4111459\\bin\\ninja.exe\n-GAndroid Gradle - Ninja\njvmArgs : \n\n"
+    "message": "  - D:\\AndroidStudioProjects\\SimpleExample_v1\\tool\\CMakeLists.txt"
   },
   {
     "level": "INFO",
-    "message": "Executable : D:\\androidSDK\\cmake\\3.6.4111459\\bin\\cmake.exe\narguments : \n-HD:\\AndroidStudioProjects\\SimpleExample_v1\\tool\n-BD:\\AndroidStudioProjects\\SimpleExample_v1\\tool\\.cxx\\cmake\\release\\armeabi-v7a\n-DANDROID_ABI\u003darmeabi-v7a\n-DANDROID_PLATFORM\u003dandroid-21\n-DCMAKE_LIBRARY_OUTPUT_DIRECTORY\u003dD:\\AndroidStudioProjects\\SimpleExample_v1\\tool\\build\\intermediates\\cmake\\release\\obj\\armeabi-v7a\n-DCMAKE_BUILD_TYPE\u003dRelease\n-DANDROID_NDK\u003dD:\\androidSDK\\ndk\\16.1.4479499\n-DCMAKE_CXX_FLAGS\u003d-std\u003dc++11\n-DCMAKE_TOOLCHAIN_FILE\u003dD:\\androidSDK\\ndk\\16.1.4479499\\build\\cmake\\android.toolchain.cmake\n-DCMAKE_MAKE_PROGRAM\u003dD:\\androidSDK\\cmake\\3.6.4111459\\bin\\ninja.exe\n-GAndroid Gradle - Ninja\njvmArgs : \n\n"
+    "message": "removing stale contents from \u0027D:\\andriodprojects\\SimpleExample_v1\\tool\\.cxx\\cmake\\release\\armeabi-v7a\u0027"
+  },
+  {
+    "level": "INFO",
+    "message": "created folder \u0027D:\\andriodprojects\\SimpleExample_v1\\tool\\.cxx\\cmake\\release\\armeabi-v7a\u0027"
+  },
+  {
+    "level": "INFO",
+    "message": "executing cmake Executable : D:\\androidsdk\\cmake\\3.6.4111459\\bin\\cmake.exe\narguments : \n-HD:\\andriodprojects\\SimpleExample_v1\\tool\n-BD:\\andriodprojects\\SimpleExample_v1\\tool\\.cxx\\cmake\\release\\armeabi-v7a\n-DANDROID_ABI\u003darmeabi-v7a\n-DANDROID_PLATFORM\u003dandroid-21\n-DCMAKE_LIBRARY_OUTPUT_DIRECTORY\u003dD:\\andriodprojects\\SimpleExample_v1\\tool\\build\\intermediates\\cmake\\release\\obj\\armeabi-v7a\n-DCMAKE_BUILD_TYPE\u003dRelease\n-DANDROID_NDK\u003dD:\\androidsdk\\ndk-bundle\n-DCMAKE_CXX_FLAGS\u003d-std\u003dc++11\n-DCMAKE_TOOLCHAIN_FILE\u003dD:\\androidsdk\\ndk-bundle\\build\\cmake\\android.toolchain.cmake\n-DCMAKE_MAKE_PROGRAM\u003dD:\\androidsdk\\cmake\\3.6.4111459\\bin\\ninja.exe\n-GAndroid Gradle - Ninja\njvmArgs : \n\n"
+  },
+  {
+    "level": "INFO",
+    "message": "Executable : D:\\androidsdk\\cmake\\3.6.4111459\\bin\\cmake.exe\narguments : \n-HD:\\andriodprojects\\SimpleExample_v1\\tool\n-BD:\\andriodprojects\\SimpleExample_v1\\tool\\.cxx\\cmake\\release\\armeabi-v7a\n-DANDROID_ABI\u003darmeabi-v7a\n-DANDROID_PLATFORM\u003dandroid-21\n-DCMAKE_LIBRARY_OUTPUT_DIRECTORY\u003dD:\\andriodprojects\\SimpleExample_v1\\tool\\build\\intermediates\\cmake\\release\\obj\\armeabi-v7a\n-DCMAKE_BUILD_TYPE\u003dRelease\n-DANDROID_NDK\u003dD:\\androidsdk\\ndk-bundle\n-DCMAKE_CXX_FLAGS\u003d-std\u003dc++11\n-DCMAKE_TOOLCHAIN_FILE\u003dD:\\androidsdk\\ndk-bundle\\build\\cmake\\android.toolchain.cmake\n-DCMAKE_MAKE_PROGRAM\u003dD:\\androidsdk\\cmake\\3.6.4111459\\bin\\ninja.exe\n-GAndroid Gradle - Ninja\njvmArgs : \n\n"
   },
   {
     "level": "INFO",
@@ -53,11 +57,11 @@
   },
   {
     "level": "INFO",
-    "message": "write build output D:\\AndroidStudioProjects\\SimpleExample_v1\\tool\\.cxx\\cmake\\release\\armeabi-v7a\\build_output.txt"
+    "message": "write build output D:\\andriodprojects\\SimpleExample_v1\\tool\\.cxx\\cmake\\release\\armeabi-v7a\\build_output.txt"
   },
   {
     "level": "INFO",
-    "message": "write command file D:\\AndroidStudioProjects\\SimpleExample_v1\\tool\\.cxx\\cmake\\release\\armeabi-v7a\\build_command.txt"
+    "message": "write command file D:\\andriodprojects\\SimpleExample_v1\\tool\\.cxx\\cmake\\release\\armeabi-v7a\\build_command.txt"
   },
   {
     "level": "INFO",

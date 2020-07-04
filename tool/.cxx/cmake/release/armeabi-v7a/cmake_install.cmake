@@ -1,4 +1,4 @@
-# Install script for directory: D:/AndroidStudioProjects/SimpleExample_v1/tool
+# Install script for directory: D:/andriodprojects/SimpleExample_v1/tool
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -40,5 +40,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "D:/AndroidStudioProjects/SimpleExample_v1/tool/.cxx/cmake/release/armeabi-v7a/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "D:/andriodprojects/SimpleExample_v1/tool/.cxx/cmake/release/armeabi-v7a/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

@@ -1,5 +1,5 @@
 {
-  "ndkFolder": "D:\\androidSDK\\ndk\\16.1.4479499",
+  "ndkFolder": "D:\\androidsdk\\ndk-bundle",
   "messages": [
     {
       "level": "INFO",
@@ -15,19 +15,15 @@
     },
     {
       "level": "INFO",
-      "message": "sdkFolder is D:\\androidSDK"
+      "message": "sdkFolder is D:\\androidsdk"
     },
     {
       "level": "INFO",
-      "message": "Considering D:\\androidSDK\\ndk-bundle in SDK ndk-bundle folder"
+      "message": "Considering D:\\androidsdk\\ndk-bundle in SDK ndk-bundle folder"
     },
     {
       "level": "INFO",
-      "message": "Considering D:\\androidSDK\\ndk\\16.1.4479499 in SDK ndk folder"
-    },
-    {
-      "level": "INFO",
-      "message": "No user requested version, choosing D:\\androidSDK\\ndk\\16.1.4479499 which is version 16.1.4479499"
+      "message": "No user requested version, choosing D:\\androidsdk\\ndk-bundle which is version 18.1.5063045"
     }
   ]
 }
