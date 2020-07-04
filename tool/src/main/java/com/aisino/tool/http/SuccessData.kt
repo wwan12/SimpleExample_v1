@@ -1,5 +1,8 @@
 package com.aisino.tool.http
 
+import com.aisino.tool.loge
+import com.google.gson.Gson
+
 /**
  * 文件描述：
  * 作者：Administrator
@@ -8,15 +11,17 @@ package com.aisino.tool.http
  * 版本号：1
  *
  */
-class SuccessData (url:String,data: MutableMap<String,Any>){
-    val params=mutableMapOf<String,Any>()
-    val data= mutableMapOf<String,Any>()
+class SuccessData (url:String,params: MutableMap<String,Any>,data: MutableMap<String,Any>){
+    var params:MutableMap<String,Any>?=null
+    var data:MutableMap<String,Any>?=null
     var url=""
     var submitTime=""
+    var gson:Gson?=null
     var retryCount=0
     init {
         this.url=url
-        this.data.putAll(data)
+        this.data =data
+        this.params=params
     }
 
     fun logParams(): Unit {
@@ -28,14 +33,23 @@ class SuccessData (url:String,data: MutableMap<String,Any>){
     }
 
     fun logAll(): Unit {
-        
+        "param:${params}".loge(url)
+        "data:${data}".loge(url)
     }
-    
-    operator fun <E>get(key:String): E{
-        return loopAny<E>(key, data) as E
+    inline fun <reified E>getForObj(key:String): E?{
+        val value= loopAny<E>(key, data!!)
+        if (value!=null){
+           return gson?.fromJson<E>(value.toString(),E::class.java)
+        }else{
+            return null
+        }
     }
 
-    private fun <E> loopAny(key: String, target: MutableMap<String, Any>): E? {
+    operator fun <E>get(key:String): E{
+        return loopAny<E>(key, data!!) as E
+    }
+
+     fun <E> loopAny(key: String, target: MutableMap<String, Any>): E? {
         var result: E?
         if (target.containsKey(key)) {
             return target[key] as E

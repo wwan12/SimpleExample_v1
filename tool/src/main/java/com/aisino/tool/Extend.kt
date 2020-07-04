@@ -13,20 +13,16 @@ import androidx.appcompat.app.AppCompatActivity
  */
 private var DEBUG = true
 
-fun DEBUG(): Boolean {
-    DEBUG=BuildConfig.DEBUG
-    return DEBUG
-}
 
 fun String.log(tag:String="tag"): Unit {
-    if (DEBUG()){
+
         Log.i(tag, this)
-    }
+
 }
 fun String.loge(tag:String="tag"): Unit {
-    if (DEBUG()){
+
         Log.e(tag, this)
-    }
+
 }
 
 fun String.toast(context: Context): Unit {
@@ -42,11 +38,9 @@ fun String.load(activity: AppCompatActivity): String {
 }
 
 fun String.promptError(describe: String): Unit {
-    if (DEBUG()){
         Log.e("promptError", "File\t" + getFileName() + "\n"
                 + "Class\t" + getClassName() + "\n"
                 + "Method\t" + getMethodName() + "\n" + "Line\t" + getLineNumber() + "\n$this\n$describe")
-    }
 }
 
 

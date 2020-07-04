@@ -183,7 +183,7 @@ fun Activity.openRecordSound(): Unit {
     startActivityForResult(intent, SOUND_REQUEST)
 }
 
-    fun Activity.createAudio(path: String): MediaPlayer {
+    fun createAudio(path: String): MediaPlayer {
         val mMediaPlayer=MediaPlayer()
         mMediaPlayer.setDataSource(path)
         mMediaPlayer.prepareAsync()

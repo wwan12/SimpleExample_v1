@@ -105,6 +105,20 @@ fun Activity.getAppSignature(): String {
     return ""
 }
 
+/**
+ * 获取程序的包名
+ * @return
+ */
+fun Activity.getAppId(): String {
+    try {
+        //包管理操作管理类
+        return application.packageName
+    } catch (e: NameNotFoundException) {
+        e.printStackTrace()
+    }
+
+    return ""
+}
 
 
 /**

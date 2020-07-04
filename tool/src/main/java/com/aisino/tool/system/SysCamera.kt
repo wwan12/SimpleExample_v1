@@ -18,6 +18,7 @@ import android.widget.PopupWindow
 import androidx.core.content.FileProvider
 import com.aisino.tool.R
 import com.aisino.tool.bitmap.drawable2Bitmap
+import com.yalantis.ucrop.UCrop
 import java.io.File
 import java.io.InputStream
 import java.util.*
@@ -27,9 +28,37 @@ import java.util.*
 /**
  * Created by lenovo on 2017/12/5.
  */
+
+
+//var uri: Uri?=null
+////        var bitmap: Bitmap?=null
+//if (requestCode == GALLERY_REQUEST &&resultCode== RESULT_OK) {
+//    uri=data?.data
+////            bitmap=uri?.handleImageOnKitKat(this)
+//
+//}
+//if (requestCode == CAMERA_REQUEST &&resultCode== RESULT_OK) {
+//    uri= cameraUri
+////            bitmap=uri?.getCameraImg(this)
+//}
+//if (uri!=null){
+//    val f = File(this.filesDir.path, "crop.jpg")
+//    UCrop.of(uri, Uri.fromFile(f))
+//            .start(this)
+//}
+//if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
+//    val resultUri = data?.let { UCrop.getOutput(it) }
+//    seal_photo.setImageURI(resultUri)
+//    sealBitmap= seal_photo.drawable.toBitmap().setBitmapSize(512,512)
+//} else if (resultCode == UCrop.RESULT_ERROR) {
+//    val cropError = data?.let { UCrop.getError(it) }
+//}
+
 val CAMERA_REQUEST = 1000
 val GALLERY_REQUEST = 2000
-private var cameraUri:Uri? = null
+val CORP_REQUEST=3000
+var cameraUri:Uri? = null
+var appId=""
 
 fun Activity.openCameraAndGalleryWindow() {
     // 将布局文件转换成View对象，popupview 内容视图
@@ -97,8 +126,10 @@ fun Activity.openCamera() :Uri{
     val f = File(this.filesDir.path, imgName)
     val contentUri: Uri
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N||Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP_MR1) {
-        contentUri = FileProvider.getUriForFile(this, this.applicationInfo.packageName+".fileProvider", f)
-        //            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        if (appId.equals("")){
+            appId=this.getAppId()
+        }
+        contentUri = FileProvider.getUriForFile(this, "${appId}.fileProvider", f)
     } else {
         contentUri = Uri.fromFile(f)
     }
@@ -111,6 +142,64 @@ fun Activity.openCamera() :Uri{
     intent.putExtra("return-data", false)
     this.startActivityForResult(intent, CAMERA_REQUEST)
     return  contentUri
+}
+
+/**
+ * 裁剪图片
+ */
+@Deprecated("xiaomi，三星手机不兼容")
+fun Activity.cropPicture(cropFile: File):Uri {
+    val c = Calendar.getInstance()
+    val year = c.get(Calendar.YEAR)
+    val month = c.get(Calendar.MONTH) + 1
+    val day = c.get(Calendar.DAY_OF_MONTH)
+    val imgName = "crop_"+ "(" + System.currentTimeMillis() + ").jpg"
+    val f = File(this.filesDir.path, imgName)
+    val contentUri = Uri.fromFile(f)
+    val cropIntent = Intent("com.android.camera.action.CROP")
+    val pictureUri= if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+        Uri.fromFile(cropFile)
+    } else {
+        //Android 7.0系统开始 使用本地真实的Uri路径不安全,使用FileProvider封装共享Uri
+        if (appId.equals("")){
+            appId=this.getAppId()
+        }
+        FileProvider.getUriForFile(this, "${appId}.fileProvider", cropFile)
+    }
+    cropIntent.setDataAndType(pictureUri, "image/*") //7.0以上 输入的uri需要是provider提供的
+    // 开启裁剪：打开的Intent所显示的View可裁剪
+    cropIntent.putExtra("crop", true)
+    // 裁剪宽高比
+//    cropIntent.putExtra("aspectX", 1f)
+//    cropIntent.putExtra("aspectY", 1f)
+    // 裁剪输出大小
+    cropIntent.putExtra("outputX", 240)
+    cropIntent.putExtra("outputY", 240)
+    cropIntent.putExtra("scale", true)
+    /**
+     * return-data
+     * 这个属性决定onActivityResult 中接收到的是什么数据类型，
+     * true data将会返回一个bitmap
+     * false，则会将图片保存到本地并将我们指定的对应的uri。
+     */
+    cropIntent.putExtra("return-data", true)
+    // 当 return-data 为 false 的时候需要设置输出的uri地址
+//        cropIntent.putExtra(MediaStore.EXTRA_OUTPUT, contentUri) //输出的uri为普通的uri，通过provider提供的uri会出现无法保存的错误
+    // 图片输出格式
+    cropIntent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString())
+    cropIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION) //不加会出现无法加载此图片的错误
+    cropIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION) // 这两句是在7.0以上版本当targeVersion大于23时需要
+    startActivityForResult(cropIntent, CORP_REQUEST)
+    return contentUri
+}
+
+/**
+ * 裁剪图片 使用uCrop
+ */
+fun Activity.cropPicture(crop: Uri):Unit {
+    val f = File(this.filesDir.path, "crop.jpg")
+   val outUri= Uri.fromFile(f)
+    UCrop.of(crop, outUri).start(this)
 }
 
 fun getDeviceBrand(): String {

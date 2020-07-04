@@ -62,9 +62,7 @@ class NotificationHelper(base: Context) : ContextWrapper(base) {
         myIntent.putExtra(DownloadService.DOWNLOADURL, apkUrl)
         val pendingIntent = PendingIntent.getService(this, 0, myIntent, PendingIntent.FLAG_UPDATE_CURRENT)
 
-        val builder = getNofity(content)
-                .setContentIntent(pendingIntent)
-
+        val builder = getNofity(content).setContentIntent(pendingIntent)
         getManager().notify(NOTIFICATION_ID, builder.build())
     }
 
@@ -85,14 +83,15 @@ class NotificationHelper(base: Context) : ContextWrapper(base) {
     }
 
     private fun getNofity(text: String): NotificationCompat.Builder {
-        return NotificationCompat.Builder(applicationContext)
+        return NotificationCompat.Builder(applicationContext,"9999")
                 .setTicker(getString(R.string.android_auto_update_notify_ticker))
                 .setContentTitle("应用更新")
                 .setContentText(text)
                 .setSmallIcon(smallIcon)
                 .setLargeIcon(largeIcon)
                 .setAutoCancel(true)
-                .setPriority(NotificationCompat.PRIORITY_LOW)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setChannelId("9999")
 
     }
 
@@ -109,8 +108,9 @@ class NotificationHelper(base: Context) : ContextWrapper(base) {
 
     companion object {
 
-        private val CHANNEL_ID = "dxy_app_update"
+        private val CHANNEL_ID = "9999"
 
-        private val NOTIFICATION_ID = 0
+        private val NOTIFICATION_ID = 9999
     }
+
 }
