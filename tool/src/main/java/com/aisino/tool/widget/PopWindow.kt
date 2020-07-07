@@ -8,6 +8,7 @@ import android.widget.*
 import com.aisino.tool.R
 import android.view.*
 import androidx.viewpager.widget.ViewPager
+import com.aisino.tool.bitmap.downloadBitmap
 import com.aisino.tool.widget.adapter.ImageAdapter
 
 
@@ -152,7 +153,7 @@ fun Activity.showGrallery(position:Int,imgs:List<Bitmap>): PopupWindow {
         newImg.scaleType=ImageView.ScaleType.FIT_CENTER
         views.add(newImg)
     }
-    val mPopView= this.layoutInflater.inflate(R.layout.image_full_window, null)
+    val mPopView= this.layoutInflater.inflate(R.layout.image_grallery, null)
     val viewPager = mPopView.findViewById(R.id.pager) as ViewPager
 
     val myPagerAdapter = ImageAdapter(views)
@@ -191,6 +192,62 @@ fun Activity.showGrallery(position:Int,imgs:List<Bitmap>): PopupWindow {
         return@setOnKeyListener false
     }
     mPopupWindow.showAsDropDown(views[position])
+    return mPopupWindow
+}
+
+/**
+ * 显示一个可以左右滑动的画廊
+ */
+fun Activity.showGrallery(imgs:List<String>): PopupWindow {
+    val views=ArrayList<View>()
+    for (img in imgs){
+        val newImg= ImageView(this)
+        newImg.downloadBitmap(img)
+//        Glide.with(this).asBitmap().load(img).into(newImg)
+//        newImg.downloadBitmap(img)
+        newImg.layoutParams= ViewGroup.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT)
+        newImg.scaleType=ImageView.ScaleType.FIT_CENTER
+        views.add(newImg)
+    }
+    val mPopView= this.layoutInflater.inflate(R.layout.image_grallery, null)
+    val viewPager = mPopView.findViewById(R.id.pager) as ViewPager
+
+    val myPagerAdapter = ImageAdapter(views)
+    viewPager.adapter = myPagerAdapter
+    viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+        override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+
+        }
+
+        override fun onPageSelected(position: Int) {
+
+        }
+
+        override fun onPageScrollStateChanged(state: Int) {
+
+        }
+    })
+    viewPager.currentItem=0
+    val mPopupWindow = PopupWindow(mPopView,
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.MATCH_PARENT)
+    // 点击popuwindow外让其消失
+    mPopupWindow.setOutsideTouchable(true)
+    mPopView.setOnClickListener{
+        if (mPopupWindow.isShowing()) {
+            mPopupWindow.dismiss();
+        }
+    }
+    mPopView.setOnKeyListener { view, i, keyEvent ->
+        if (i == KeyEvent.KEYCODE_BACK) {//返回自动关闭pop
+            if (mPopupWindow.isShowing()) {
+                mPopupWindow.dismiss()
+                return@setOnKeyListener true
+            }
+        }
+        return@setOnKeyListener false
+    }
+    mPopupWindow.showAsDropDown(views[0])
     return mPopupWindow
 }
 
