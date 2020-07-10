@@ -22,6 +22,7 @@ fun Activity.copyToShear(text: CharSequence) {
     clipboard.primaryClip = ClipData.newPlainText("text", text)
 }
 
+
 /**
  * 获取剪贴板的文本
  *

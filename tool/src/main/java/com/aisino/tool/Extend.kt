@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 
 
@@ -27,6 +28,13 @@ fun String.loge(tag:String="tag"): Unit {
 
 fun String.toast(context: Context): Unit {
     Toast.makeText(context, this, Toast.LENGTH_SHORT).show()
+}
+fun String.Dialog(context: Context): Unit {
+    val load = AlertDialog.Builder(context)
+            .setMessage(this)
+            .setPositiveButton("确认") { dialog, id -> }
+            .show()
+    //   success.setCancelable(true)
 }
 
 fun String.save(activity: AppCompatActivity,key:String): Unit {

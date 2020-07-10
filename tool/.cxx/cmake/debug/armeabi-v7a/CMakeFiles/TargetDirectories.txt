@@ -1,3 +1,0 @@
-D:/andriodprojects/SimpleExample_v1/tool/.cxx/cmake/debug/armeabi-v7a/CMakeFiles/native-lib.dir
-D:/andriodprojects/SimpleExample_v1/tool/.cxx/cmake/debug/armeabi-v7a/CMakeFiles/edit_cache.dir
-D:/andriodprojects/SimpleExample_v1/tool/.cxx/cmake/debug/armeabi-v7a/CMakeFiles/rebuild_cache.dir

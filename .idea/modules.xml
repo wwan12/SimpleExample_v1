@@ -17,6 +17,13 @@
       <module fileurl="file://$PROJECT_DIR$/qrcode/SimpleExample_v1-qrcode.iml" filepath="$PROJECT_DIR$/qrcode/SimpleExample_v1-qrcode.iml" />
       <module fileurl="file://$PROJECT_DIR$/simpleanimation/SimpleExample_v1-simpleanimation.iml" filepath="$PROJECT_DIR$/simpleanimation/SimpleExample_v1-simpleanimation.iml" />
       <module fileurl="file://$PROJECT_DIR$/tool/SimpleExample_v1-tool.iml" filepath="$PROJECT_DIR$/tool/SimpleExample_v1-tool.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/SimpleExample_v2.iml" filepath="$PROJECT_DIR$/.idea/modules/SimpleExample_v2.iml" group="SimpleExample_v2" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/SimpleExample_v2-app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/SimpleExample_v2-app.iml" group="SimpleExample_v2/app" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/danmuku/SimpleExample_v2-danmuku.iml" filepath="$PROJECT_DIR$/.idea/modules/danmuku/SimpleExample_v2-danmuku.iml" group="SimpleExample_v2/danmuku" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/independentmodule/SimpleExample_v2-independentmodule.iml" filepath="$PROJECT_DIR$/.idea/modules/independentmodule/SimpleExample_v2-independentmodule.iml" group="SimpleExample_v2/independentmodule" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/qrcode/SimpleExample_v2-qrcode.iml" filepath="$PROJECT_DIR$/.idea/modules/qrcode/SimpleExample_v2-qrcode.iml" group="SimpleExample_v2/qrcode" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/simpleanimation/SimpleExample_v2-simpleanimation.iml" filepath="$PROJECT_DIR$/.idea/modules/simpleanimation/SimpleExample_v2-simpleanimation.iml" group="SimpleExample_v2/simpleanimation" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/tool/SimpleExample_v2-tool.iml" filepath="$PROJECT_DIR$/.idea/modules/tool/SimpleExample_v2-tool.iml" group="SimpleExample_v2/tool" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/danmuku/danmuku.iml" filepath="$PROJECT_DIR$/danmuku/danmuku.iml" />
       <module fileurl="file://$PROJECT_DIR$/independentmodule/independentmodule.iml" filepath="$PROJECT_DIR$/independentmodule/independentmodule.iml" />

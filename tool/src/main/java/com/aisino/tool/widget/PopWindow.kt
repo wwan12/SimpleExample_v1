@@ -1,5 +1,6 @@
 package com.aisino.tool.widget
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.graphics.Bitmap
 import android.graphics.Color
@@ -7,6 +8,8 @@ import android.graphics.drawable.ColorDrawable
 import android.widget.*
 import com.aisino.tool.R
 import android.view.*
+import android.view.View.OnTouchListener
+import androidx.core.view.ViewConfigurationCompat
 import androidx.viewpager.widget.ViewPager
 import com.aisino.tool.bitmap.downloadBitmap
 import com.aisino.tool.widget.adapter.ImageAdapter
@@ -177,10 +180,30 @@ fun Activity.showGrallery(position:Int,imgs:List<Bitmap>): PopupWindow {
             LinearLayout.LayoutParams.MATCH_PARENT)
     // 点击popuwindow外让其消失
     mPopupWindow.setOutsideTouchable(true)
-    mPopView.setOnClickListener{
-        if (mPopupWindow.isShowing()) {
-            mPopupWindow.dismiss();
+    val configuration = ViewConfiguration.get(this)
+    val mTouchSlop = ViewConfigurationCompat.getScaledPagingTouchSlop(configuration)
+    viewPager.setOnTouchListener { view, motionEvent ->
+        var touchFlag = 0
+        var x = 0f
+        var y = 0f
+        when (motionEvent.action) {
+            MotionEvent.ACTION_DOWN -> {
+                touchFlag = 0
+                x = motionEvent.x
+                y = motionEvent.y
+            }
+            MotionEvent.ACTION_MOVE -> {
+                val xDiff = Math.abs(motionEvent.x - x)
+                val yDiff = Math.abs(motionEvent.y - y)
+                touchFlag = if (xDiff < mTouchSlop && xDiff >= yDiff) 0 else -1
+            }
+            MotionEvent.ACTION_UP -> if (touchFlag == 0) {
+                if (mPopupWindow.isShowing()) {
+                    mPopupWindow.dismiss()
+                }
+            }
         }
+        return@setOnTouchListener false
     }
     mPopView.setOnKeyListener { view, i, keyEvent ->
         if (i == KeyEvent.KEYCODE_BACK) {//返回自动关闭pop
@@ -198,6 +221,7 @@ fun Activity.showGrallery(position:Int,imgs:List<Bitmap>): PopupWindow {
 /**
  * 显示一个可以左右滑动的画廊
  */
+@SuppressLint("ClickableViewAccessibility")
 fun Activity.showGrallery(imgs:List<String>): PopupWindow {
     val views=ArrayList<View>()
     for (img in imgs){
@@ -233,10 +257,30 @@ fun Activity.showGrallery(imgs:List<String>): PopupWindow {
             LinearLayout.LayoutParams.MATCH_PARENT)
     // 点击popuwindow外让其消失
     mPopupWindow.setOutsideTouchable(true)
-    mPopView.setOnClickListener{
-        if (mPopupWindow.isShowing()) {
-            mPopupWindow.dismiss();
+    val configuration = ViewConfiguration.get(this)
+    val mTouchSlop = ViewConfigurationCompat.getScaledPagingTouchSlop(configuration)
+    viewPager.setOnTouchListener { view, motionEvent ->
+        var touchFlag = 0
+        var x = 0f
+        var y = 0f
+        when (motionEvent.action) {
+            MotionEvent.ACTION_DOWN -> {
+                touchFlag = 0
+                x = motionEvent.x
+                y = motionEvent.y
+            }
+            MotionEvent.ACTION_MOVE -> {
+                val xDiff = Math.abs(motionEvent.x - x)
+                val yDiff = Math.abs(motionEvent.y - y)
+                touchFlag = if (xDiff < mTouchSlop && xDiff >= yDiff) 0 else -1
+            }
+            MotionEvent.ACTION_UP -> if (touchFlag == 0) {
+                if (mPopupWindow.isShowing()) {
+                    mPopupWindow.dismiss()
+                }
+            }
         }
+        return@setOnTouchListener false
     }
     mPopView.setOnKeyListener { view, i, keyEvent ->
         if (i == KeyEvent.KEYCODE_BACK) {//返回自动关闭pop
