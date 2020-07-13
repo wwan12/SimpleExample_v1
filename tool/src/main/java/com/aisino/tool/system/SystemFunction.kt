@@ -9,6 +9,7 @@ import android.content.Intent
 import android.net.Uri
 import android.util.Log
 import android.view.WindowManager
+import android.view.inputmethod.InputMethodManager
 import com.aisino.tool.model.webview.HtmlActivity
 import java.io.File
 
@@ -54,10 +55,21 @@ fun Activity.installApk(file: File) {
 }
 
 /**
+ * 隐藏输入法
+ */
+@Deprecated("页面启动无效")
+fun Activity.hideInput() {
+    this.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
+}
+
+/**
  * 关闭输入法
  */
 fun Activity.closeInput() {
-    this.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
+    val imm = (this
+            .getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
+    imm!!.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS)
+
 }
 
 /**
