@@ -46,3 +46,7 @@ fun View.setOnNotFastClick(click:(view: View)->Unit){
 
     }
 }
+
+fun View.setOnChangeView(views:List<View>  ): Unit {
+
+}

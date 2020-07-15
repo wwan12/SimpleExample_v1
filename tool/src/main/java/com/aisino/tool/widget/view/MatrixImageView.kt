@@ -1,6 +1,5 @@
-package com.aisino.tool.widget
+package com.aisino.tool.widget.view
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Matrix
 import android.graphics.PointF
@@ -9,9 +8,7 @@ import android.util.AttributeSet
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
-import android.widget.ImageView
 import androidx.appcompat.widget.AppCompatImageView
-import com.aisino.tool.loge
 
 
 //可手势缩放其中图片的imageview

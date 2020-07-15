@@ -29,7 +29,7 @@ fun String.loge(tag:String="tag"): Unit {
 fun String.toast(context: Context): Unit {
     Toast.makeText(context, this, Toast.LENGTH_SHORT).show()
 }
-fun String.Dialog(context: Context): Unit {
+fun String.dialog(context: Context): Unit {
     val load = AlertDialog.Builder(context)
             .setMessage(this)
             .setPositiveButton("确认") { dialog, id -> }
