@@ -11,6 +11,7 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.io.InputStream
+import java.lang.Exception
 import java.net.HttpURLConnection
 import java.net.URL
 
@@ -18,7 +19,7 @@ import java.net.URL
 class DownloadService : IntentService("DownloadService") {
 
     override fun onHandleIntent(intent: Intent) {
-
+        try {
         val notificationHelper = NotificationHelper(this)
         val urlStr = intent.getStringExtra(DOWNLOADURL)
         var ins: InputStream? = null
@@ -55,18 +56,18 @@ class DownloadService : IntentService("DownloadService") {
             // 如果进度与之前进度相等，则不更新，如果更新太频繁，否则会造成界面卡顿
             if (progress != oldProgress) {
                 notificationHelper.updateProgress(progress)
+                upCall(progress)
             }
             oldProgress = progress
             byteread = ins.read(buffer)
         }
         // 下载完成
-        installAPK(this, apkFile)
         notificationHelper.cancel()
-        try {
+        installAPK(this, apkFile)
             out.close()
             ins?.close()
-        } catch (ignored: IOException) {
-            ignored.printStackTrace()
+        }catch (e:Exception){
+            exceptionCall()
         }
     }
 
@@ -74,7 +75,7 @@ class DownloadService : IntentService("DownloadService") {
         val intent = Intent(Intent.ACTION_VIEW)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
-            val uri = FileProvider.getUriForFile(context,  this.applicationInfo.packageName+".fileProvider", apkFile)
+            val uri = FileProvider.getUriForFile(context,  context.packageName+".fileProvider", apkFile)
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
             intent.setDataAndType(uri, "application/vnd.android.package-archive")
         } else {
@@ -91,8 +92,10 @@ class DownloadService : IntentService("DownloadService") {
     }
 
     companion object {
-        private val BUFFER_SIZE = 10 * 1024 // 8k ~ 32K
+        private val BUFFER_SIZE = 24 * 1024 // 8k ~ 32K
         val DOWNLOADURL = "DOWNLOADURL"
+        var upCall:(i:Int)->Unit={}
+        var exceptionCall:()->Unit={}
     }
 
 

@@ -119,15 +119,21 @@ class Picker : View {
     }
 
     private fun moveHeadToTail() {
-        val datasBean: GetConfigReq = mDataList!![0]
-        mDataList!!.removeAt(0)
-        mDataList!!.add(datasBean)
+        if(mDataList!!.size>0){
+            val datasBean: GetConfigReq = mDataList!![0]
+            mDataList!!.removeAt(0)
+            mDataList!!.add(datasBean)
+        }
+
     }
 
     private fun moveTailToHead() {
-        val datasBean: GetConfigReq = mDataList!![mDataList!!.size - 1]
-        mDataList!!.removeAt(mDataList!!.size - 1)
-        mDataList!!.add(0, datasBean)
+        if(mDataList!!.size>0){
+            val datasBean: GetConfigReq = mDataList!![mDataList!!.size - 1]
+            mDataList!!.removeAt(mDataList!!.size - 1)
+            mDataList!!.add(0, datasBean)
+        }
+
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
