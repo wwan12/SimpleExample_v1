@@ -3,6 +3,7 @@ package com.aisino.tool.http
 import android.os.Handler
 import android.os.Looper
 import android.util.JsonToken
+import android.util.Log
 import okhttp3.*
 import android.util.Xml
 import com.aisino.tool.log
@@ -162,6 +163,8 @@ class Submit {
             Method.SOCKET ->  socketOpen()
 
             Method.SOCKETSEND -> socket()
+
+            Method.POST_JSON-> postJson()
         }
 
     }
@@ -237,6 +240,29 @@ class Submit {
 
             override fun onResponse(call: Call, response: Response) {
                 successCall(response)
+            }
+        })
+    }
+
+    fun postJson() {
+        val okHttpClient = OkHttpClient.Builder()
+        okHttpClient.connectTimeout(5, TimeUnit.SECONDS)
+        //     "".toRequestBody("application/json".toMediaTypeOrNull())
+        val json:String=_params.get("json") as String
+        val build = RequestBody.create("application/json".toMediaTypeOrNull(), json!!)
+        Log.e("up", json)
+        val request = Request.Builder().url(url).post(build).build()
+        val call = okHttpClient.build().newCall(request)
+        call.enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                failCall(e.toString())
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                val json = response.body!!.string()
+                Log.e("call", json)
+                successCall(response)
+
             }
         })
     }

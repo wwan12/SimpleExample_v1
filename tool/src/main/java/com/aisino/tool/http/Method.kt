@@ -10,7 +10,8 @@ enum class Method {
     FILE,
     DOWNLOAD,
     SOCKET,
-    SOCKETSEND
+    SOCKETSEND,
+    POST_JSON,
 }
 
 enum class ReturnType{
