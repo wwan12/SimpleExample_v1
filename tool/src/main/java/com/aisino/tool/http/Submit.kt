@@ -429,6 +429,7 @@ class Submit {
             if (response.code != 200) {
                 response.request.url.toString().log("failCall"+"code:"+response.code)
                 failCall("请求失败:" + response.code)
+                response.close()
              //   _fail(FailData(url,"请求失败:" + response.code).apply { this.submitTime=DateAndTime.nowDateTime })
                 return@post
             }
@@ -439,14 +440,17 @@ class Submit {
                 var jsonString = response.body?.string()
                 jsonString?.log("successCall")
                 pullJson(jsonString!!)
+                response.close()
             }
             ReturnType.XML -> {
 //                    val s = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<ROOT><RESULT><CODE>9999</CODE><POS><PO>1111</PO><PO>2222</PO></POS><CONTENT>java.lang.NullPointerException\ncom.aisino.heb.xlg.web.servlet.XlgServlet.doPost(XlgServlet.java:135)</CONTENT></RESULT></ROOT>".byteInputStream()
                 pullXML(response.body!!.byteStream())
+                response.close()
 //                    pullXML(s)
             }
             ReturnType.STRING -> {
                 _response.put(ReturnType.STRING.name, response.body!!.string())
+                response.close()
             }
         }
         toUI.post {

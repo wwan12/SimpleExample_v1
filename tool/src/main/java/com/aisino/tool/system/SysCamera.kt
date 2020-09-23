@@ -1,5 +1,6 @@
 package com.aisino.tool.system
 
+import android.Manifest
 import android.app.Activity
 import android.content.ContentUris
 import android.content.Context
@@ -69,38 +70,38 @@ fun Activity.openCameraAndGalleryWindow() {
             this.windowManager.defaultDisplay.width-128,
             LinearLayout.LayoutParams.WRAP_CONTENT)
     // 点击popuwindow外让其消失
-    mPopupWindow.setOutsideTouchable(true)
+    mPopupWindow.isOutsideTouchable = true
     var openCamera = mPopView.findViewById<Button>(R.id.btn_take_photo)
     var openGallery = mPopView.findViewById<Button>(R.id.btn_pick_photo)
     var cancel = mPopView.findViewById<Button>(R.id.btn_cancel)
     openCamera.setOnClickListener{
         cameraUri= this.openCamera()
-        if (mPopupWindow.isShowing()) {
+        if (mPopupWindow.isShowing) {
             mPopupWindow.dismiss();
         }
     }
     openGallery.setOnClickListener{
         this.openGallery()
-        if (mPopupWindow.isShowing()) {
+        if (mPopupWindow.isShowing) {
             mPopupWindow.dismiss();
         }
     }
     cancel.setOnClickListener{
-        if (mPopupWindow.isShowing()) {
+        if (mPopupWindow.isShowing) {
             mPopupWindow.dismiss();
         }
     }
     mPopupWindow.setOnDismissListener {
         val params = this.getWindow().getAttributes()
         params.alpha = 1f
-        this.getWindow().setAttributes(params)
+        this.window.attributes = params
     }
-    if (mPopupWindow.isShowing()) {
+    if (mPopupWindow.isShowing) {
         mPopupWindow.dismiss();
     } else {
         val params = this.getWindow().getAttributes()
         params.alpha = 0.7f
-        this.getWindow().setAttributes(params)
+        this.window.attributes = params
         // 设置PopupWindow 显示的形式 底部或者下拉等
         // 在某个位置显示
         mPopupWindow.showAtLocation(mPopView, Gravity.BOTTOM, 0, 0);
@@ -110,37 +111,42 @@ fun Activity.openCameraAndGalleryWindow() {
 }
 
 fun Activity.openGallery() {
-    val intent = Intent()
-    intent.type = "image/*"
-    intent.action = Intent.ACTION_GET_CONTENT
-    this.startActivityForResult(intent, GALLERY_REQUEST)
+    this.signPermission(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)) {
+        val intent = Intent()
+        intent.type = "image/*"
+        intent.action = Intent.ACTION_GET_CONTENT
+        this.startActivityForResult(intent, GALLERY_REQUEST)
+    }
 }
 
-fun Activity.openCamera() :Uri{
-    val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-    val c = Calendar.getInstance()
-    val year = c.get(Calendar.YEAR)
-    val month = c.get(Calendar.MONTH) + 1
-    val day = c.get(Calendar.DAY_OF_MONTH)
-    val imgName = year.toString() + "_" + month + "_" + day + "(" + System.currentTimeMillis() + ").jpg"
-    val f = File(this.filesDir.path, imgName)
-    val contentUri: Uri
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N||Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP_MR1) {
-        if (appId.equals("")){
-            appId=this.getAppId()
+fun Activity.openCamera() :Uri?{
+    var contentUri: Uri? = null
+    this.signPermission(arrayOf(Manifest.permission.CAMERA)) {
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        val c = Calendar.getInstance()
+        val year = c.get(Calendar.YEAR)
+        val month = c.get(Calendar.MONTH) + 1
+        val day = c.get(Calendar.DAY_OF_MONTH)
+        val imgName = year.toString() + "_" + month + "_" + day + "(" + System.currentTimeMillis() + ").jpg"
+        val f = File(this.filesDir.path, imgName)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N||Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP_MR1) {
+            if (appId.equals("")){
+                appId=this.getAppId()
+            }
+            contentUri = FileProvider.getUriForFile(this, "${appId}.fileProvider", f)
+        } else {
+            contentUri = Uri.fromFile(f)
         }
-        contentUri = FileProvider.getUriForFile(this, "${appId}.fileProvider", f)
-    } else {
-        contentUri = Uri.fromFile(f)
-    }
-    if ( getDeviceBrand().toUpperCase().contains("VIVO")||getDeviceBrand().toUpperCase().contains("OPPO")){
-        intent.putExtra(MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA, contentUri)
-    }else{
+        if ( getDeviceBrand().toUpperCase().contains("VIVO")||getDeviceBrand().toUpperCase().contains("OPPO")){
+            intent.putExtra(MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA, contentUri)
+        }else{
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, contentUri)
+        }
         intent.putExtra(MediaStore.EXTRA_OUTPUT, contentUri)
+        intent.putExtra("return-data", false)
+        this.startActivityForResult(intent, CAMERA_REQUEST)
     }
-    intent.putExtra(MediaStore.EXTRA_OUTPUT, contentUri)
-    intent.putExtra("return-data", false)
-    this.startActivityForResult(intent, CAMERA_REQUEST)
+
     return  contentUri
 }
 

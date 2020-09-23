@@ -1,0 +1,69 @@
+{
+  "variant": {
+    "module": {
+      "rootBuildGradleFolder": "F:\\AndroidStudioProjects\\SimpleExample_v2",
+      "sdkFolder": "F:\\Android SDK",
+      "isNativeCompilerSettingsCacheEnabled": false,
+      "isBuildOnlyTargetAbiEnabled": true,
+      "splitsAbiFilterSet": [],
+      "intermediatesFolder": "F:\\AndroidStudioProjects\\SimpleExample_v2\\tool\\build\\intermediates",
+      "gradleModulePathName": ":tool",
+      "moduleRootFolder": "F:\\AndroidStudioProjects\\SimpleExample_v2\\tool",
+      "makeFile": "F:\\AndroidStudioProjects\\SimpleExample_v2\\tool\\CMakeLists.txt",
+      "buildSystem": "CMAKE",
+      "compilerSettingsCacheFolder": "F:\\AndroidStudioProjects\\SimpleExample_v2\\.cxx",
+      "cxxFolder": "F:\\AndroidStudioProjects\\SimpleExample_v2\\tool\\.cxx",
+      "ndkFolder": "F:\\Android SDK\\ndk\\21.2.6472646",
+      "ndkVersion": "21.2.6472646",
+      "ndkSupportedAbiList": [
+        "ARMEABI_V7A",
+        "ARM64_V8A",
+        "X86",
+        "X86_64"
+      ],
+      "ndkDefaultAbiList": [
+        "ARMEABI_V7A",
+        "ARM64_V8A",
+        "X86",
+        "X86_64"
+      ],
+      "cmakeToolchainFile": "."
+    },
+    "buildSystemArgumentList": [],
+    "cFlagList": [],
+    "cppFlagsList": [
+      "-std\u003dc++11"
+    ],
+    "variantName": "release",
+    "soFolder": "F:\\AndroidStudioProjects\\SimpleExample_v2\\tool\\build\\intermediates\\cmake\\release\\lib",
+    "objFolder": "F:\\AndroidStudioProjects\\SimpleExample_v2\\tool\\build\\intermediates\\cmake\\release\\obj",
+    "jsonFolder": "F:\\AndroidStudioProjects\\SimpleExample_v2\\tool\\.cxx\\cmake\\release",
+    "gradleBuildOutputFolder": "F:\\AndroidStudioProjects\\SimpleExample_v2\\tool\\.cxx\\cxx\\release",
+    "isDebuggableEnabled": false,
+    "validAbiList": [
+      "ARMEABI_V7A"
+    ],
+    "buildTargetSet": []
+  },
+  "abi": "ARMEABI_V7A",
+  "abiPlatformVersion": 21,
+  "cxxBuildFolder": "F:\\AndroidStudioProjects\\SimpleExample_v2\\tool\\.cxx\\cmake\\release\\armeabi-v7a",
+  "jsonFile": "F:\\AndroidStudioProjects\\SimpleExample_v2\\tool\\.cxx\\cmake\\release\\armeabi-v7a\\android_gradle_build.json",
+  "gradleBuildOutputFolder": "F:\\AndroidStudioProjects\\SimpleExample_v2\\tool\\.cxx\\cxx\\release\\armeabi-v7a",
+  "objFolder": "F:\\AndroidStudioProjects\\SimpleExample_v2\\tool\\build\\intermediates\\cmake\\release\\obj\\armeabi-v7a",
+  "buildCommandFile": "F:\\AndroidStudioProjects\\SimpleExample_v2\\tool\\.cxx\\cmake\\release\\armeabi-v7a\\build_command.txt",
+  "buildOutputFile": "F:\\AndroidStudioProjects\\SimpleExample_v2\\tool\\.cxx\\cmake\\release\\armeabi-v7a\\build_output.txt",
+  "modelOutputFile": "F:\\AndroidStudioProjects\\SimpleExample_v2\\tool\\.cxx\\cmake\\release\\armeabi-v7a\\build_model.json",
+  "cmake": {
+    "cmakeListsWrapperFile": "F:\\AndroidStudioProjects\\SimpleExample_v2\\tool\\.cxx\\cxx\\release\\armeabi-v7a\\CMakeLists.txt",
+    "toolchainWrapperFile": "F:\\AndroidStudioProjects\\SimpleExample_v2\\tool\\.cxx\\cxx\\release\\armeabi-v7a\\android_gradle_build.toolchain.cmake",
+    "buildGenerationStateFile": "F:\\AndroidStudioProjects\\SimpleExample_v2\\tool\\.cxx\\cxx\\release\\armeabi-v7a\\build_generation_state.json",
+    "cacheKeyFile": "F:\\AndroidStudioProjects\\SimpleExample_v2\\tool\\.cxx\\cxx\\release\\armeabi-v7a\\compiler_cache_key.json",
+    "compilerCacheUseFile": "F:\\AndroidStudioProjects\\SimpleExample_v2\\tool\\.cxx\\cxx\\release\\armeabi-v7a\\compiler_cache_use.json",
+    "compilerCacheWriteFile": "F:\\AndroidStudioProjects\\SimpleExample_v2\\tool\\.cxx\\cxx\\release\\armeabi-v7a\\compiler_cache_write.json",
+    "toolchainSettingsFromCacheFile": "F:\\AndroidStudioProjects\\SimpleExample_v2\\tool\\.cxx\\cxx\\release\\armeabi-v7a\\compiler_settings_cache.cmake",
+    "cmakeWrappingBaseFolder": "."
+  },
+  "jsonGenerationLoggingRecordFile": "F:\\AndroidStudioProjects\\SimpleExample_v2\\tool\\.cxx\\cmake\\release\\armeabi-v7a\\json_generation_record.json",
+  "compileCommandsJsonFile": "F:\\AndroidStudioProjects\\SimpleExample_v2\\tool\\.cxx\\cmake\\release\\armeabi-v7a\\compile_commands.json"
+}

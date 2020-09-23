@@ -64,11 +64,11 @@ fun Int.numberToChinese(): String {
         }
         chinese_section = sectionTrans(section)
         if (section != 0) {//判断是都加节权位
-            chinese_section = chinese_section + weight_units[weigth]
+            chinese_section += weight_units[weigth]
         }
         chinese = chinese_section + chinese
-        setZero = section < 1000 && section > 0
-        num = num / 10000
+        setZero = section in 1..999
+        num /= 10000
         weigth++
     }
     if ((chinese.length == 2 || chinese.length == 3) && chinese.contains("一十")) {
@@ -99,7 +99,7 @@ private fun sectionTrans(section: Int): String {
             section_chinese.insert(0, nums[v])
         }
         pos++
-        section = section / 10
+        section /= 10
     }
 
     return section_chinese.toString()
@@ -109,14 +109,12 @@ private fun sectionTrans(section: Int): String {
  * 汉字转数字
  */
 fun String.getNumFromString(): Int {
-    var index=0
-    if (isContainsNumber(this)) {
-        index = getStringNum(this).toInt()
-    }else{
-        index = getCharNum(this)
-    }
 
-    return index
+    return if (isContainsNumber(this)) {
+        getStringNum(this).toInt()
+    }else{
+        getCharNum(this)
+    }
 }
 ///最大9999
 private fun getCharNum(number: String): Int {
@@ -146,7 +144,7 @@ private fun isContainsNumber(time: String): Boolean {
     val p = Pattern.compile(regEx)
     val m = p.matcher(time)
     val trim = m.replaceAll("").trim()
-    return trim.length>0
+    return trim.isNotEmpty()
 }
 
 private fun getStringNum(time: String): String {

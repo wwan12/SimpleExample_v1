@@ -1,4 +1,4 @@
-package com.aisino.tool.widget.view
+package com.aisino.tool.widget
 
 import android.app.Activity
 import android.view.View

@@ -1,4 +1,4 @@
-package com.aisino.tool.widget
+package com.aisino.tool.widget.view
 
 
 import android.content.Context;
@@ -12,7 +12,6 @@ import android.os.SystemClock;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
-import android.widget.ImageView;
 import com.aisino.tool.R
 
 import java.io.InputStream;
