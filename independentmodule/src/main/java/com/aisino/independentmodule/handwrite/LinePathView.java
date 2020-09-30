@@ -23,7 +23,6 @@ import java.io.OutputStream;
 /**
  * 绘制Path的View 用于签名
  *
- * @author wastrel
  */
 public class LinePathView extends View {
 
@@ -195,6 +194,7 @@ public class LinePathView extends View {
         save(path, false, 0);
     }
 
+
     /**
      * 保存画板
      *
@@ -223,18 +223,29 @@ public class LinePathView extends View {
         }
     }
 
+
+    /**
+     * 设置画板的bitmap
+     * @return
+     */
+    public void setBitMap(Bitmap bitmap)
+    {
+        cacheCanvas.drawBitmap(bitmap,0f,0f,mGesturePaint);
+        isTouched=true;
+    }
+
     /**
      * 获取画板的bitmap
      * @return
      */
     public Bitmap getBitMap()
     {
-        setDrawingCacheEnabled(true);
-        buildDrawingCache();
-        Bitmap bitmap=getDrawingCache();
+//        setDrawingCacheEnabled(true);
+//        buildDrawingCache();
+//        Bitmap bitmap=getDrawingCache();
         //清除缓存
 //        setDrawingCacheEnabled(false);
-        return bitmap;
+        return cachebBitmap.copy(Config.ARGB_8888, false);
     }
 
 

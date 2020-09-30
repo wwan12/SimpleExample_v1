@@ -50,6 +50,61 @@ import kotlin.concurrent.thread
  */
 
 /**
+ * 以第一个图为准
+ * 优化算法  1.图片不需要铺满，只需要以统一合适的宽度。然后让imageview自己去铺满，不然长图合成长图会崩溃，这里以第一张图为例
+ * 2.只缩放不相等宽度的图片。已经缩放过的不需要再次缩放
+ * @param bit1
+ * @param bit2
+ * @return
+ */
+fun assembleBitmap(bit1: Bitmap, bit2: Bitmap,model:Int): Bitmap? {
+    var newBit: Bitmap? = null
+    if (model==0){
+        val width = bit1.width
+        if (bit2.width != width) {
+            val h2 = bit2.height * width / bit2.width
+            newBit = Bitmap.createBitmap(width, bit1.height + h2, Bitmap.Config.ARGB_8888)
+            val canvas = Canvas(newBit)
+            val newSizeBitmap2: Bitmap = getAssembleSizeBitmap(bit2, width, h2)
+            canvas.drawBitmap(bit1, 0f, 0f, null)
+            canvas.drawBitmap(newSizeBitmap2, 0f, bit1.height.toFloat(), null)
+        } else {
+            newBit = Bitmap.createBitmap(width, bit1.height + bit2.height, Bitmap.Config.ARGB_8888)
+            val canvas = Canvas(newBit)
+            canvas.drawBitmap(bit1, 0f, 0f, null)
+            canvas.drawBitmap(bit2, 0f, bit1.height.toFloat(), null)
+        }
+    }else{
+        val height = bit1.height
+        if (bit2.height != height) {
+            val h2 = bit2.width * height / bit2.height
+            newBit = Bitmap.createBitmap(bit2.width, bit1.height + h2, Bitmap.Config.ARGB_8888)
+            val canvas = Canvas(newBit)
+            val newSizeBitmap2: Bitmap = getAssembleSizeBitmap(bit2, bit2.width, bit1.height + h2)
+            canvas.drawBitmap(bit1, 0f, 0f, null)
+            canvas.drawBitmap(newSizeBitmap2,  bit1.width.toFloat(), 0f, null)
+        } else {
+            newBit = Bitmap.createBitmap(bit1.width+bit2.width, bit1.height, Bitmap.Config.ARGB_8888)
+            val canvas = Canvas(newBit)
+            canvas.drawBitmap(bit1, 0f, 0f, null)
+            canvas.drawBitmap(bit2, bit1.width.toFloat(),0f , null)
+        }
+    }
+    return newBit
+}
+
+private fun getAssembleSizeBitmap(bitmap: Bitmap, newWidth: Int, newHeight: Int): Bitmap{
+    val scaleWidth = newWidth.toFloat() / bitmap.width
+    val scaleHeight = newHeight.toFloat() / bitmap.height
+    // 取得想要缩放的matrix参数
+    val matrix = Matrix()
+    matrix.postScale(scaleWidth, scaleHeight)
+    // 得到新的图片
+    return Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
+}
+
+
+/**
  * 把batmap 转file
  * @param bitmap
  * @param filepath
