@@ -12,6 +12,7 @@ import android.os.SystemClock;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
+import android.widget.ImageView;
 import com.aisino.tool.R
 
 import java.io.InputStream;
@@ -49,7 +50,7 @@ class GifView : androidx.appcompat.widget.AppCompatImageView{
      */
     private var mMovieStart: Long = 0
 
-    constructor(context: Context?) : super(context) {}
+    constructor(context: Context?) : super(context!!) {}
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0) {}
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
         context,
@@ -79,9 +80,10 @@ class GifView : androidx.appcompat.widget.AppCompatImageView{
                 /**
                  * 获取gif图片大小
                  */
-                val bitmap: Bitmap = BitmapFactory.decodeStream(`is`)
-                bitmapSize = BitmapSize(bitmap.width, bitmap.height)
-                bitmap.recycle()
+            //    val bitmap: Bitmap = BitmapFactory.decodeStream(`is`)
+
+                bitmapSize = BitmapSize(mMovie!!.width(), mMovie!!.height())
+          //      bitmap.recycle()
                 if (!isAutoPlay) {
                     // 当不允许自动播放的时候，得到开始播放按钮的图片，并注册点击事件
                    // mStartBotton = BitmapFactory.decodeResource(getResources(), R.drawable.g1)
