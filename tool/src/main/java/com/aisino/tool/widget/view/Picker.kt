@@ -10,21 +10,7 @@ import android.view.MotionEvent
 import android.view.View
 import java.util.*
 import kotlin.collections.ArrayList
-//val datasBeanList=ArrayList<PickerScrollView.GetConfigReq>()
-//// 设置数据，默认选择第一条
-//for (data in datasList){
-//    datasBeanList.add(PickerScrollView.GetConfigReq("",data))
-//}
-//log.picker_list.setData(datasBeanList)
-//log.picker_list.setSelected(0)
-//
-////滚动监听
-//log.picker_list.setOnSelectListener(object : onSelectListener {
-//    override fun onSelect(pickers: PickerScrollView.GetConfigReq) {
-//        selectText=pickers.msg
-//    }
-//
-//})
+
 class Picker : View {
     private var mDataList: MutableList<GetConfigReq>? = null
 
@@ -50,6 +36,8 @@ class Picker : View {
     private var mSelectListener: onSelectListener? = null
     private var timer: Timer? = null
     private var mTask: MyTimerTask? = null
+    var hasLine=true
+
     var updateHandler: Handler = object : Handler() {
         override fun handleMessage(msg: Message?) {
             if (Math.abs(mMoveLen) < SPEED) {
@@ -76,6 +64,9 @@ class Picker : View {
 
     fun setOnSelectListener(listener: onSelectListener?) {
         mSelectListener = listener
+        if (mDataList!!.size>0){
+            mSelectListener?.defSelect(mDataList!![mCurrentSelected])
+        }
     }
 
     private fun performSelect() {
@@ -86,6 +77,7 @@ class Picker : View {
         mDataList = datas
         mCurrentSelected = datas.size / 2
         invalidate()
+
     }
 
     /**
@@ -119,12 +111,9 @@ class Picker : View {
     }
 
     private fun moveHeadToTail() {
-        if(mDataList!!.size>0){
-            val datasBean: GetConfigReq = mDataList!![0]
-            mDataList!!.removeAt(0)
-            mDataList!!.add(datasBean)
-        }
-
+        val datasBean: GetConfigReq = mDataList!![0]
+        mDataList!!.removeAt(0)
+        mDataList!!.add(datasBean)
     }
 
     private fun moveTailToHead() {
@@ -133,7 +122,6 @@ class Picker : View {
             mDataList!!.removeAt(mDataList!!.size - 1)
             mDataList!!.add(0, datasBean)
         }
-
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
@@ -154,12 +142,13 @@ class Picker : View {
         mPaint?.setStyle(Paint.Style.FILL)
         mPaint?.setTextAlign(Paint.Align.CENTER)
         mPaint?.setColor(mColorText)
+
     }
 
    override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         // 根据index绘制view
-        if (isInit) drawData(canvas)
+        if (isInit&&mDataList!!.size>0) drawData(canvas)
     }
 
     private fun drawData(canvas: Canvas) {
@@ -206,13 +195,15 @@ class Picker : View {
         val size = (mMaxTextSize - mMinTextSize) * scale + mMinTextSize
         mPaint?.setTextSize(size)
         mPaint?.setAlpha(((mMaxTextAlpha - mMinTextAlpha) * scale + mMinTextAlpha).toInt())
-        mPaint?.color=666666
         val y = (mViewHeight / 2.0 + type * d).toFloat()
         val fmi: Paint.FontMetricsInt = mPaint!!.getFontMetricsInt()
         val baseline = (y - (fmi.bottom / 2.0f + fmi.top / 2.0f))
         val indexs = mCurrentSelected + type * position
         val textData: String = mDataList!![indexs].msg
         canvas.drawText(textData, (mViewWidth / 2.0).toFloat(), baseline, mPaint!!)
+//        if (hasLine){
+//            canvas.drawLine(mViewWidth .toFloat(),baseline-10,(mViewWidth / 2.0+100).toFloat(),baseline-10,mPaint!!)
+//        }
     }
 
     /**
@@ -286,6 +277,7 @@ class Picker : View {
 
     interface onSelectListener {
         fun onSelect(pickers: GetConfigReq)
+        fun defSelect(pickers: GetConfigReq)
     }
 
     companion object {

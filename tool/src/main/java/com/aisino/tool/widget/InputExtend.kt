@@ -1,8 +1,8 @@
 package com.aisino.tool.widget
 
-import android.text.Editable
-import android.text.TextWatcher
+import android.text.*
 import android.widget.EditText
+import java.text.DecimalFormat
 import java.util.regex.Pattern
 
 /**
@@ -43,7 +43,50 @@ fun EditText.accounting(): Unit {
     })
 }
 
+/**
+ * 设置小数点后位数
+ */
+fun EditText.decimal(POINT_LENGTH:Int): Unit {
+    this.inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL
+    this.filters = arrayOf(object : InputFilter {
+        override fun filter(
+                source: CharSequence,
+                start: Int,
+                end: Int,
+                dest: Spanned,
+                dstart: Int,
+                dend: Int
+        ): CharSequence {
+            val start = dest.subSequence(0, dstart)
+            val end = dest.subSequence(dend, dest.length)
+            val target = start.toString() + source + end//字符串变化后的结果
+            val backup = dest.subSequence(dstart, dend)//将要被替换的字符串
 
+            if (target.indexOf(".") == 0) {//不允许第一个字符为.
+                return backup
+            }
+
+            if (target.startsWith("0") && !target.startsWith("0.") && "0" != target) {//不允许出现0123、0456这类字符串
+                return backup
+            }
+
+            //限制小数点后面只能有两位小数
+            val index = target.indexOf(".")
+            if (index >= 0 && index + POINT_LENGTH + 2 <= target.length) {
+                return backup
+            }
+
+            return source
+
+        }
+
+    })
+}
+
+fun Double.doubleToString(): String? {
+    //使用0.00不足位补0，#.##仅保留有效位
+    return DecimalFormat("0.00").format(this)
+}
 
 /**
  * 数字转汉字

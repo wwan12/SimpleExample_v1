@@ -12,6 +12,7 @@ import android.graphics.PorterDuff;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -155,8 +156,8 @@ public class LinePathView extends View {
         final float dx = Math.abs(x - previousX);
         final float dy = Math.abs(y - previousY);
 
-        // 两点之间的距离大于等于3时，生成贝塞尔绘制曲线
-        if (dx >= 3 || dy >= 3) {
+        // 两点之间的距离大于等于1时，生成贝塞尔绘制曲线
+        if (dx >= 1 || dy >= 1) {
             // 设置贝塞尔曲线的操作点为起点和终点的一半
             float cX = (x + previousX) / 2;
             float cY = (y + previousY) / 2;
@@ -230,12 +231,18 @@ public class LinePathView extends View {
      */
     public void setBitMap(Bitmap bitmap)
     {
+//        if (cacheCanvas == null) {
+//            cachebBitmap = Bitmap.createBitmap(getWidth(), getHeight(), Config.ARGB_8888);
+//            cacheCanvas = new Canvas(cachebBitmap);
+//            cacheCanvas.drawColor(mBackColor);
+//        }
         cacheCanvas.drawBitmap(bitmap,0f,0f,mGesturePaint);
         isTouched=true;
+
     }
 
     /**
-     * 获取画板的bitmap
+     * 获取画板的bitmap 背景透明的
      * @return
      */
     public Bitmap getBitMap()
@@ -245,9 +252,27 @@ public class LinePathView extends View {
 //        Bitmap bitmap=getDrawingCache();
         //清除缓存
 //        setDrawingCacheEnabled(false);
-        return cachebBitmap.copy(Config.ARGB_8888, false);
+
+        return cachebBitmap.copy(Config.ARGB_4444, false);
     }
 
+
+    /**
+     * 获取画板的bitmap 白底的
+     * @return
+     */
+    public Bitmap getBitMapWhite()
+    {
+        Bitmap b= cachebBitmap.copy(Config.ARGB_4444, false);
+        Paint paint =new Paint();
+        paint.setColor(Color.WHITE);
+        Config config = b.getConfig();
+        Bitmap bitmap = Bitmap.createBitmap(b.getWidth(), b.getHeight(), config);
+        Canvas canvas =new Canvas(bitmap);
+        canvas.drawRect(0f, 0f, b.getWidth(), b.getHeight(), paint);
+        canvas.drawBitmap(b, 0f, 0f, paint);
+        return bitmap;
+    }
 
 
 
@@ -358,6 +383,19 @@ public class LinePathView extends View {
     public void setPenColor(int mPenColor) {
         this.mPenColor = mPenColor;
         mGesturePaint.setColor(mPenColor);
+    }
+
+
+    /**
+     * 重设 view 的宽高
+     */
+    public void setViewSize( int nWidth, int nHeight) {
+        ViewGroup.LayoutParams lp = this.getLayoutParams();
+        if (lp.height != nHeight || lp.width != nWidth) {
+            lp.width = nWidth;
+            lp.height = nHeight;
+            this.setLayoutParams(lp);
+        }
     }
 
     /**
