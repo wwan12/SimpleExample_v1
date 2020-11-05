@@ -162,33 +162,52 @@ fun Bitmap.bitmap2Drable(): Drawable {
     return BitmapDrawable(this)
 }
 
-
-/**
- * 把图片转换成字节数组
+/**把byte字节流转成bitmap
+ * @param bytes
  * @return
  */
-fun Bitmap.bitmap2Byte(): ByteArray? {
-    val outBitmap = Bitmap.createScaledBitmap(this, 150, this.height * 150 / this.width, true)
-    if (this != outBitmap) {
-        this.recycle()
-    }
-    var compressData: ByteArray? = null
-    val baos = ByteArrayOutputStream()
-    try {
-        try {
-            outBitmap.compress(Bitmap.CompressFormat.PNG, 100, baos)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-
-        compressData = baos.toByteArray()
-        baos.close()
-    } catch (e: IOException) {
-        e.printStackTrace()
-    }
-
-    return compressData
+fun ByteArray.byteToBitmap(): Bitmap? {
+    val opts = BitmapFactory.Options()
+    opts.inJustDecodeBounds = false //为true时，返回的bitmap为null
+    return BitmapFactory.decodeByteArray(this, 0, this.size, opts)
 }
+
+/**把bitmap转成byte字节流
+ * @param bm
+ * @return
+ */
+fun  Bitmap.bitmapToByte(): ByteArray? {
+    val baos = ByteArrayOutputStream()
+    this.compress(Bitmap.CompressFormat.PNG, 100, baos)
+    return baos.toByteArray()
+}
+
+///**
+// * 把图片转换成字节数组
+// * @return
+// */
+//fun Bitmap.bitmap2Byte(): ByteArray? {
+//    val outBitmap = Bitmap.createScaledBitmap(this, 150, this.height * 150 / this.width, true)
+//    if (this != outBitmap) {
+//        this.recycle()
+//    }
+//    var compressData: ByteArray? = null
+//    val baos = ByteArrayOutputStream()
+//    try {
+//        try {
+//            outBitmap.compress(Bitmap.CompressFormat.PNG, 100, baos)
+//        } catch (e: Exception) {
+//            e.printStackTrace()
+//        }
+//
+//        compressData = baos.toByteArray()
+//        baos.close()
+//    } catch (e: IOException) {
+//        e.printStackTrace()
+//    }
+//
+//    return compressData
+//}
 
 /**
  * 缩放图片

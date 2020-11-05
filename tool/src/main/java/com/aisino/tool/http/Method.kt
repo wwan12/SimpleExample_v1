@@ -19,6 +19,7 @@ enum class ReturnType{
     XML,
     STRING,
     FILE,
+    BYTE_ARRAY,
     IMAGE
 }
 

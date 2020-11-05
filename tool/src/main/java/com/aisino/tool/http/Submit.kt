@@ -4,26 +4,22 @@ import android.os.Handler
 import android.os.Looper
 import android.util.JsonToken
 import android.util.Log
-import okhttp3.*
 import android.util.Xml
 import com.aisino.tool.log
 import com.aisino.tool.loge
 import com.aisino.tool.system.DateAndTime
 import com.google.gson.stream.JsonReader
-import org.xmlpull.v1.XmlPullParser
-import java.io.*
+import okhttp3.*
+import okhttp3.Headers.Companion.toHeaders
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
-import okhttp3.Cookie
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import java.util.concurrent.TimeUnit
 import okhttp3.RequestBody.Companion.asRequestBody
-import com.google.gson.JsonArray
-import okhttp3.Headers.Companion.toHeaders
 import okio.ByteString
-import org.json.JSONArray
-import java.lang.Exception
+import org.xmlpull.v1.XmlPullParser
+import java.io.*
 import java.util.*
+import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
@@ -43,7 +39,7 @@ val cookjar: CookieJar = object : CookieJar {
 }
 val cookieStore = HashMap<String, List<Cookie>>()//cookie缓存
 //url : result
-val testResult=HashMap<String,Submit.TestResult>()
+val testResult=HashMap<String, Submit.TestResult>()
 
 private var socket: WebSocket?=null
 
@@ -160,11 +156,11 @@ class Submit {
 
             Method.FILE -> upFile()
 
-            Method.SOCKET ->  socketOpen()
+            Method.SOCKET -> socketOpen()
 
             Method.SOCKETSEND -> socket()
 
-            Method.POST_JSON-> postJson()
+            Method.POST_JSON -> postJson()
         }
 
     }
@@ -272,7 +268,7 @@ class Submit {
         val build = MultipartBody.Builder().setType(MultipartBody.FORM)
         for (p in _params) {
             if (p.value is File) {
-                build.addFormDataPart(p.key, (p.value as File).name,( p.value as File).asRequestBody("image/png".toMediaTypeOrNull() ))//RequestBody.create("image/png".toMediaTypeOrNull(), p.value as File)
+                build.addFormDataPart(p.key, (p.value as File).name, (p.value as File).asRequestBody("image/png".toMediaTypeOrNull()))//RequestBody.create("image/png".toMediaTypeOrNull(), p.value as File)
             } else {
                 build.addFormDataPart(p.key, p.value.toString())
             }
@@ -302,7 +298,7 @@ class Submit {
         val build = MultipartBody.Builder().setType(MultipartBody.FORM)
         for (p in _params) {
             if (p.value is File) {
-                build.addFormDataPart(p.key, (p.value as File).name,( p.value as File).asRequestBody("file/*".toMediaTypeOrNull()) )//MediaType.parse("file/*")
+                build.addFormDataPart(p.key, (p.value as File).name, (p.value as File).asRequestBody("file/*".toMediaTypeOrNull()))//MediaType.parse("file/*")
             } else {
                 build.addFormDataPart(p.key, p.value.toString())
             }
@@ -335,18 +331,18 @@ class Submit {
                 .connectTimeout(5, TimeUnit.SECONDS)//设置连接超时时间
                 .build()
         val request = Request.Builder().url(url).build()
-        mOkHttpClient.newWebSocket(request, object: WebSocketListener(){
+        mOkHttpClient.newWebSocket(request, object : WebSocketListener() {
             override fun onOpen(webSocket: WebSocket, response: Response) {
                 super.onOpen(webSocket, response)
                 socket = webSocket
                 ("连接成功").loge("onOpen")
-                if (beat!=null){
+                if (beat != null) {
                     val timer = Timer()
                     timer.schedule(object : TimerTask() {
                         override fun run() {
                             socket?.send(beat!!.data)
                         }
-                    }, beat!!.beat,beat!!.beat)
+                    }, beat!!.beat, beat!!.beat)
                 }
                 _socketOpen()
             }
@@ -359,7 +355,7 @@ class Submit {
 
             override fun onMessage(webSocket: WebSocket, text: String) {
                 super.onMessage(webSocket, text)
-                ("receive text:" + text ).loge("onMessage")
+                ("receive text:" + text).loge("onMessage")
                 successCall(text)
 
             }
@@ -367,7 +363,7 @@ class Submit {
             override fun onClosed(webSocket: WebSocket, code: Int, reason: String) {
                 super.onClosed(webSocket, code, reason)
                 ("closed:" + reason).loge("onClosed")
-                socket=null
+                socket = null
             }
 
             override fun onClosing(webSocket: WebSocket, code: Int, reason: String) {
@@ -387,7 +383,7 @@ class Submit {
 
     private fun socket(): Unit {
         socket?.send(_params["socket"].toString())
-        socketCalls.add(SocketCall(socketSave,_success))
+        socketCalls.add(SocketCall(socketSave, _success))
     }
 
     private fun download(): Unit {
@@ -419,7 +415,7 @@ class Submit {
     private fun failCall(failMsg: String): Unit {
         toUI.post {
             failMsg.log("failCall")
-            _fail(FailData(url,failMsg).apply { this.submitTime=DateAndTime.nowDateTime })
+            _fail(FailData(url, failMsg).apply { this.submitTime = DateAndTime.nowDateTime })
             retrySubmit()
         }
     }
@@ -427,18 +423,18 @@ class Submit {
     private fun successCall(response: Response): Unit {
         toUI.post {
             if (response.code != 200) {
-                response.request.url.toString().log("failCall"+"code:"+response.code)
+                response.request.url.toString().log("failCall" + "code:" + response.code)
                 failCall("请求失败:" + response.code)
                 response.close()
              //   _fail(FailData(url,"请求失败:" + response.code).apply { this.submitTime=DateAndTime.nowDateTime })
                 return@post
             }
         }
-        response.request.url.toString().log("successCall")
+
         when (returnType) {
             ReturnType.JSON -> {
                 var jsonString = response.body?.string()
-                jsonString?.log("successCall")
+                (response.request.url.toString()+ jsonString).log("successCall")
                 pullJson(jsonString!!)
                 response.close()
             }
@@ -452,11 +448,15 @@ class Submit {
                 _response.put(ReturnType.STRING.name, response.body!!.string())
                 response.close()
             }
+            ReturnType.BYTE_ARRAY->{
+                _response.put(ReturnType.BYTE_ARRAY.name,response.body!!.bytes())
+            }
         }
         toUI.post {
-            _success(SuccessData(url,_params,_response).apply {
-                this.gson=gson
-                this.submitTime=DateAndTime.nowDateTime })
+            _success(SuccessData(url, _params, _response).apply {
+                this.gson = gson
+                this.submitTime = DateAndTime.nowDateTime
+            })
         }
     }
 ///socket 专用
@@ -474,17 +474,17 @@ class Submit {
 //                    pullXML(s)
             }
             ReturnType.STRING -> {
-                _response.put(ReturnType.STRING.name,vback)
+                _response.put(ReturnType.STRING.name, vback)
             }
             else -> {}
         }
         toUI.post {
-            _socketCall(SuccessData(url,_params,_response).apply {
-                this.gson=gson
-                this.submitTime=DateAndTime.nowDateTime })
+            _socketCall(SuccessData(url, _params, _response).apply {
+                this.gson = gson
+                this.submitTime = DateAndTime.nowDateTime
+            })
         }
     }
-
 
     /**
      * 测试回调
@@ -510,8 +510,8 @@ class Submit {
                 _response.put(ReturnType.STRING.name, response.result)
             }
         }
-        _success(SuccessData(url,_params,_response).apply {
-            this.gson=gson
+        _success(SuccessData(url, _params, _response).apply {
+            this.gson = gson
             this.submitTime = DateAndTime.nowDateTime
         })
     }
@@ -590,7 +590,7 @@ class Submit {
                 val al = ArrayList<MutableMap<String, Any>>()
                 val als = ArrayList<String>()
                 while (reader.hasNext()) {
-                    when(reader.peek().name) {
+                    when (reader.peek().name) {
                         JsonToken.STRING.name -> als.add(reader.nextString())
                         JsonToken.NUMBER.name -> als.add(reader.nextInt().toString())
                         JsonToken.NULL.name -> als.add("")
@@ -625,7 +625,7 @@ class Submit {
             JsonToken.NUMBER.name -> {
                 try {
                     target.put(loopName, reader.nextLong().toString())
-                }catch (e: Exception){
+                } catch (e: Exception) {
                     target.put(loopName, reader.nextDouble().toString())
                 }
             }
@@ -702,17 +702,17 @@ class Submit {
      */
     fun retrySubmit(): Unit {
         toUI.postDelayed({
-            if(isRetry&&retryNumber<maxRetryNumber) {
+            if (isRetry && retryNumber < maxRetryNumber) {
                 tryInit()
-            }else {
+            } else {
 
             }
             retryNumber++
-        },5000)
+        }, 5000)
 
     }
 
-    data class TestResult(val code:Int ,val url:String, val result:String,val waitTime:Long)
-    data class SocketHeart(val beat:Long,val data:String)
-    data class SocketCall(val save:Boolean,val call:(SuccessData) -> Unit)
+    data class TestResult(val code: Int, val url: String, val result: String, val waitTime: Long)
+    data class SocketHeart(val beat: Long, val data: String)
+    data class SocketCall(val save: Boolean, val call: (SuccessData) -> Unit)
 }
