@@ -35,6 +35,13 @@ object Http {
         sub.run()
     }
 
+    var postjson = fun(function: Submit.() -> Unit) {
+        val sub = Submit()
+        sub.method = Method.POSTJSON
+        sub.function()
+        sub.run()
+    }
+
     var upimage = fun(function: Submit.() -> Unit) {
         val sub = Submit()
         sub.function()
@@ -66,15 +73,15 @@ object Http {
         val sub = Submit()
         sub.function()
         sub.method = Method.SOCKET
-       // sub.returnType=ReturnType.STRING
+        sub.returnType=ReturnType.STRING
         sub.run()
     }
-    var socketSend = fun(function: Submit.() -> Unit) {
-        val sub = Submit()
-        sub.function()
-        sub.method = Method.SOCKETSEND
-       // sub.returnType=ReturnType.STRING
-        sub.run()
-    }
+//    var socketSend = fun(function: Submit.() -> Unit) {
+//        val sub = Submit()
+//        sub.function()
+//        sub.method = Method.SOCKETSEND
+//       // sub.returnType=ReturnType.STRING
+//        sub.run()
+//    }
 }
 

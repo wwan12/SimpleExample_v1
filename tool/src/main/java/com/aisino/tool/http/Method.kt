@@ -6,12 +6,12 @@ package com.aisino.tool.http
 enum class Method {
     GET,
     POST,
+    POSTJSON,
     IMAGE,
     FILE,
     DOWNLOAD,
     SOCKET,
-    SOCKETSEND,
-    POST_JSON,
+    SOCKETSEND
 }
 
 enum class ReturnType{
@@ -19,7 +19,6 @@ enum class ReturnType{
     XML,
     STRING,
     FILE,
-    BYTE_ARRAY,
     IMAGE
 }
 
