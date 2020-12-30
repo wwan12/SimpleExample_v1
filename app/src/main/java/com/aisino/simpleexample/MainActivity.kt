@@ -1,17 +1,11 @@
 package com.aisino.simpleexample
 
-import android.content.Context
-import android.location.LocationManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.telephony.TelephonyManager
-import com.aisino.tool.service.showNotifictionIcon
+import com.aisino.tool.system.showNotifictionIcon
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlin.collections.ArrayList
 import com.aisino.tool.system.CrashHandler
-import com.aisino.tool.http.Http
-import com.aisino.tool.model.update.UpdateChecker
-import com.aisino.tool.system.getVersionCode
 
 
 class MainActivity : AppCompatActivity() {
