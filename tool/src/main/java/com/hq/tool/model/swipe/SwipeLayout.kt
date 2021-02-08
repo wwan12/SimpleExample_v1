@@ -14,6 +14,8 @@ import androidx.customview.widget.ViewDragHelper
 import com.hq.tool.R
 import java.util.*
 
+/////左右滑动布局，直接使用配置宽度超过边界即可
+
 class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : FrameLayout(context, attrs, defStyle) {
     private val mTouchSlop: Int
     var dragEdge: DragEdge? = DefaultDragEdge
@@ -1281,10 +1283,10 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
      */
     @Deprecated("")
     fun setBottomViewIds(leftId: Int, rightId: Int, topId: Int, bottomId: Int) {
-        addDrag(DragEdge.Left, findViewById(leftId))
-        addDrag(DragEdge.Right, findViewById(rightId))
-        addDrag(DragEdge.Top, findViewById(topId))
-        addDrag(DragEdge.Bottom, findViewById(bottomId))
+        addDrag(DragEdge.Left, findViewById(leftId),null)
+        addDrag(DragEdge.Right, findViewById(rightId),null)
+        addDrag(DragEdge.Top, findViewById(topId),null)
+        addDrag(DragEdge.Bottom, findViewById(bottomId),null)
     }
 
     private val currentOffset: Float
