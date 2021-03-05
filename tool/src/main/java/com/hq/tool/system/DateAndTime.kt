@@ -1,5 +1,6 @@
 package com.hq.tool.system
 
+import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -61,6 +62,32 @@ object DateAndTime {
                 total-=tick
             }
         },tick,total)
+    }
+
+    //大于false
+    fun less(StartTime: String?, EndTime: String?): Boolean {
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd") //年-月-日 时-分
+        try {
+            val date1 = dateFormat.parse(StartTime) //开始时间
+            val date2 = dateFormat.parse(EndTime) //结束时间
+            when {
+                date2.time < date1.time -> {
+    //                Toast.makeText(PostActivity.this,"结束时间小于开始时间", Toast.LENGTH_SHORT).show();
+                    return true
+                }
+                date2.time == date1.time -> {
+    //                Toast.makeText(PostActivity.this,"开始时间与结束时间相同", Toast.LENGTH_SHORT).show();
+                    return false
+                }
+                date2.time > date1.time -> {
+                    //正常情况下的逻辑操作.
+                    return false
+                }
+            }
+        } catch (e: ParseException) {
+            e.printStackTrace()
+        }
+        return false
     }
 
 }

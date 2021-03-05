@@ -1,6 +1,7 @@
 package com.hq.tool
 
 import android.app.Activity
+import android.app.Dialog
 import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
@@ -66,6 +67,26 @@ fun String.dialog(context: Context): Unit {
             .setPositiveButton("确认") { dialog, id -> }
             .show()
     //   success.setCancelable(true)
+}
+
+fun Int.dialog(context: Activity,enterId:Int): AlertDialog {
+    var success: AlertDialog? = null
+    val load = AlertDialog.Builder(context)
+    var log: View = context.layoutInflater.inflate(this, null, false)
+    load.setView(log)
+    success = load.show()
+    success?.window?.setBackgroundDrawableResource(android.R.color.transparent)
+    return success
+}
+
+fun Dialog.noCrashDismiss(): Unit {
+    if (this.context is Activity){
+        if (!(this.context as Activity).isDestroyed){
+            this.dismiss()
+        }
+    }else{
+        this.dismiss()
+    }
 }
 
 fun String.save(activity: AppCompatActivity,key:String): Unit {

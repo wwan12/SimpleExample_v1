@@ -264,7 +264,7 @@ final class PathParser {
    *     the starting position of next number, whether it is ending with a '-'.
    */
   private static void extract(String s, int start, ExtractFloatResult result) {
-    // Now looking for ' ', ',', '.' or '-' from the start.
+    // Now looaisino for ' ', ',', '.' or '-' from the start.
     int currentIndex = start;
     boolean foundSeparator = false;
     result.mEndWithNegOrDot = false;
