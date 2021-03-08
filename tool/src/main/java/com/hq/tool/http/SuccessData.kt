@@ -40,7 +40,9 @@ class SuccessData (url:String,data: MutableMap<String,Any>){
     operator fun <E>get(key:String): E{
         return loopAny<E>(key, data) as E
     }
-
+     fun <E>tryGet(key:String): E?{
+        return loopAny<E>(key, data)
+    }
 
     private fun <E> loopAny(key: String, target: MutableMap<String, Any>): E? {
         var result: E?
