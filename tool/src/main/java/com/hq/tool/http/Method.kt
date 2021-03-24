@@ -7,6 +7,8 @@ enum class Method {
     GET,
     POST,
     POSTJSON,
+    PUT,
+    PUTJSON,
     IMAGE,
     FILE,
     DOWNLOAD,

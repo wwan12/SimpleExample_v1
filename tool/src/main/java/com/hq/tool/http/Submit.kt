@@ -83,10 +83,9 @@ class Submit {
     var isRetry = false
     private val _params: MutableMap<String, Any> = mutableMapOf()
   //  val _fileParams: MutableMap<String, String> = mutableMapOf()
- //   val _headers: MutableMap<String, String> = mutableMapOf()
+  var _headers:Headers?=null
     private val _response: MutableMap<String, Any> = mutableMapOf()
-    var jsonParam=""//临时参数
-    lateinit private var toUI:Handler
+    private lateinit var toUI:Handler
     private var _start: () -> Unit = {}
     private var _success: (SuccessData) -> Unit = {}
     private var _socketOpen: (socket:WebSocket) -> Unit = {}
@@ -133,8 +132,8 @@ class Submit {
             ReturnType.XML -> {
             }
         }
-        if (url .equals("") ){
-            "url为空".loge("http")
+        if (url == ""||!url.contains("http")){
+            "url设置错误".loge("http")
             return
         }
         tag = method.name
@@ -149,12 +148,17 @@ class Submit {
 //        } else {
 //            url = RELEASEAPI + url
 //        }
+        if (_headers==null){
+            _headers= Headers.headersOf()
+        }
         when (method) {//分类请求
             Method.GET -> get()
 
             Method.POST -> post()
 
             Method.POSTJSON -> postJson()
+
+            Method.PUTJSON -> putJson()
 
             Method.IMAGE -> upImage()
 
@@ -208,7 +212,7 @@ class Submit {
             cacheUrl = cacheUrl.substring(0, cacheUrl.length - 1)
         }
         "DEBUGAPI->$cacheUrl".loge("api")
-        val request = Request.Builder().url(cacheUrl).build()
+        val request = Request.Builder().addheaders(_headers).url(cacheUrl).build()
         val call = okHttpClient.build().newCall(request)
         call.enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
@@ -230,7 +234,7 @@ class Submit {
             (p.key + "-" + p.value.toString()).log("post")
         }
         val body = build.build()
-        val request = Request.Builder().url(cacheUrl).post(body).build()
+        val request = Request.Builder().addheaders(_headers).url(cacheUrl).post(body).build()
         val call = okHttpClient.build().newCall(request)
         call.enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
@@ -244,15 +248,36 @@ class Submit {
         })
     }
 
-    data class Param(var token:String ,var content:Any)//提交数据的外壳
 
     private fun postJson(): Unit {
          val okHttpClient = OkHttpClient.Builder()
         okHttpClient.connectTimeout(5, TimeUnit.SECONDS)
         //     "".toRequestBody("application/json".toMediaTypeOrNull())
         val json:String=_params.get("json") as String
-        val build = RequestBody.create("application/json".toMediaTypeOrNull(), json!!)
-        val request = Request.Builder().url(url).post(build).build()
+        json.loge()
+        val build = json.toRequestBody("application/json".toMediaTypeOrNull())
+        val request = Request.Builder().addheaders(_headers).url(url).post(build).build()
+        val call = okHttpClient.build().newCall(request)
+        call.enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                failCall(e.toString())
+
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                successCall(response)
+            }
+        })
+    }
+
+    private fun putJson(): Unit {
+        val okHttpClient = OkHttpClient.Builder()
+        okHttpClient.connectTimeout(5, TimeUnit.SECONDS)
+        //     "".toRequestBody("application/json".toMediaTypeOrNull())
+        val json:String=_params.get("json") as String
+        json.loge()
+        val build = json.toRequestBody("application/json".toMediaTypeOrNull())
+        val request = Request.Builder().addheaders(_headers).url(url).put(build).build()
         val call = okHttpClient.build().newCall(request)
         call.enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
@@ -279,7 +304,7 @@ class Submit {
         }
         val requestBody = build.build()
 
-        val request = Request.Builder()
+        val request = Request.Builder().addheaders(_headers)
 //                .header("Authorization", "Client-ID " + "...")
                 .url(cacheUrl)
                 .post(requestBody)
@@ -309,7 +334,7 @@ class Submit {
         }
         val requestBody = build.build()
 
-        val request = Request.Builder()
+        val request = Request.Builder().addheaders(_headers)
 //                .header("Authorization", "Client-ID " + "...")
                 .url(cacheUrl)
                 .post(requestBody)
@@ -438,7 +463,7 @@ class Submit {
             }
         }
         response.request.url.toString().log("successCall")
-        jsonParam?.log("successCall")
+        _params.toString()?.log("successCall")
         when (returnType) {
             ReturnType.JSON -> {
                 var jsonString = response.body?.string()
@@ -682,6 +707,13 @@ class Submit {
         }
 
         return null
+    }
+
+    fun Request.Builder.addheaders(headers: Headers?): Request.Builder {
+        if (headers!=null){
+            this.headers(headers)
+        }
+        return this
     }
 
     /**

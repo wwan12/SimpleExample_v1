@@ -62,13 +62,25 @@ object Http {
         sub.method = Method.DOWNLOAD
         sub.run()
     }
+    var putjson = fun(function: Submit.() -> Unit) {
+        val sub = Submit()
+        sub.function()
+        sub.method = Method.PUTJSON
+        sub.run()
+    }
 
     var test = fun(function: HashMap<String,Submit.TestResult>.() -> Unit) {
         val h = HashMap<String,Submit.TestResult>()
         h.function()
         testResult.putAll(h)
     }
-
+    var testJson = fun(function: HashMap<String,String>.() -> Unit) {
+        val h = HashMap<String,String>()
+        h.function()
+        for (i in h){
+            testResult[i.key] = Submit.TestResult(200,i.key,i.value,500)
+        }
+    }
     var socketOpen = fun(function: Submit.() -> Unit) {
         val sub = Submit()
         sub.function()
