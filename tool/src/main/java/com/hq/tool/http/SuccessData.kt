@@ -1,5 +1,7 @@
 package com.hq.tool.http
 
+import java.lang.Exception
+
 /**
  * 文件描述：
  * 作者：Administrator
@@ -41,7 +43,12 @@ class SuccessData (url:String,data: MutableMap<String,Any>){
         return loopAny<E>(key, data) as E
     }
      fun <E>tryGet(key:String): E?{
-        return loopAny<E>(key, data)
+         return try {
+             loopAny<E>(key, data)
+         }catch (e:Exception){
+             e.printStackTrace()
+             null
+         }
     }
 
     private fun <E> loopAny(key: String, target: MutableMap<String, Any>): E? {

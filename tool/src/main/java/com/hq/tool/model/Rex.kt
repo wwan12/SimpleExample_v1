@@ -150,4 +150,33 @@ val ACCOUNT_NUMBER_PATTERN: Pattern = Pattern
             val m: Matcher = ACCOUNT_NUMBER_PATTERN.matcher(this)
             return m.matches()
         }
+/**
+ *  密码验证的正则表达式 (6-16位字母和数字组合)
+ * */
+fun String.pwd(): Boolean {
+    val m: Matcher = Pattern.compile("^(?![0-9]+\$)(?![a-zA-Z]+\$)[0-9A-Za-z]{6,16}$").matcher(this)
+    return m.matches()
+}
 
+
+/**
+ *  必须包含 数字,字母,符号 3项组合的 正则表达式
+ * */
+fun String.pwdHigh(): Boolean {
+    val m: Matcher = Pattern.compile("^(?:(?=.*[0-9].*)(?=.*[A-Za-z].*)(?=.*[,\\.#%'\\+\\*-:;^_`].*))[,\\.#%'\\+\\*-:;^_`0-9A-Za-z]{8,20}$").matcher(this)
+    return m.matches()
+}
+
+fun String.hasNumber(): Boolean {
+    val m: Matcher = Pattern.compile(".*\\d+.*").matcher(this)
+    return m.matches()
+}
+
+fun String.hasZM(): Boolean {
+    val m: Matcher = Pattern.compile(".*[A-Za-z]+.*").matcher(this)
+    return m.matches()
+}
+fun String.hasTSZM(): Boolean {
+    val m: Matcher = Pattern.compile(".*[ _`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]+.*").matcher(this)
+    return m.matches()
+}

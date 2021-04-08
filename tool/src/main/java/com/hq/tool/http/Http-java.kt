@@ -8,7 +8,7 @@ import java.io.IOException
 import java.util.concurrent.TimeUnit
 
 
-fun get(url:String,_params: Map<String, Any>,kCall: KCall): Unit {
+fun get(url:String,headers: Headers,_params: Map<String, Any>,kCall: KCall): Unit {
     val okHttpClient = OkHttpClient.Builder().connectTimeout(5, TimeUnit.SECONDS)
     var cacheUrl=url
     if (cacheUrl.isNotEmpty() && cacheUrl.substring(cacheUrl.length - 1, cacheUrl.length) != "?" && _params.isNotEmpty()) {
@@ -21,7 +21,7 @@ fun get(url:String,_params: Map<String, Any>,kCall: KCall): Unit {
         cacheUrl = cacheUrl.substring(0, cacheUrl.length - 1)
     }
     "DEBUGAPI->$cacheUrl".loge("api")
-    val request = Request.Builder().url(cacheUrl).build()
+    val request = Request.Builder().headers(headers).url(cacheUrl).build()
     val call = okHttpClient.build().newCall(request)
     call.enqueue(object : Callback {
         override fun onFailure(call: Call, e: IOException) {
@@ -37,7 +37,7 @@ fun get(url:String,_params: Map<String, Any>,kCall: KCall): Unit {
     })
 }
 
- fun post(url:String,_params: Map<String, Any>,kCall: KCall): Unit {
+ fun post(url:String,headers: Headers,_params: Map<String, Any>,kCall: KCall): Unit {
     val okHttpClient = OkHttpClient.Builder().connectTimeout(5, TimeUnit.SECONDS)
     val build = FormBody.Builder()
     url.log("post")
@@ -46,7 +46,7 @@ fun get(url:String,_params: Map<String, Any>,kCall: KCall): Unit {
         (p.key + "-" + p.value.toString()).log("post")
     }
     val body = build.build()
-    val request = Request.Builder().url(url).post(body).build()
+    val request = Request.Builder().headers(headers).url(url).post(body).build()
     val call = okHttpClient.build().newCall(request)
     call.enqueue(object : Callback {
         override fun onFailure(call: Call, e: IOException) {
@@ -63,13 +63,13 @@ fun get(url:String,_params: Map<String, Any>,kCall: KCall): Unit {
     })
 }
 
-fun postJson(url: String?, json: String?, kCall: KCall) {
+fun postJson(url: String?,headers: Headers, json: String?, kCall: KCall) {
     val okHttpClient = OkHttpClient.Builder()
     okHttpClient.connectTimeout(5, TimeUnit.SECONDS)
        //     "".toRequestBody("application/json".toMediaTypeOrNull())
     val build = RequestBody.create("application/json".toMediaTypeOrNull(), json!!)
     Log.e("up", json)
-    val request = Request.Builder().url(url!!).post(build).build()
+    val request = Request.Builder().headers(headers).url(url!!).post(build).build()
     val call = okHttpClient.build().newCall(request)
     call.enqueue(object : Callback {
         override fun onFailure(call: Call, e: IOException) {
