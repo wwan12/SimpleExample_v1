@@ -480,9 +480,14 @@ class Submit {
             }
         }
         toUI.post {
-            _success(SuccessData(url,_response).apply {
-                this.params.putAll(params)
-                this.submitTime=DateAndTime.nowDateTime })
+            try {
+                _success(SuccessData(url,_response).apply {
+                    this.params.putAll(params)
+                    this.submitTime=DateAndTime.nowDateTime })
+            }catch (e:Exception){
+                e.printStackTrace()
+            }
+
         }
     }
 ///socket 专用

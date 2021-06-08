@@ -1,6 +1,7 @@
 package com.hq.tool
 
 import android.app.Activity
+import android.app.Application
 import android.app.Dialog
 import android.content.Context
 import android.content.SharedPreferences
@@ -31,20 +32,25 @@ fun String.loge(tag:String="tag"): Unit {
 }
 
 fun String.toast(context: Context): Unit {
-    Toast.makeText(context, this, Toast.LENGTH_SHORT).show()
+    try {
+        Toast.makeText(context, this, Toast.LENGTH_SHORT).show()
+    }catch (e:Exception){
+        e.printStackTrace()
+    }
+
 }
 
 fun Activity.onLoad(): LoadingDialog? {
-    try {
+    return try {
         val subLog = LoadingDialog(this)
         subLog.show()
 //    val load = AlertDialog.Builder(this)
 //    val subLog = load.show() as LoadingDialog
         subLog.setCancelable(false)
-        return subLog
+        subLog
     }catch (e:Exception){
         e.printStackTrace()
-        return null
+        null
     }
 
 }
@@ -80,12 +86,30 @@ fun Int.dialog(context: Activity,enterId:Int): AlertDialog {
 }
 
 fun Dialog.noCrashDismiss(): Unit {
-    if (this.context is Activity){
-        if (!(this.context as Activity).isDestroyed){
+    try {
+        if (this.context is Activity){
+            if (!(this.context as Activity).isDestroyed){
+                this.dismiss()
+            }
+        }else{
             this.dismiss()
         }
-    }else{
-        this.dismiss()
+    }catch (e:Exception){
+        e.printStackTrace()
+    }
+}
+
+fun Dialog.noCrashShow(): Unit {
+    try {
+        if (this.context is Activity){
+            if (!(this.context as Activity).isDestroyed){
+                this.show()
+            }
+        }else{
+            this.show()
+        }
+    }catch (e:Exception){
+        e.printStackTrace()
     }
 }
 
@@ -95,6 +119,13 @@ fun String.save(activity: AppCompatActivity,key:String): Unit {
 
 fun String.load(activity: AppCompatActivity): String {
     return activity.getSharedPreferences("activity", AppCompatActivity.MODE_PRIVATE).getString(this,"")
+}
+fun String.savePro(app: Application,key:String): Unit {
+    app.getSharedPreferences("activity",AppCompatActivity.MODE_PRIVATE).edit().putString(key,this).apply()
+}
+
+fun String.loadPro(app: Application): String {
+    return app.getSharedPreferences("activity", AppCompatActivity.MODE_PRIVATE).getString(this,"")
 }
 
 fun String.promptError(describe: String): Unit {
