@@ -574,7 +574,7 @@ fun Bitmap.bitmapToBase64(): String? {
             baos.flush()
             baos.close()
             val bitmapBytes = baos.toByteArray()
-            result = Base64.encodeToString(bitmapBytes, Base64.DEFAULT)
+            result = Base64.encodeToString(bitmapBytes, Base64.NO_WARP)
         }
     } catch (e: IOException) {
         e.printStackTrace()
@@ -598,7 +598,7 @@ fun Bitmap.bitmapToBase64(): String? {
  * @return
  */
 fun String.base64ToBitmap(): Bitmap? {
-    val bytes = Base64.decode(this, Base64.DEFAULT)
+    val bytes = Base64.decode(this, Base64.NO_WARP)
     return BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
 }
 

@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.ContentUris
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.drawable.Drawable
@@ -16,10 +17,11 @@ import android.view.Gravity
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.PopupWindow
+import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
 import com.hq.tool.R
 import com.hq.tool.bitmap.drawable2Bitmap
-import com.yalantis.ucrop.UCrop
+//import com.yalantis.ucrop.UCrop
 import java.io.File
 import java.io.InputStream
 import java.util.*
@@ -62,51 +64,64 @@ var cameraUri:Uri? = null
 var appId=""
 
 fun Activity.openCameraAndGalleryWindow() {
-    // 将布局文件转换成View对象，popupview 内容视图
-    val mPopView = this.layoutInflater.inflate(R.layout.camera_gallery_window, null)
-    // 将转换的View放置到 新建一个popuwindow对象中
+    if (PackageManager.PERMISSION_GRANTED == ActivityCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA)&&
+        PackageManager.PERMISSION_GRANTED == ActivityCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE))
+        {
+        // 将布局文件转换成View对象，popupview 内容视图
+        val mPopView = this.layoutInflater.inflate(R.layout.camera_gallery_window, null)
+        // 将转换的View放置到 新建一个popuwindow对象中
 
-    val mPopupWindow = PopupWindow(mPopView,
-            this.windowManager.defaultDisplay.width-128,
-            LinearLayout.LayoutParams.WRAP_CONTENT)
-    // 点击popuwindow外让其消失
-    mPopupWindow.isOutsideTouchable = true
-    var openCamera = mPopView.findViewById<Button>(R.id.btn_take_photo)
-    var openGallery = mPopView.findViewById<Button>(R.id.btn_pick_photo)
-    var cancel = mPopView.findViewById<Button>(R.id.btn_cancel)
-    openCamera.setOnClickListener{
-        cameraUri= this.openCamera()
+        val mPopupWindow = PopupWindow(
+            mPopView,
+            this.windowManager.defaultDisplay.width,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        )
+        // 点击popuwindow外让其消失
+        mPopupWindow.isOutsideTouchable = true
+        var openCamera = mPopView.findViewById<Button>(R.id.btn_take_photo)
+        var openGallery = mPopView.findViewById<Button>(R.id.btn_pick_photo)
+        var cancel = mPopView.findViewById<Button>(R.id.btn_cancel)
+        openCamera.setOnClickListener {
+            cameraUri = this.openCamera()
+            if (mPopupWindow.isShowing) {
+                mPopupWindow.dismiss();
+            }
+        }
+        openGallery.setOnClickListener {
+            this.openGallery()
+            if (mPopupWindow.isShowing) {
+                mPopupWindow.dismiss();
+            }
+        }
+        cancel.setOnClickListener {
+            if (mPopupWindow.isShowing) {
+                mPopupWindow.dismiss();
+            }
+        }
+        mPopupWindow.setOnDismissListener {
+            val params = this.getWindow().getAttributes()
+            params.alpha = 1f
+            this.window.attributes = params
+        }
         if (mPopupWindow.isShowing) {
             mPopupWindow.dismiss();
+        } else {
+            val params = this.getWindow().getAttributes()
+            params.alpha = 0.7f
+            this.window.attributes = params
+            // 设置PopupWindow 显示的形式 底部或者下拉等
+            // 在某个位置显示
+            mPopupWindow.showAtLocation(mPopView, Gravity.BOTTOM, 0, 0);
+            // 作为下拉视图显示
+            // mPopupWindow.showAsDropDown(mPopView, Gravity.CENTER, 200, 300);
         }
-    }
-    openGallery.setOnClickListener{
-        this.openGallery()
-        if (mPopupWindow.isShowing) {
-            mPopupWindow.dismiss();
-        }
-    }
-    cancel.setOnClickListener{
-        if (mPopupWindow.isShowing) {
-            mPopupWindow.dismiss();
-        }
-    }
-    mPopupWindow.setOnDismissListener {
-        val params = this.getWindow().getAttributes()
-        params.alpha = 1f
-        this.window.attributes = params
-    }
-    if (mPopupWindow.isShowing) {
-        mPopupWindow.dismiss();
     } else {
-        val params = this.getWindow().getAttributes()
-        params.alpha = 0.7f
-        this.window.attributes = params
-        // 设置PopupWindow 显示的形式 底部或者下拉等
-        // 在某个位置显示
-        mPopupWindow.showAtLocation(mPopView, Gravity.BOTTOM, 0, 0);
-        // 作为下拉视图显示
-        // mPopupWindow.showAsDropDown(mPopView, Gravity.CENTER, 200, 300);
+        signPermission(
+            arrayOf(
+                Manifest.permission.CAMERA,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            )
+        )
     }
 }
 
@@ -205,7 +220,7 @@ fun Activity.cropPicture(cropFile: File):Uri {
 fun Activity.cropPicture(crop: Uri):Unit {
     val f = File(this.filesDir.path, "crop.jpg")
    val outUri= Uri.fromFile(f)
-    UCrop.of(crop, outUri).start(this)
+//    UCrop.of(crop, outUri).start(this)
 }
 
 fun getDeviceBrand(): String {

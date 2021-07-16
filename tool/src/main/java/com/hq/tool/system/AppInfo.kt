@@ -5,19 +5,52 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.pm.PackageManager.NameNotFoundException
 import android.location.LocationManager
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
+import android.net.wifi.WifiManager
 import android.os.Build
 import android.provider.Settings
 import android.telephony.TelephonyManager
 import android.view.WindowManager
-import android.content.pm.PackageManager.NameNotFoundException
+
 
 /**
  * 获取系统数据
  * Created by lenovo on 2018/2/26.
  */
+
+
+/**
+ * ACCESS_WIFI_STATE
+ * */
+fun Activity.getMacID(): String {
+    var macAddress: String? = null
+    val info =(this.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager).connectionInfo
+    macAddress = info?.macAddress
+    if (macAddress==null||macAddress.equals("")){
+        val ANDROID_ID = Settings.System.getString(contentResolver, Settings.System.ANDROID_ID)
+        macAddress=ANDROID_ID
+    }
+    return macAddress.toString()
+}
+//
+//fun getMacAddress(): String? {
+//    var macAddress: String? = null
+//    val wifiManager =
+//        MyApplication.getContext().getSystemService(Context.WIFI_SERVICE) as WifiManager
+//    val info = wifiManager?.connectionInfo
+//    if (!wifiManager.isWifiEnabled) {
+//        //必须先打开，才能获取到MAC地址
+//        wifiManager.isWifiEnabled = true
+//        wifiManager.isWifiEnabled = false
+//    }
+//    if (null != info) {
+//        macAddress = info.macAddress
+//    }
+//    return macAddress
+//}
 
 /**
  * 获取当前程序的版本号

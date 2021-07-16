@@ -24,6 +24,7 @@ fun Activity.copyToShear(text: CharSequence) {
 }
 
 
+
 /**
  * 获取剪贴板的文本
  *
@@ -63,7 +64,7 @@ fun Activity.hideInput() {
 }
 
 /**
- * 关闭输入法
+ * 反向输入法
  */
 fun Activity.closeInput() {
     val imm = (this
