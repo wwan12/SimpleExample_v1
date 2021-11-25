@@ -50,6 +50,14 @@ object DateAndTime {
         return sdf.format(date)
     }
 
+ fun changeFormatTime(date:String,format1: String="yyyy-MM-dd HH:mm:ss",format2: String="MMdd"): String {
+        val sdf1 = SimpleDateFormat(format1)
+        val sdf2 = SimpleDateFormat(format2)
+        val timeM: Long = sdf1.parse(date).getTime()
+        val tDate= sdf2.format(Date(timeM))
+        return tDate
+    }
+
     fun lastLifeTime(call:(TimerTask)->Unit,tick:Long,total:Long): Unit {
         var total=total
         Timer().schedule(object:TimerTask(){
