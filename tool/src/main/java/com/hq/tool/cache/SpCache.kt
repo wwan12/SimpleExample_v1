@@ -9,3 +9,4 @@ fun String.save(activity: AppCompatActivity, key:String): Unit {
 fun String.load(activity: AppCompatActivity): String {
     return activity.getSharedPreferences("activity", AppCompatActivity.MODE_PRIVATE).getString(this,"").toString()
 }
+

@@ -20,4 +20,5 @@
   <color name="blackPrimaryDark">#282828</color>
   <color name="blackPrimary">#2E2E2E</color>
   <color name="blackPrimaryLight">#8F8F8F</color>
+  <color name="gray">#f5f5f5</color>
 </resources>

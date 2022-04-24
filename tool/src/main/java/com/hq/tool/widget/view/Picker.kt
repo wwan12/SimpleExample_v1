@@ -1,5 +1,6 @@
 package com.hq.tool.widget.view
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
@@ -10,6 +11,7 @@ import android.view.MotionEvent
 import android.view.View
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.math.abs
 
 class Picker : View {
     private var mDataList: MutableList<GetConfigReq>? = null
@@ -38,8 +40,9 @@ class Picker : View {
     private var mTask: MyTimerTask? = null
     var hasLine=true
 
-    var updateHandler: Handler = object : Handler() {
-        override fun handleMessage(msg: Message?) {
+    var updateHandler: Handler = @SuppressLint("HandlerLeak")
+    object : Handler() {
+        override fun handleMessage(msg: Message) {
             if (Math.abs(mMoveLen) < SPEED) {
                 mMoveLen = 0f
                 if (mTask != null) {
@@ -48,8 +51,7 @@ class Picker : View {
                     performSelect()
                 }
             } else  // 这里mMoveLen / Math.abs(mMoveLen)是为了保有mMoveLen的正负号，以实现上滚或下滚
-                mMoveLen =
-                    mMoveLen - mMoveLen / Math.abs(mMoveLen) * SPEED
+                mMoveLen -= mMoveLen / abs(mMoveLen) * SPEED
             invalidate()
         }
     }

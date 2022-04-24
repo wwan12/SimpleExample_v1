@@ -909,13 +909,15 @@ class SwipeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSe
     }
 
     var clickListener: OnClickListener? = null
-    override fun setOnClickListener(l: OnClickListener) {
+
+    override fun setOnClickListener(l: OnClickListener?) {
         super.setOnClickListener(l)
         clickListener = l
     }
 
+
     var longClickListener: OnLongClickListener? = null
-    override fun setOnLongClickListener(l: OnLongClickListener) {
+    override fun setOnLongClickListener(l: OnLongClickListener?) {
         super.setOnLongClickListener(l)
         longClickListener = l
     }

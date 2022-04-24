@@ -47,12 +47,12 @@ private fun drawableLoadText(view: TextView, text: String, getter: ImageGetter){
     view.text = Html.fromHtml(text, getter, null)
 }
 
-internal class URLDrawable : BitmapDrawable() {
+class URLDrawable : BitmapDrawable() {
     var bitmapUrl: Bitmap? = null
     override fun draw(canvas: Canvas) {
         if (bitmapUrl != null) {
             //    drawable.draw(canvas);
-            canvas.drawBitmap(bitmapUrl, 0f, 0f, paint)
+            canvas.drawBitmap(this.bitmapUrl, 0f, 0f, paint)
         } else {
             
         }

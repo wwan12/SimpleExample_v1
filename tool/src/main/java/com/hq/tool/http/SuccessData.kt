@@ -1,5 +1,6 @@
 package com.hq.tool.http
 
+import com.google.gson.Gson
 import java.lang.Exception
 
 /**
@@ -37,6 +38,9 @@ class SuccessData (url:String,data: MutableMap<String,Any>){
         
     }
 
+    inline fun <reified E>getEntity (): E {
+       return Gson().fromJson<E>(stringBody,E::class.java)
+    }
 
     
     operator fun <E>get(key:String): E{

@@ -13,12 +13,12 @@ import com.hq.tool.model.swipe.util.Attributes
 abstract class ArraySwipeAdapter<T> : ArrayAdapter<Any?>, SwipeItemMangerInterface, SwipeAdapterInterface {
     private val mItemManger = SwipeItemMangerImpl(this)
 
-    constructor(context: Context?, resource: Int) : super(context, resource) {}
-    constructor(context: Context?, resource: Int, textViewResourceId: Int) : super(context, resource, textViewResourceId) {}
-    constructor(context: Context?, resource: Int, objects: Array<T>?) : super(context, resource, objects) {}
-    constructor(context: Context?, resource: Int, textViewResourceId: Int, objects: Array<T>?) : super(context, resource, textViewResourceId, objects) {}
-    constructor(context: Context?, resource: Int, objects: List<T>?) : super(context, resource, objects) {}
-    constructor(context: Context?, resource: Int, textViewResourceId: Int, objects: List<T>?) : super(context, resource, textViewResourceId, objects) {}
+    constructor(context: Context, resource: Int) : super(context, resource) {}
+    constructor(context: Context, resource: Int, textViewResourceId: Int) : super(context, resource, textViewResourceId) {}
+    constructor(context: Context, resource: Int, objects: Array<T>?) : super(context, resource, objects) {}
+    constructor(context: Context, resource: Int, textViewResourceId: Int, objects: Array<T>?) : super(context, resource, textViewResourceId, objects) {}
+    constructor(context: Context, resource: Int, objects: List<T>?) : super(context, resource, objects) {}
+    constructor(context: Context, resource: Int, textViewResourceId: Int, objects: List<T>?) : super(context, resource, textViewResourceId, objects) {}
 
     override fun notifyDatasetChanged() {
         super.notifyDataSetChanged()

@@ -28,7 +28,7 @@ class MediaPlayerUtil {
     /**
      * 播放音频
      */
-    fun playAudioByAssets(mContext: Context, fileName: String?) {
+    fun playAudioByAssets(mContext: Context, fileName: String) {
         try {
             if (null != mMediaPlayer) {
                 if (mMediaPlayer!!.isPlaying) {

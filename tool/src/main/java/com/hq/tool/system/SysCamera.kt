@@ -1,4 +1,4 @@
-package com.aisino.tool.system
+package com.hq.tool.system
 
 import android.app.Activity
 import android.content.ContentUris
@@ -17,9 +17,8 @@ import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.PopupWindow
 import androidx.core.content.FileProvider
-import com.aisino.tool.R
-import com.aisino.tool.bitmap.drawable2Bitmap
-import com.aisino.tool.loge
+import com.hq.tool.R
+import com.hq.tool.bitmap.drawable2Bitmap
 import java.io.File
 import java.io.InputStream
 import java.util.*
@@ -47,7 +46,7 @@ fun Activity.openCameraAndGalleryWindow() {
     var openGallery = mPopView.findViewById<Button>(R.id.btn_pick_photo)
     var cancel = mPopView.findViewById<Button>(R.id.btn_cancel)
     openCamera.setOnClickListener{
-        cameraUri= this.openCamera()
+        cameraUri = this.openCamera()
         if (mPopupWindow.isShowing()) {
             mPopupWindow.dismiss();
         }
@@ -112,7 +111,7 @@ fun Activity.openCamera() :Uri{
     } else {
         contentUri = Uri.fromFile(f)
     }
-    if ( getDeviceBrand().toUpperCase().contains("VIVO")||getDeviceBrand().toUpperCase().contains("OPPO")){
+    if ( getDeviceBrand().toUpperCase().contains("VIVO")|| getDeviceBrand().toUpperCase().contains("OPPO")){
         intent.putExtra(MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA, contentUri)
     }else{
         intent.putExtra(MediaStore.EXTRA_OUTPUT, contentUri)
@@ -120,7 +119,7 @@ fun Activity.openCamera() :Uri{
     intent.putExtra(MediaStore.EXTRA_OUTPUT, contentUri)
     intent.putExtra("return-data", false)
     this.startActivityForResult(intent, CAMERA_REQUEST)
-    cameraUri=contentUri
+    cameraUri =contentUri
     return  contentUri
 }
 
@@ -176,7 +175,6 @@ fun Uri.getCameraImg(activity: Activity): Bitmap? {
         return dar.drawable2Bitmap()
     } catch (e: Exception) {
         e.printStackTrace()
-        e.message?.loge()
         return BitmapFactory.decodeStream(stream)
 
     } finally {

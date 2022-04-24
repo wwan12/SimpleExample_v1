@@ -1,7 +1,7 @@
 package com.hq.tool.model.swipe.adapters
 
-import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import com.hq.tool.model.swipe.SwipeLayout
 import com.hq.tool.model.swipe.implments.SwipeItemMangerImpl
 import com.hq.tool.model.swipe.interfaces.SwipeAdapterInterface

@@ -18,10 +18,10 @@ import java.net.URL
 
 class DownloadService : IntentService("DownloadService") {
 
-    override fun onHandleIntent(intent: Intent) {
+    override fun onHandleIntent(intent: Intent?) {
         try {
         val notificationHelper = NotificationHelper(this)
-        val urlStr = intent.getStringExtra(DOWNLOADURL)
+        val urlStr = intent?.getStringExtra(DOWNLOADURL)
         var ins: InputStream? = null
         var out: FileOutputStream? = null
         val url = URL(urlStr)
@@ -41,7 +41,7 @@ class DownloadService : IntentService("DownloadService") {
         var byteread = 0
         ins = urlConnection.inputStream
         val dir = cacheDir
-        val apkName = urlStr.substring(urlStr.lastIndexOf("/") + 1, urlStr.length)
+        val apkName = urlStr?.substring(urlStr.lastIndexOf("/") + 1, urlStr.length)
         val apkFile = File(dir, apkName)
         out = FileOutputStream(apkFile)
         val buffer = ByteArray(BUFFER_SIZE)

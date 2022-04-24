@@ -123,14 +123,14 @@ fun String.save(activity: AppCompatActivity,key:String): Unit {
 }
 
 fun String.load(activity: AppCompatActivity): String {
-    return activity.getSharedPreferences("activity", AppCompatActivity.MODE_PRIVATE).getString(this,"")
+    return activity.getSharedPreferences("activity", AppCompatActivity.MODE_PRIVATE).getString(this,"")!!
 }
 fun String.savePro(app: Application,key:String): Unit {
     app.getSharedPreferences("activity",AppCompatActivity.MODE_PRIVATE).edit().putString(key,this).apply()
 }
 
 fun String.loadPro(app: Application): String {
-    return app.getSharedPreferences("activity", AppCompatActivity.MODE_PRIVATE).getString(this,"")
+    return app.getSharedPreferences("activity", AppCompatActivity.MODE_PRIVATE).getString(this,"")!!
 }
 
 fun String.promptError(describe: String): Unit {

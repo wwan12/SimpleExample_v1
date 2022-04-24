@@ -13,11 +13,12 @@ import android.content.Intent
 import android.net.Uri
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
+import com.hq.tool.system.CAMERA_REQUEST
+import com.hq.tool.system.openCamera
 import com.hq.tool.R
 import com.hq.tool.ani.CircularAnim
 import com.hq.tool.ani.LoadAnim
-import com.hq.tool.system.CAMERA_REQUEST
-import com.hq.tool.system.openCamera
+
 import com.hq.tool.toast
 
 
@@ -92,7 +93,7 @@ class HtmlActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_html)
-        mBaseUrl = intent.getStringExtra("URL")
+        mBaseUrl = intent.getStringExtra("URL").toString()
         errorUrl = intent.getStringExtra("ERRORURL")
         isSingle=intent.getBooleanExtra("ISSINGLE",false)
         isAutoStyle=intent.getBooleanExtra("ISAUTOSTYLE",false)

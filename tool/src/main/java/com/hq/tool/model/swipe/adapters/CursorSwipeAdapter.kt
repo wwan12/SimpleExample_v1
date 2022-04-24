@@ -2,9 +2,9 @@ package com.hq.tool.model.swipe.adapters
 
 import android.content.Context
 import android.database.Cursor
-import android.support.v4.widget.CursorAdapter
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CursorAdapter
 import com.hq.tool.model.swipe.SwipeLayout
 import com.hq.tool.model.swipe.implments.SwipeItemMangerImpl
 import com.hq.tool.model.swipe.interfaces.SwipeAdapterInterface

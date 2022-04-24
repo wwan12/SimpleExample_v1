@@ -7,9 +7,7 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.Filter
 import android.widget.Filterable
-import com.aisino.jyzy.R
-import com.aisino.jyzy.jyz.JyzQueryActivity
-import kotlinx.android.synthetic.main.item_spinner_text.view.*
+
 
 //
 //class ImsAdapter(val activity: Activity, val list: ArrayList<JyzQueryActivity.ImsItem>): BaseAdapter(), Filterable {

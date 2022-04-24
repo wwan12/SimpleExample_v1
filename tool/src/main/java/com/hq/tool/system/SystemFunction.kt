@@ -19,8 +19,8 @@ import java.io.File
  * @param text 文本
  */
 fun Activity.copyToShear(text: CharSequence) {
-    val clipboard = this.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-    clipboard.primaryClip = ClipData.newPlainText("text", text)
+    var clipboard = this.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+    ClipData.newPlainText("text", text).also { clipboard.primaryClip = it }
 }
 
 
