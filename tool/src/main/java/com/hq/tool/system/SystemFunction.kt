@@ -18,6 +18,7 @@ import java.io.File
  *
  * @param text 文本
  */
+@Deprecated("安卓10不可用")
 fun Activity.copyToShear(text: CharSequence) {
     var clipboard = this.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
     ClipData.newPlainText("text", text).also { clipboard.primaryClip = it }
@@ -45,13 +46,24 @@ fun Activity.openCall(phone: String) {
 }
 
 //打开APK程序代码
-@Deprecated("安卓10不可用")
+
 fun Activity.installApk(file: File) {
-    Log.e("OpenFile", file.name)
-    val intent = Intent()
+   val intent = Intent(Intent.ACTION_VIEW)
     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-    intent.action = android.content.Intent.ACTION_VIEW
-    intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive")
+    if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
+        val uri = FileProvider.getUriForFile(this,  this.packageName+".fileProvider", file)
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        intent.setDataAndType(uri, "application/vnd.android.package-archive")
+    } else {
+        try {
+            val command = arrayOf(this.toString())
+            val builder = ProcessBuilder(*command)
+            builder.start()
+        } catch (ignored: IOException) {
+        }
+        val uri = Uri.fromFile(file)
+        intent.setDataAndType(uri, "application/vnd.android.package-archive")
+    }
     this.startActivity(intent)
 }
 
