@@ -1,3 +1,4 @@
 <resources>
     <string name="zxing_bar_name">ZxingLib</string>
+    <string name="tips_scan_code">请对准二维码</string>
 </resources>

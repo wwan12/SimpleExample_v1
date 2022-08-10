@@ -160,6 +160,8 @@ class Submit {
 
             Method.PUTJSON -> putJson()
 
+            Method.PUT -> put()
+
             Method.IMAGE -> upImage()
 
             Method.DOWNLOAD -> download()
@@ -257,6 +259,29 @@ class Submit {
         json.loge()
         val build = json.toRequestBody("application/json".toMediaTypeOrNull())
         val request = Request.Builder().addheaders(_headers).url(url).post(build).build()
+        val call = okHttpClient.build().newCall(request)
+        call.enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                failCall(e.toString())
+
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                successCall(response)
+            }
+        })
+    }
+
+    private fun put(): Unit {
+        val okHttpClient = OkHttpClient.Builder().cookieJar(cookjar).connectTimeout(outTime, TimeUnit.SECONDS)
+        val build = FormBody.Builder()
+        url.log("post")
+        for (p in _params) {
+            build.add(p.key, p.value.toString())
+            (p.key + "-" + p.value.toString()).log("post")
+        }
+        val body = build.build()
+        val request = Request.Builder().addheaders(_headers).url(cacheUrl).put(body).build()
         val call = okHttpClient.build().newCall(request)
         call.enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
@@ -610,8 +635,11 @@ class Submit {
                 val al = ArrayList<MutableMap<String, Any>>()
                 val als = ArrayList<String>()
                 while (reader.hasNext()) {
-                    if (reader.peek().name.equals(JsonToken.STRING.name)) {
+                    if (reader.peek().name == JsonToken.STRING.name) {
                         als.add(reader.nextString())
+                    } else if(reader.peek().name == JsonToken.NUMBER.name){
+
+                        als.add(reader.nextInt().toString())
                     } else {
                         reader.beginObject()
                         val ba: MutableMap<String, Any> = mutableMapOf()

@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.view.Gravity
 import android.view.View
 import android.widget.Toast
-import com.aisino.tool.http.Http
+import com.hq.tool.http.Http
 import kotlinx.android.synthetic.main.activity_network.*
 
 /**
@@ -44,14 +44,13 @@ class NetWorkActivity : AppCompatActivity() {
                 0 -> Http.get {
                     url = title_network.text.toString()
                     "kotlin"-"1.6"//添加参数
-                    _params.put("kotlin","1.6")//添加参数
                     //请求开始
                     start {  }
                     //请求成功
                     success {
-                        _response["id"]//取出参数id
-                        _response["ids"]//取出集合ids
-                        getAny<ArrayList<String>>("ids")//取出集合ids
+//                        it["id"]//取出参数id
+//                        it["ids"]//取出集合ids
+//                        getEntity<User>("user")//取出实体user
                         !"id"//取出STRING参数id
                         "user".."id"//取出userJOBJ对象中STRING参数id
                     }

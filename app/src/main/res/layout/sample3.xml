@@ -16,7 +16,6 @@
                 android:id="@+id/star"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
-                android:src="@drawable/star"
                 android:layout_width="20dp"
                 android:layout_height="20dp" />
         </RelativeLayout>

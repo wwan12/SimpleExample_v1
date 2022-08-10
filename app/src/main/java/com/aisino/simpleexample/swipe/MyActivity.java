@@ -1,4 +1,4 @@
-package com.hq.tool.model.swipedemo;
+package com.aisino.simpleexample.swipe;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -10,8 +10,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.aisino.simpleexample.R;
+
 import com.hq.tool.model.swipe.SwipeLayout;
-import com.nineoldandroids.view.ViewHelper;
+
 
 public class MyActivity extends Activity {
 
@@ -82,9 +84,9 @@ public class MyActivity extends Activity {
             public void onReveal(View child, SwipeLayout.DragEdge edge, float fraction, int distance) {
                 View star = child.findViewById(R.id.star);
                 float d = child.getHeight() / 2 - star.getHeight() / 2;
-                ViewHelper.setTranslationY(star, d * fraction);
-                ViewHelper.setScaleX(star, fraction + 0.6f);
-                ViewHelper.setScaleY(star, fraction + 0.6f);
+//                ViewHelper.setTranslationY(star, d * fraction);
+//                ViewHelper.setScaleX(star, fraction + 0.6f);
+//                ViewHelper.setScaleY(star, fraction + 0.6f);
             }
         });
 
@@ -137,9 +139,9 @@ public class MyActivity extends Activity {
             public void onReveal(View child, SwipeLayout.DragEdge edge, float fraction, int distance) {
                 View star = child.findViewById(R.id.star);
                 float d = child.getHeight() / 2 - star.getHeight() / 2;
-                ViewHelper.setTranslationY(star, d * fraction);
-                ViewHelper.setScaleX(star, fraction + 0.6f);
-                ViewHelper.setScaleY(star, fraction + 0.6f);
+//                ViewHelper.setTranslationY(star, d * fraction);
+//                ViewHelper.setScaleX(star, fraction + 0.6f);
+//                ViewHelper.setScaleY(star, fraction + 0.6f);
                 int c = (Integer) evaluate(fraction, Color.parseColor("#dddddd"), Color.parseColor("#4C535B"));
                 child.setBackgroundColor(c);
             }

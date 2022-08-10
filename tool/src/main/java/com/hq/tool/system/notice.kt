@@ -8,8 +8,35 @@ import android.graphics.Color
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
+
+/**
+ * 通知是否启动
+ *
+ * @param context
+ */
+fun Activity.enabledNotification(): Boolean {
+    val notification = NotificationManagerCompat.from(this)
+    val isEnabled = notification.areNotificationsEnabled()
+    return isEnabled
+}
 
 
+/**
+ * 打开通知权限
+ *
+ * @param context
+ */
+fun Activity.openNotificationSettingsForApp() {
+    // Links to this app's notification settings.
+    val intent = Intent()
+    intent.action = "android.settings.APP_NOTIFICATION_SETTINGS"
+    intent.putExtra("app_package", packageName)
+    intent.putExtra("app_uid", applicationInfo.uid)
+    // for Android 8 and above
+    intent.putExtra("android.provider.extra.APP_PACKAGE", packageName)
+    startActivity(intent)
+}
 /**
  * Created by lenovo on 2017/12/11.
  * 推送一个前台通知

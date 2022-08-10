@@ -3,12 +3,13 @@ package com.hq.tool.widget.view
 import android.content.Context
 import android.util.AttributeSet
 import android.view.MotionEvent
+import android.widget.GridView
 import android.widget.ListView
 
 /**
- * 可以滑动子控件的listview
+ * 可以滑动子控件的GridView
  */
-class InScorllListView : ListView {
+class InScorllGridView : GridView {
 
     constructor(context: Context) : super(context) {
 
@@ -18,6 +19,15 @@ class InScorllListView : ListView {
 
     constructor(context: Context, attrs: AttributeSet, defStyle: Int) : super(context, attrs, defStyle) {}
 
+    override fun hasFocusable(): Boolean {
+        return false
+        //return super.hasFocusable()
+    }
+
+    override fun isFocused(): Boolean {
+        return false
+        //return super.isFocused()
+    }
     /**
      * 改写MotionEvent 拦截条件,当子View中有需要请求nested scroll 的时候不进行拦截
      */
@@ -39,8 +49,12 @@ class InScorllListView : ListView {
     }
 
     public override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        val expandSpec = MeasureSpec.makeMeasureSpec(Integer.MAX_VALUE shr 2,
-                MeasureSpec.AT_MOST)
+//        val expandSpec = MeasureSpec.makeMeasureSpec(Integer.MAX_VALUE shr 2,
+//                MeasureSpec.AT_MOST)
+//        val expandSpec = MeasureSpec.makeMeasureSpec(1 shl 16, MeasureSpec.AT_MOST)
+        val expandSpec = MeasureSpec.makeMeasureSpec(
+            Int.MAX_VALUE shr 2, MeasureSpec.AT_MOST
+        )
         super.onMeasure(widthMeasureSpec, expandSpec)
     }
 

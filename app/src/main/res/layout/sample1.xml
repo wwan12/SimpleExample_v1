@@ -44,7 +44,6 @@
 
         <ImageView
             android:id="@+id/magnifier2"
-            android:src="@drawable/magnifier"
             android:layout_width="70dp"
             android:background="#f7e79c"
             android:paddingLeft="25dp"
@@ -53,7 +52,6 @@
 
         <ImageView
             android:id="@+id/star2"
-            android:src="@drawable/star"
             android:layout_width="70dp"
             android:background="#4cd964"
             android:paddingLeft="25dp"
@@ -62,7 +60,6 @@
 
         <ImageView
             android:id="@+id/trash2"
-            android:src="@drawable/trash"
             android:layout_width="70dp"
             android:background="@drawable/red"
             android:paddingLeft="25dp"
@@ -85,7 +82,7 @@
                 android:id="@+id/star"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
-                android:src="@drawable/star"
+
                 android:layout_width="20dp"
                 android:layout_height="20dp" />
         </RelativeLayout>

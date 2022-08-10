@@ -10,6 +10,7 @@ import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
+import android.os.ParcelFileDescriptor
 import android.provider.DocumentsContract
 import android.provider.MediaStore
 import android.view.Gravity
@@ -17,8 +18,21 @@ import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.PopupWindow
 import androidx.core.content.FileProvider
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import com.hq.tool.R
 import com.hq.tool.bitmap.drawable2Bitmap
+import com.hq.tool.loge
+import com.luck.picture.lib.PictureSelectionModel
+import com.luck.picture.lib.PictureSelector
+import com.luck.picture.lib.config.PictureConfig
+import com.luck.picture.lib.config.PictureMimeType
+import com.luck.picture.lib.config.PictureMimeType.ofImage
+import com.luck.picture.lib.entity.LocalMedia
+import com.luck.picture.lib.listener.OnResultCallbackListener
 import java.io.File
 import java.io.InputStream
 import java.util.*
@@ -31,6 +45,168 @@ import java.util.*
 val CAMERA_REQUEST = 1000
 val GALLERY_REQUEST = 2000
 var cameraUri:Uri? = null
+
+
+fun Activity.openCameraAndGalleryWindowPro(call:(Bitmap?)->Unit,delete: Boolean=false) {
+    // 将布局文件转换成View对象，popupview 内容视图
+    val mPopView= if (delete){
+        this.layoutInflater.inflate(R.layout.camera_gallery_delete_window, null)
+    }else{
+        this.layoutInflater.inflate(R.layout.camera_gallery_window, null)
+    }
+  //  val mPopView = this.layoutInflater.inflate(R.layout.camera_gallery_window, null)
+    // 将转换的View放置到 新建一个popuwindow对象中
+
+    val mPopupWindow = PopupWindow(mPopView,
+        this.windowManager.defaultDisplay.width-128,
+        LinearLayout.LayoutParams.WRAP_CONTENT)
+    // 点击popuwindow外让其消失
+    mPopupWindow.setOutsideTouchable(true)
+    var openCamera = mPopView.findViewById<Button>(R.id.btn_take_photo)
+    var openGallery = mPopView.findViewById<Button>(R.id.btn_pick_photo)
+    var deleteBitmap = mPopView.findViewById<Button>(R.id.btn_delete_photo)
+    var cancel = mPopView.findViewById<Button>(R.id.btn_cancel)
+    openCamera.setOnClickListener{
+        if (mPopupWindow.isShowing()) {
+            mPopupWindow.dismiss();
+        }
+        openCameraPro(call)
+    }
+    openGallery.setOnClickListener{
+        if (mPopupWindow.isShowing()) {
+            mPopupWindow.dismiss();
+        }
+        openGalleryPro(call)
+    }
+    cancel.setOnClickListener{
+        if (mPopupWindow.isShowing()) {
+            mPopupWindow.dismiss();
+        }
+    }
+    if (deleteBitmap!=null){
+        deleteBitmap.setOnClickListener{
+            if (mPopupWindow.isShowing()) {
+                mPopupWindow.dismiss();
+            }
+            call(null)
+        }
+    }
+    mPopupWindow.setOnDismissListener {
+        val params = this.getWindow().getAttributes()
+        params.alpha = 1f
+        this.getWindow().setAttributes(params)
+    }
+    if (mPopupWindow.isShowing()) {
+        mPopupWindow.dismiss();
+    } else {
+        val params = this.getWindow().getAttributes()
+        params.alpha = 0.7f
+        this.getWindow().setAttributes(params)
+        // 设置PopupWindow 显示的形式 底部或者下拉等
+        // 在某个位置显示
+        mPopupWindow.showAtLocation(mPopView, Gravity.BOTTOM, 0, 0);
+        // 作为下拉视图显示
+        // mPopupWindow.showAsDropDown(mPopView, Gravity.CENTER, 200, 300);
+    }
+}
+fun Activity.openGalleryPro(call:(Bitmap)->Unit) {
+
+    PictureSelector.create(this)
+        .openGallery(ofImage())
+        .imageEngine(GlideEngine.create())
+        .maxSelectNum(1)
+        .minSelectNum(1)
+        .isCompress(true)
+       // .selectionMode(PictureConfig.SINGLE)// 单选或是多选
+        .isWeChatStyle(true)
+        .isCamera(false)
+        .forResult(object : OnResultCallbackListener<LocalMedia> {
+            override fun onResult(result: MutableList<LocalMedia>) {
+                val filePath= if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+                    result[0].androidQToPath;
+                } else {
+                    result[0].realPath;
+                }
+                var b=BitmapFactory.decodeFile(filePath)
+              //  var b=BitmapFactory.decodeFile(result[0].path)
+                if  (b==null){
+                    val uri= Uri.parse(result[0].path)
+                    //   call(BitmapFactory.decodeStream(FileInputStream(file) ))
+                    var pfd: ParcelFileDescriptor?
+                    if (uri != null) {
+                        pfd = this@openGalleryPro.contentResolver.openFileDescriptor(uri, "r")
+                        if (pfd != null) {
+                            val bitmap = BitmapFactory.decodeFileDescriptor(pfd.fileDescriptor);
+                            // show the bitmap, or do something else.
+                            pfd.close()
+                            call(bitmap)
+                        }
+                    }
+
+                }else{
+                    call(b)
+                }
+            }
+            override fun onCancel() {}
+
+
+        })
+}
+
+
+fun Activity.openGalleryPathPro(call:(String)->Unit) {
+
+    PictureSelector.create(this)
+        .openGallery(ofImage())
+        .imageEngine(GlideEngine.create())
+        .maxSelectNum(1)
+        .minSelectNum(1)
+        .isCompress(true)
+        // .selectionMode(PictureConfig.SINGLE)// 单选或是多选
+        .isWeChatStyle(true)
+        .isCamera(false)
+        .forResult(object : OnResultCallbackListener<LocalMedia> {
+            override fun onResult(result: MutableList<LocalMedia>) {
+                call(result[0].path)
+            }
+            override fun onCancel() {}
+
+
+        })
+}
+fun Activity.openCameraPro(call:(Bitmap)->Unit): Unit {
+    PictureSelector.create(this)
+        .openCamera(ofImage())
+        .maxSelectNum(1)
+        .minSelectNum(1)
+        .isCompress(true)
+        .isWeChatStyle(true)
+        .forResult(object : OnResultCallbackListener<LocalMedia> {
+            override fun onResult(result: MutableList<LocalMedia>) {
+                //  if(result[0]!=null&&result[0].path!=null)
+                var b=BitmapFactory.decodeFile(result[0].path)
+                if  (b==null){
+                    val uri= Uri.parse(result[0].path)
+                    //   call(BitmapFactory.decodeStream(FileInputStream(file) ))
+                    var pfd:ParcelFileDescriptor?
+                    if (uri != null) {
+                        pfd = this@openCameraPro.contentResolver.openFileDescriptor(uri, "r")
+                        if (pfd != null) {
+                            val bitmap = BitmapFactory.decodeFileDescriptor(pfd.fileDescriptor);
+                            // show the bitmap, or do something else.
+                            pfd.close()
+                            call(bitmap)
+                        }
+                    }
+                }else{
+                    call(b)
+                }
+                result[0].path.loge()
+            }
+            override fun onCancel() {}
+        })
+}
+
 
 fun Activity.openCameraAndGalleryWindow() {
     // 将布局文件转换成View对象，popupview 内容视图

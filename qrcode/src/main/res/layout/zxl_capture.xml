@@ -17,5 +17,5 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:src="@drawable/zxl_flashlight_selector"
-        android:layout_marginTop="@dimen/zxl_flashlight_margin_top" />
+        android:layout_marginTop="160dp" />
 </FrameLayout>

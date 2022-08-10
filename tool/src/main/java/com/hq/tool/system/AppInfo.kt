@@ -73,10 +73,10 @@ fun Activity.getVersionCode(): Int {
  * 获取当前程序的版本名称
  */
 fun Activity.getVersionName(): String {
-    val manager = this.application.getPackageManager()
+    val manager = this.application.packageManager
     try {
         val info = manager.getPackageInfo(
-                this.application.getPackageName(), 0)
+                this.application.packageName, 0)
         return info.versionName
     } catch (e: NameNotFoundException) {
         

@@ -36,6 +36,7 @@ import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.View;
 
+import com.aisino.qrcode.R;
 import com.google.zxing.Result;
 import com.google.zxing.ResultPoint;
 

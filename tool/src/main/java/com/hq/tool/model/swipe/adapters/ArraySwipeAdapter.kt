@@ -15,16 +15,16 @@ abstract class ArraySwipeAdapter<T> : ArrayAdapter<Any?>, SwipeItemMangerInterfa
 
     constructor(context: Context, resource: Int) : super(context, resource) {}
     constructor(context: Context, resource: Int, textViewResourceId: Int) : super(context, resource, textViewResourceId) {}
-    constructor(context: Context, resource: Int, objects: Array<T>?) : super(context, resource, objects) {}
-    constructor(context: Context, resource: Int, textViewResourceId: Int, objects: Array<T>?) : super(context, resource, textViewResourceId, objects) {}
-    constructor(context: Context, resource: Int, objects: List<T>?) : super(context, resource, objects) {}
-    constructor(context: Context, resource: Int, textViewResourceId: Int, objects: List<T>?) : super(context, resource, textViewResourceId, objects) {}
+    constructor(context: Context, resource: Int, objects: Array<T>) : super(context, resource, objects) {}
+    constructor(context: Context, resource: Int, textViewResourceId: Int, objects: Array<T>) : super(context, resource, textViewResourceId, objects) {}
+    constructor(context: Context, resource: Int, objects: List<T>) : super(context, resource, objects) {}
+    constructor(context: Context, resource: Int, textViewResourceId: Int, objects: List<T>) : super(context, resource, textViewResourceId, objects) {}
 
     override fun notifyDatasetChanged() {
         super.notifyDataSetChanged()
     }
 
-    override fun getView(position: Int, convertView: View, parent: ViewGroup): View {
+    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val v = super.getView(position, convertView, parent)
         mItemManger.bind(v, position)
         return v

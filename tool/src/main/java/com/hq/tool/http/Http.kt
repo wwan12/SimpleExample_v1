@@ -62,6 +62,13 @@ object Http {
         sub.method = Method.DOWNLOAD
         sub.run()
     }
+    var put = fun(function: Submit.() -> Unit) {
+        val sub = Submit()
+        sub.function()
+        sub.method = Method.PUT
+        sub.run()
+    }
+
     var putjson = fun(function: Submit.() -> Unit) {
         val sub = Submit()
         sub.function()

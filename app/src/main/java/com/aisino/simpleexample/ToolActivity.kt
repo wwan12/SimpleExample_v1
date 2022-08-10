@@ -8,11 +8,11 @@ import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
 import androidx.appcompat.widget.AppCompatButton
-import com.aisino.tool.cache.ACache
-import com.aisino.tool.log
-import com.aisino.tool.model.webview.HtmlActivity
-import com.aisino.tool.system.*
-import com.aisino.tool.toast
+import com.hq.tool.cache.ACache
+import com.hq.tool.log
+import com.hq.tool.model.webview.HtmlActivity
+import com.hq.tool.system.*
+import com.hq.tool.toast
 import kotlinx.android.synthetic.main.activity_tool.*
 
 /**
@@ -106,7 +106,7 @@ class ToolActivity : AppCompatActivity() {
         actReust = { requestCode, resultCode, data ->
             if (requestCode == GALLERY_REQUEST) {
                 if (data?.getData() != null) {
-                    showImg.setImageBitmap(data.data.handleImageOnKitKat(this))
+                    showImg.setImageBitmap(data.data?.handleImageOnKitKat(this))
                 }
             }
         }

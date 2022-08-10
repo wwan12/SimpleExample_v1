@@ -72,11 +72,14 @@ fun Activity.onLoadPro(rid:Int): View {
     return log
 }
 
-fun String.dialog(context: Context): Unit {
+fun String.dialog(context: Context,call:(b:Boolean)->Unit): AlertDialog {
     val load = AlertDialog.Builder(context)
             .setMessage(this)
-            .setPositiveButton("确认") { dialog, id -> }
+            .setPositiveButton("确认") { dialog, id ->
+                call(true) }
+            .setNegativeButton("取消") { dialog, id -> call(false)}
             .show()
+    return load
     //   success.setCancelable(true)
 }
 

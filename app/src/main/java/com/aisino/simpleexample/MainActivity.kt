@@ -8,7 +8,6 @@ import com.hq.tool.discreteness.StreamActivity.app
 import androidx.core.content.ContextCompat.getSystemService
 import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 import android.util.Base64
-import com.hq.tool.system.CrashHandler
 import com.hq.tool.system.showNotifictionIcon
 
 
@@ -22,7 +21,7 @@ class MainActivity : AppCompatActivity() {
         showNotifictionIcon(0,R.mipmap.ic_launcher,"ceshi","sd","asc")
        example_list.createButtons(this,exampleList,null)
         // 异常处理，不需要处理时注释掉这两句即可！
-       CrashHandler.openCrashHandler?.init(applicationContext)
+//       CrashHandler.openCrashHandler?.init(applicationContext)
         var updateurl=""
         val param = String(Base64.decode("merchantCode=&merchantName=", Base64.DEFAULT))
 //        Http.post{

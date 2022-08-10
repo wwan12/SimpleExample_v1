@@ -5,16 +5,18 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.aisino.simpleexample.R;
 import com.aisino.simpleexample.swipe.adapter.RecyclerViewAdapter;
+import com.aisino.simpleexample.swipe.adapter.util.DividerItemDecoration;
 import com.hq.tool.model.swipe.util.Attributes;
-import com.hq.tool.model.swipedemo.adapter.util.DividerItemDecoration;
 
 import java.util.ArrayList;
 import java.util.Arrays;

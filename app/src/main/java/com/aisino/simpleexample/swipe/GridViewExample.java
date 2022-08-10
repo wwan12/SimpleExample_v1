@@ -7,9 +7,10 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
-import com.hq.tool.R;
+import com.aisino.simpleexample.R;
+import com.aisino.simpleexample.swipe.adapter.GridViewAdapter;
+
 import com.hq.tool.model.swipe.util.Attributes;
-import com.hq.tool.model.swipedemo.adapter.GridViewAdapter;
 
 public class GridViewExample extends Activity{
 
@@ -19,7 +20,7 @@ public class GridViewExample extends Activity{
         setContentView(R.layout.gridview);
         final GridView gridView = (GridView)findViewById(R.id.gridview);
         final GridViewAdapter adapter = new GridViewAdapter(this);
-        adapter.setMode(Attributes.Mode.Multiple);
+//        adapter.setMode(Attributes.Mode.Multiple);
         gridView.setAdapter(adapter);
         gridView.setSelected(false);
         gridView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {

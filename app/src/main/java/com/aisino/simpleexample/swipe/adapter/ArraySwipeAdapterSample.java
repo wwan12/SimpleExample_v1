@@ -2,8 +2,9 @@ package com.aisino.simpleexample.swipe.adapter;
 
 import android.content.Context;
 
+import com.aisino.simpleexample.R;
 import com.hq.tool.model.swipe.adapters.ArraySwipeAdapter;
-import com.hq.tool.R;
+
 
 import java.util.List;
 

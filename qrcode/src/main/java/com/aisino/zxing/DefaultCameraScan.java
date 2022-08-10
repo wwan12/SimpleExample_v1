@@ -147,18 +147,26 @@ public class DefaultCameraScan extends CameraScan {
         mAmbientLightManager = new AmbientLightManager(mContext);
         if(mAmbientLightManager != null){
             mAmbientLightManager.register();
-            mAmbientLightManager.setOnLightSensorEventListener((dark, lightLux) -> {
-                if(flashlightView != null){
-                    if(dark){
-                        if(flashlightView.getVisibility() != View.VISIBLE){
-                            flashlightView.setVisibility(View.VISIBLE);
-                            flashlightView.setSelected(isTorchEnabled());
-                        }
-                    }else if(flashlightView.getVisibility() == View.VISIBLE && !isTorchEnabled()){
-                        flashlightView.setVisibility(View.INVISIBLE);
-                        flashlightView.setSelected(false);
-                    }
+            mAmbientLightManager.setOnLightSensorEventListener(new AmbientLightManager.OnLightSensorEventListener() {
+                @Override
+                public void onSensorChanged(float lightLux) {
 
+                }
+
+                @Override
+                public void onSensorChanged(boolean dark, float lightLux) {
+                    if(flashlightView != null){
+                        if(dark ){
+                            if(flashlightView.getVisibility() != View.VISIBLE){
+                                flashlightView.setVisibility(View.VISIBLE);
+                                flashlightView.setSelected(isTorchEnabled());
+                            }
+                        }else if(flashlightView.getVisibility() == View.VISIBLE && !isTorchEnabled()){
+                            flashlightView.setVisibility(View.INVISIBLE);
+                            flashlightView.setSelected(false);
+                        }
+
+                    }
                 }
             });
         }

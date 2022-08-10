@@ -1,4 +1,4 @@
-package com.hq.tool.model.swipedemo.adapter;
+package com.aisino.simpleexample.swipe.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -6,7 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.hq.tool.R;
+
+import com.aisino.simpleexample.R;
 import com.hq.tool.model.swipe.adapters.BaseSwipeAdapter;
 
 public class GridViewAdapter extends BaseSwipeAdapter {
