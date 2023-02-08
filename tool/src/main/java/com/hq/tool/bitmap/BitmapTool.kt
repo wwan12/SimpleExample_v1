@@ -598,7 +598,12 @@ fun Bitmap.bitmapToBase64(): String? {
  * @return
  */
 fun String.base64ToBitmap(): Bitmap? {
-    val bytes = Base64.decode(this, Base64.NO_WRAP)
+  val bytes:ByteArray = if (startsWith("data:image/jpeg;base64,")){
+        val s=  substring("data:image/jpeg;base64,".length,length)
+        Base64.decode(s, Base64.NO_WRAP)
+    }else {
+        Base64.decode(this, Base64.NO_WRAP)
+    }
     return BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
 }
 

@@ -62,7 +62,11 @@ fun Activity.Tips(pushId:Int,icon:Int,title: String,text:String,num:Int): Unit {
     val mBuilder = NotificationCompat.Builder(this)
     val notificationIntent = Intent(this, this::class.java)
     notificationIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
-    val intent = PendingIntent.getActivity(this, 0, notificationIntent, 0)
+val intent = if (Build.VERSION.SDK_INT >31) {
+        PendingIntent.getActivity(this, 0, notificationIntent,  1 shl 25)
+    } else {
+        PendingIntent.getActivity(this, 0, notificationIntent,  1 shl 25)
+    }
     mBuilder.setContentTitle(title)//设置通知栏标题
             .setContentText(text)
             .setContentIntent(intent) //设置通知栏单击意图
@@ -93,7 +97,11 @@ fun Activity.showNoticeNew(pushId:Int,icon:Int,title: String,text:String,peer:St
     notificationIntent.putExtra("pushId",pushId)
     notificationIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
     //     notificationIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-    val intent = PendingIntent.getActivity(this, 0, notificationIntent, 0)
+   val intent = if (Build.VERSION.SDK_INT >31) {
+        PendingIntent.getActivity(this, 0, notificationIntent,  1 shl 25)
+    } else {
+        PendingIntent.getActivity(this, 0, notificationIntent,  1 shl 25)
+    }
     mBuilder.setContentTitle(title)//设置通知栏标题
             .setContentText(text)
             .setContentIntent(intent) //设置通知栏单击意图

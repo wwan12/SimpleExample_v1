@@ -55,4 +55,6 @@ dependencies {
     implementation 'androidx.core:core:1.1.0'
     implementation 'io.github.lucksiege:pictureselector:v2.7.3-rc02'
     implementation 'androidx.recyclerview:recyclerview:1.2.0'
+//协程
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.1.1"
 }
