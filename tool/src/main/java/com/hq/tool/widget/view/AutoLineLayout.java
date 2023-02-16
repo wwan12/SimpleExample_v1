@@ -1,4 +1,4 @@
-package com.aisino.grblfz.widget;
+package com.hq.tool.widget.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -6,8 +6,11 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.aisino.grblfz.R;
+import com.hq.tool.R;
 
+/**
+ * 按控件的宽度自动换行LineLayout
+ */
 public class AutoLineLayout extends ViewGroup {
     private int horizontalSpace;
 

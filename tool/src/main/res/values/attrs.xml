@@ -49,5 +49,13 @@
     <attr name="civ_border_overlay" format="boolean" />
     <attr name="civ_circle_background_color" format="color" />
   </declare-styleable>
-
+  <declare-styleable name="AutoLineLayout">
+    <attr name="horizontalSpace" format="dimension"/>
+    <attr name="verticalSpace" format="dimension"/>
+  </declare-styleable>
+  <declare-styleable name="GridRadioGroup">
+    <attr name="numColumns" format="integer" />
+    <attr name="horizontalSpacing" format="dimension" />
+    <attr name="verticalSpacing" format="dimension" />
+  </declare-styleable>
 </resources>

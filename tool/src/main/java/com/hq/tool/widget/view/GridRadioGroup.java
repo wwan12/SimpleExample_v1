@@ -1,4 +1,4 @@
-package com.aisino.grblfz.widget;
+package com.hq.tool.widget.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -6,8 +6,11 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.RadioGroup;
 
-import com.aisino.grblfz.R;
+import com.hq.tool.R;
 
+/**
+ * 网格排列RadioButton
+ */
 public class GridRadioGroup extends RadioGroup {
 
     private static final int VERTICAL_SPACING_DIP = 15;

@@ -3,7 +3,7 @@
 <item>
     <shape>
 <!--        <&#45;&#45;边框颜色&ndash;&gt;-->
-        <solid android:color="@color/mainColor"/>
+        <solid android:color="@color/blackPrimary"/>
     </shape>
 </item>
 <item android:bottom="2px">

@@ -19,6 +19,11 @@
         <entry key="..\:/AndroidStudioProjects/SimpleExample_v2/qrcode/src/main/res/layout/qr_code_activity.xml" value="0.2" />
         <entry key="..\:/AndroidStudioProjects/SimpleExample_v2/qrcode/src/main/res/layout/top_title_back_bar.xml" value="0.1453125" />
         <entry key="..\:/AndroidStudioProjects/SimpleExample_v2/qrcode/src/main/res/layout/zxl_capture.xml" value="0.1453125" />
+        <entry key="..\:/AndroidStudioProjects/SimpleExample_v2/tool/src/main/res/drawable/bottom_line.xml" value="0.22447916666666667" />
+        <entry key="..\:/AndroidStudioProjects/SimpleExample_v2/tool/src/main/res/drawable/check_blue_button.xml" value="0.22447916666666667" />
+        <entry key="..\:/AndroidStudioProjects/SimpleExample_v2/tool/src/main/res/layout/dialog_alert.xml" value="0.20833333333333334" />
+        <entry key="..\:/AndroidStudioProjects/SimpleExample_v2/tool/src/main/res/layout/listview_refresh.xml" value="0.286231884057971" />
+        <entry key="..\:/AndroidStudioProjects/SimpleExample_v2/tool/src/main/res/layout/view_fragment_paper.xml" value="0.286231884057971" />
       </map>
     </option>
   </component>
