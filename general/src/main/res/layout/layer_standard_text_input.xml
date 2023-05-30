@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/dp_16"
+        android:paddingTop="@dimen/dp_16"
+        android:paddingRight="@dimen/dp_16"
+        android:paddingBottom="@dimen/dp_16">
+
+    <TextView
+        android:id="@+id/text_must"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="*"
+        android:padding="@dimen/dp_2"
+        android:textColor="@color/redPrimary"
+        android:textSize="@dimen/sp_content" />
+    <TextView
+        android:id="@+id/text_title"
+        android:layout_width="@dimen/dp_150"
+        android:layout_height="wrap_content"
+        android:textColor="@color/blackPrimary"
+        android:textSize="@dimen/sp_content" />
+
+    <EditText
+        android:id="@+id/text_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@null"
+        android:gravity="right"
+        android:maxLines="1"
+        android:textColor="@color/blackPrimary"
+        android:textSize="@dimen/sp_content" />
+    </LinearLayout>

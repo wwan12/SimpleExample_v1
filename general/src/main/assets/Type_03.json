@@ -1,0 +1,233 @@
+{
+  "actionType": "Save",
+  "lineSets": [
+   {
+      "title": "",
+      "data": "",
+      "dataType": "OnlyData",
+      "must": false,
+      "serviceName": "id"
+    },
+    {
+      "title": "",
+      "data": "",
+      "dataType": "OnlyData",
+      "must": false,
+      "serviceName": "typeOfCompany"
+    },
+    {
+      "title": "",
+      "data": "",
+      "dataType": "OnlyData",
+      "must": false,
+      "serviceName": "sourceType"
+    },
+    {
+      "hint": "",
+      "rule": "None",
+      "title": "统一社会信用代码",
+      "type": "Text",
+      "data": "",
+      "dataType": "Text",
+      "must": true,
+      "serviceName": "socialUnifiedCreditCode"
+    },
+    {
+      "hint": "",
+      "rule": "None",
+      "title": "单位名称",
+      "type": "Text",
+      "data": "",
+      "dataType": "Text",
+      "must": true,
+      "serviceName": "unitName"
+    },
+    {
+      "hint": "请输入单位办公地址",
+      "rule": "None",
+      "title": "单位办公地址",
+      "type": "TextInput",
+      "data": "",
+      "dataType": "Text",
+      "maxLength": 100,
+      "must": true,
+      "serviceName": "address"
+    },
+    {
+      "hint": "请输入法定代表人姓名",
+      "rule": "None",
+      "title": "法定代表人姓名",
+      "type": "TextInput",
+      "data": "",
+      "dataType": "Text",
+      "maxLength": 10,
+      "must": true,
+      "serviceName": "legalRepresentative"
+    },
+    {
+      "hint": "请输入法定代表人身份证号码",
+      "rule": "None",
+      "title": "法定代表人身份证号码",
+      "type": "TextInput",
+      "data": "",
+      "dataType": "Text",
+      "maxLength": 18,
+      "must": true,
+      "serviceName": "representativeIdNum"
+    },
+    {
+      "hint": "请输入法定代表人联系电话",
+      "rule": "Number",
+      "title": "法定代表人联系电话",
+      "type": "TextInput",
+      "data": "",
+      "dataType": "Text",
+      "maxLength": 11,
+      "must": true,
+      "serviceName": "representativePhone"
+    },
+    {
+      "hint": "请输入实际经营联系人姓名",
+      "rule": "None",
+      "title": "实际经营联系人姓名",
+      "type": "TextInput",
+      "data": "",
+      "dataType": "Text",
+      "maxLength": 10,
+      "must": true,
+      "serviceName": "operatorName"
+    },
+    {
+      "hint": "请输入实际经营人电话号码",
+      "rule": "Number",
+      "title": "实际经营人电话号码",
+      "type": "TextInput",
+      "data": "",
+      "dataType": "Text",
+      "maxLength": 11,
+      "must": true,
+      "serviceName": "operatorPhone"
+    },
+    {
+      "hint": "请输入实际经营人身份证号码",
+      "rule": "None",
+      "title": "实际经营人身份证号码",
+      "type": "TextInput",
+      "data": "",
+      "dataType": "Text",
+      "maxLength": 18,
+      "must": true,
+      "serviceName": "operatorIdNum"
+    },
+    {
+      "hint": "请输入实际经营人居住地址",
+      "rule": "None",
+      "title": "实际经营人居住地址",
+      "type": "TextInput",
+      "data": "",
+      "dataType": "Text",
+      "maxLength": 100,
+      "must": true,
+      "serviceName": "operatorAddress"
+    },
+    {
+      "hint": "请输入安保负责人姓名",
+      "rule": "None",
+      "title": "安保负责人姓名",
+      "type": "TextInput",
+      "data": "",
+      "dataType": "Text",
+      "maxLength": 10,
+      "must": true,
+      "serviceName": "defenseName"
+    },
+    {
+      "hint": "请输入安保负责人身份证号码",
+      "rule": "None",
+      "title": "安保负责人身份证号码",
+      "type": "TextInput",
+      "data": "",
+      "dataType": "Text",
+      "maxLength": 18,
+      "must": true,
+      "serviceName": "defenseIdNum"
+    },
+    {
+      "hint": "请输入安保负责人联系方式",
+      "rule": "Number",
+      "title": "安保负责人联系方式",
+      "type": "TextInput",
+      "data": "",
+      "dataType": "Text",
+      "maxLength": 11,
+      "must": true,
+      "serviceName": "defensePhone"
+    },
+    {
+      "hint": "请选择企业类型",
+      "rule": "None",
+      "title": "企业类型",
+      "type": "TextSelect",
+      "data": "",
+      "dataType": "Text",
+      "must": true,
+      "serviceName": "mailType",
+      "options": [
+        {
+          "id": "1",
+          "title": "邮政银行公司"
+        },
+        {
+          "id": "2",
+          "title": "分支机构"
+        },
+        {
+          "id": "3",
+          "title": "许可企业"
+        }
+      ]
+    },
+    {
+      "hint": "请录入企业品牌",
+      "rule": "None",
+      "title": "企业品牌",
+      "type": "TextInput",
+      "data": "",
+      "dataType": "Text",
+      "maxLength": 50,
+      "must": false,
+      "serviceName": "brand"
+    },
+    {
+      "hint": "请录入许可证号",
+      "rule": "None",
+      "title": "许可证号",
+      "type": "TextInput",
+      "data": "",
+      "dataType": "Text",
+      "maxLength": 50,
+      "must": false,
+      "serviceName": "licenseKey"
+    },
+    {
+      "hint": "请选择管辖单位名称",
+      "rule": "None",
+      "title": "管辖单位名称",
+      "type": "TextSelect",
+      "data": "",
+      "dataType": "Text",
+      "must": true,
+      "serviceName": "sysOrgCode"
+    }
+
+  ],
+  "pageName": "企业信息",
+  "pageType": "FormStandard",
+  "urlSet": {
+    "loadUrl": "business/information/getInfoByOilUserId",
+    "postMethod": "PUTJSON",
+    "postUrl": "business/information",
+    "requestMethod": "GET"
+  },
+  "ver": "1.0.0"
+}

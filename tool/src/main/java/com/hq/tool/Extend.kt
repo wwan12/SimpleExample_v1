@@ -36,6 +36,19 @@ fun String.loge(tag:String="tag"): Unit {
 
 }
 
+fun Any?.toStringPro(): String {
+    return this?.toString() ?: ""
+}
+
+fun String?.toBooleanPro(): Boolean {
+    return if (this==null){
+        false
+    }else{
+        val b=  this.toBooleanStrictOrNull()
+        b ?: false
+    }
+}
+
 fun String.toast(context: Context): Unit {
     try {
         Toast.makeText(context, this, Toast.LENGTH_SHORT).show()
@@ -159,15 +172,5 @@ private fun getLineNumber(): Int {
     return Thread.currentThread().stackTrace[2].lineNumber
 }
 
-class If{
-    fun I(b: Boolean): If {
-        return this
-    }
-    fun S(e:()->Unit): If {
-        return this
-    }
-    fun E(e:()->Unit): If {
-        return this
-    }
-}
+
 

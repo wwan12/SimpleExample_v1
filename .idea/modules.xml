@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/SimpleExample_v2.iml" filepath="$PROJECT_DIR$/.idea/modules/SimpleExample_v2.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/SimpleExample_v2.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/SimpleExample_v2.app.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/danmuku/SimpleExample_v2.danmuku.iml" filepath="$PROJECT_DIR$/.idea/modules/danmuku/SimpleExample_v2.danmuku.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/general/SimpleExample_v2.general.iml" filepath="$PROJECT_DIR$/.idea/modules/general/SimpleExample_v2.general.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/independentmodule/SimpleExample_v2.independentmodule.iml" filepath="$PROJECT_DIR$/.idea/modules/independentmodule/SimpleExample_v2.independentmodule.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/pdfread/SimpleExample_v2.pdfread.iml" filepath="$PROJECT_DIR$/.idea/modules/pdfread/SimpleExample_v2.pdfread.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/qrcode/SimpleExample_v2.qrcode.iml" filepath="$PROJECT_DIR$/.idea/modules/qrcode/SimpleExample_v2.qrcode.iml" />

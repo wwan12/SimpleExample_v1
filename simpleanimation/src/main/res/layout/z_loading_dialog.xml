@@ -11,7 +11,7 @@
               android:orientation="vertical"
               android:padding="10dp">
 
-    <com.aisino.simpleanimation.load.ZLoadingView
+    <com.hq.simpleanimation.load.ZLoadingView
         android:id="@+id/z_loading_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -19,7 +19,7 @@
         android:contentDescription="@string/app_name"
         android:scaleType="fitCenter"/>
 
-    <com.aisino.simpleanimation.load.ZLoadingTextView
+    <com.hq.simpleanimation.load.ZLoadingTextView
         android:id="@+id/z_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

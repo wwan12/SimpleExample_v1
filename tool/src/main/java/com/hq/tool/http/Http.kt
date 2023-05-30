@@ -20,6 +20,13 @@ package com.hq.tool.http
  */
 object Http {
 
+    var any = fun(method:Method,function: Submit.() -> Unit) {
+        val sub = Submit()
+        sub.method = method
+        sub.function()
+        sub.run()
+
+    }
     var get = fun(function: Submit.() -> Unit) {
         val sub = Submit()
         sub.method = Method.GET

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="basic_info">基本信息</string>
+    <string name="enterprise_basic_info">企业基本信息</string>
+    <string name="security_protect">内保单位技防</string>
+    <string name="security_staff">安保人员</string>
+    <string name="enter_and_edit">进入填写</string>
+    <string name="shuxing_info">属性信息</string>
+
+    <string name="company_name_1">企业名称</string>
+    <string name="credit_code">社会统一信用代码</string>
+    <string name="company_type">企业类型</string>
+    <string name="f_name">法人姓名</string>
+    <string name="f_card_code">法人身份证号</string>
+    <string name="f_phone">法人联系电话</string>
+    <string name="j_name">经营人姓名</string>
+    <string name="j_card_code">经营人身份证号</string>
+    <string name="j_phone">经营人联系电话</string>
+    <string name="staff_number">员工数量</string>
+    <string name="registrar">登记机关</string>
+    <string name="company_address">企业地址</string>
+    <string name="jurisdiction_unit">管辖单位</string>
+    <string name="id_card_code">证件号码</string>
+    <string name="hint_id_card_code">请输入证件号码</string>
+
+    <string name="pls_select">请选择</string>
+
+    <string name="staff_name">姓名</string>
+    <string name="hint_staff_name">请输入姓名</string>
+    <string name="hint_name_card">请输入姓名或身份证号</string>
+    <string name="staff_card_code">身份证号码</string>
+    <string name="scan_id_card">请刷身份证</string>
+    <string name="staff_phone">联系电话</string>
+    <string name="hint_staff_phone">请输入联系电话</string>
+    <string name="entry_time">入职日期</string>
+    <string name="hint_entry_time">请选择入职日期</string>
+    <string name="leave_office_time">离职日期</string>
+    <string name="hint_leave_office_time">请选择离职日期</string>
+    <string name="address_detail">详细地址</string>
+    <string name="address_hj">户籍地址</string>
+    <string name="hint_address_detail">请输入详细地址</string>
+    <string name="hint_address_detail_select">请选择地址行政区划</string>
+    <string name="add_staff">添加从业人员</string>
+    <string name="add_enter">确定添加</string>
+    <string name="enter">确定</string>
+    <string name="upload_staff_pic">上传从业人员照片</string>
+    <string name="search_fail">未查询到相关信息</string>
+</resources>
