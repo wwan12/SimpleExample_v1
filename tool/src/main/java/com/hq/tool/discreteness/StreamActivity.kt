@@ -6,8 +6,8 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import android.view.View
 import androidx.appcompat.app.AlertDialog
-import com.hq.tool.ani.CircularAnim
-import com.hq.tool.ani.LoadAnim
+import com.hq.tool.animation.CircularAnim
+import com.hq.tool.animation.LoadAnim
 import com.hq.tool.discreteness.StreamActivity.app.mApplication
 
 /**

@@ -1,6 +1,7 @@
 package com.hq.tool.http
 
-import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+import com.hq.tool.http.gson.MyTypeAdapterFactory
 import java.lang.Exception
 
 /**
@@ -39,7 +40,9 @@ class SuccessData (url:String,data: MutableMap<String,Any>){
     }
 
     inline fun <reified E>getEntity (): E {
-       return Gson().fromJson<E>(stringBody,E::class.java)
+     val gson= GsonBuilder().registerTypeAdapterFactory(MyTypeAdapterFactory()).create()
+
+       return gson.fromJson<E>(stringBody,E::class.java)
     }
 
     

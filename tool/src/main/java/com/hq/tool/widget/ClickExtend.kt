@@ -3,7 +3,7 @@ package com.hq.tool.widget
 import android.app.Activity
 import android.view.View
 import androidx.fragment.app.Fragment
-import com.hq.tool.ani.LoadingDialog
+import com.hq.tool.animation.LoadingDialog
 
 private val controllerViews= mutableMapOf<Int,Long>()
 

@@ -1,4 +1,4 @@
-package com.aisino.jwtydjw.publics.widget
+package com.hq.tool.widget.view
 
 import android.animation.ValueAnimator
 import android.annotation.SuppressLint

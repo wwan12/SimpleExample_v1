@@ -4,8 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import android.view.View
-import com.aisino.simpleanimation.circular.CircularAnim
 import com.aisino.simpleexample.R
+import com.hq.tool.animation.circular.CircularAnim
 import kotlinx.android.synthetic.main.activity_circular.*
 
 /**

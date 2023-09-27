@@ -172,6 +172,9 @@ class Submit {
         }
 
     }
+    fun params(params:MutableMap<String,Any>): Unit {
+        _params.putAll(params)
+    }
 
     fun start(start: () -> Unit): Unit {//检查参数
         _start = start
@@ -299,7 +302,7 @@ class Submit {
         val okHttpClient = OkHttpClient.Builder()
         okHttpClient.connectTimeout(5, TimeUnit.SECONDS)
         //     "".toRequestBody("application/json".toMediaTypeOrNull())
-        val json:String=_params.get("json") as String
+        val json:String= Gson().toJson(_params) //_params.get("json") as String
         json.loge()
         val build = json.toRequestBody("application/json".toMediaTypeOrNull())
         val request = Request.Builder().addheaders(_headers).url(url).put(build).build()

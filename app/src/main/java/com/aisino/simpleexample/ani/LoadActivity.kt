@@ -4,10 +4,11 @@ import android.graphics.Color
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import android.view.View
-import com.aisino.simpleanimation.load.ZLoadingDialog
-import com.aisino.simpleanimation.load.LOAD_TYPE
+
 import com.aisino.simpleexample.R
 import com.aisino.simpleexample.createButtons
+import com.hq.tool.animation.load.LOAD_TYPE
+import com.hq.tool.animation.load.ZLoadingDialog
 import kotlinx.android.synthetic.main.activity_load.*
 
 /**

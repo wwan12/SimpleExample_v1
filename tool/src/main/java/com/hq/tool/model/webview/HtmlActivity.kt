@@ -16,8 +16,8 @@ import androidx.appcompat.app.AlertDialog
 import com.hq.tool.system.CAMERA_REQUEST
 import com.hq.tool.system.openCamera
 import com.hq.tool.R
-import com.hq.tool.ani.CircularAnim
-import com.hq.tool.ani.LoadAnim
+import com.hq.tool.animation.CircularAnim
+import com.hq.tool.animation.LoadAnim
 
 import com.hq.tool.toast
 

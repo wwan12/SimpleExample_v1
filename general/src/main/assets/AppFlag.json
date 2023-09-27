@@ -1,0 +1,13 @@
+{
+  "systemFlag": {
+    "isCache": false
+  },
+  "urlFlag": {
+    "baseUrl": "",
+    "codeName": "code",
+    "msgName": "msg",
+    "successCode": "200",
+    "failMsg": ""
+  },
+  "ver": "1.0.0"
+}

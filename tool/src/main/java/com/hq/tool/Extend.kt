@@ -4,13 +4,12 @@ import android.app.Activity
 import android.app.Application
 import android.app.Dialog
 import android.content.Context
-import android.content.SharedPreferences
 import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.hq.tool.ani.LoadingDialog
+import com.hq.tool.animation.LoadingDialog
 
 
 ///第一步：AndroidManifest.xml文件中设置windowSoftInputMode属性为“adjustResize”（可设置在对应页面的Activity中，亦可设置在application节点中）

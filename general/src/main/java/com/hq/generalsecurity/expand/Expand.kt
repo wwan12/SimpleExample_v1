@@ -3,8 +3,12 @@ package com.hq.generalsecurity.expand
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.PopupWindow
+import androidx.viewbinding.ViewBinding
 import com.hq.generalsecurity.adapter.GxAdapter
 import com.github.gzuliyujiang.wheelpicker.contract.LinkageProvider
 import com.google.gson.GsonBuilder
@@ -12,6 +16,10 @@ import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonDeserializer
 import com.google.gson.JsonElement
 import com.hq.generalsecurity.R
+import com.hq.generalsecurity.formwidget.Text
+import com.hq.generalsecurity.formwidget.TextCheck
+import com.hq.generalsecurity.formwidget.TextInput
+import com.hq.generalsecurity.formwidget.TextSelect
 import com.hq.tool.loge
 import com.hq.tool.widget.openAnyViewWindowCenter
 import java.io.BufferedReader
@@ -168,6 +176,8 @@ object Expand {
             return thirdList[s]!!.indexOf(thirdValue)
         }
     }
+
+
     /**
      * GSON的解析自适应程序
      */
@@ -189,4 +199,7 @@ object Expand {
 //        }
         }
     }
+
+
+
 }

@@ -16,8 +16,8 @@
         android:id="@+id/base_tool_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/app_color"
-        android:layout_below="@id/toolbar">
+        android:layout_below="@id/toolbar"
+        android:background="@color/app_color">
 
         <LinearLayout
             android:id="@+id/ll_act_back"

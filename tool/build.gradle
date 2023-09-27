@@ -48,7 +48,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.core:core-ktx:1.1.0'
     implementation 'pub.devrel:easypermissions:3.0.0'
-    api 'com.github.getActivity:XXPermissions:15.0'
+    api 'com.github.getActivity:XXPermissions:18.0'
     api "com.google.code.gson:gson:2.8.6"
     api "com.squareup.okhttp3:okhttp:4.2.2"
     implementation 'org.conscrypt:conscrypt-android:2.2.1'

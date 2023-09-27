@@ -3,7 +3,7 @@ package com.hq.generalsecurity.expand
 
 var BASE_URL=""
 
-
+const val PageFlag="PageFlag"
 
 private var user_p: User?=null
 
