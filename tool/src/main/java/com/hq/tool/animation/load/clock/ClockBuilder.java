@@ -7,7 +7,6 @@ import android.graphics.ColorFilter;
 import android.graphics.Paint;
 import android.graphics.RectF;
 
-import com.hq.simpleanimation.load.clock.CircleBuilder;
 
 public class ClockBuilder extends CircleBuilder
 {

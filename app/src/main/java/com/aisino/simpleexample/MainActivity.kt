@@ -22,8 +22,8 @@ class MainActivity : AppCompatActivity() {
        example_list.createButtons(this,exampleList,null)
         // 异常处理，不需要处理时注释掉这两句即可！
 //       CrashHandler.openCrashHandler?.init(applicationContext)
-        var updateurl=""
-        val param = String(Base64.decode("merchantCode=&merchantName=", Base64.DEFAULT))
+//        var updateurl=""
+//        val param = String(Base64.decode("merchantCode=&merchantName=", Base64.DEFAULT))
 //        Http.post{
 //            url = "https://blog.csdn.net/zybieku/article/details/52925928"
 //            success {
@@ -52,11 +52,11 @@ class MainActivity : AppCompatActivity() {
      */
     external fun stringFromJNI(): String
 
-    companion object {
-
-        // Used to load the 'native-lib' library on application startup.
-        init {
-            System.loadLibrary("native-lib")
-        }
-    }
+//    companion object {
+//
+//        // Used to load the 'native-lib' library on application startup.
+//        init {
+//            System.loadLibrary("native-lib")
+//        }
+//    }
 }

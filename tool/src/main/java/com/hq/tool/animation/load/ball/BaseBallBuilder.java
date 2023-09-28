@@ -5,7 +5,7 @@ import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.Paint;
 import android.graphics.Path;
-import com.hq.simpleanimation.load.ZLoadingBuilder;
+import com.hq.tool.animation.load.ZLoadingBuilder;
 
 import java.util.LinkedList;
 

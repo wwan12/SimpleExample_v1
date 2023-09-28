@@ -1,8 +1,8 @@
-package com.hq.simpleanimation.tween.tween
+package com.hq.tool.animation.tween.tween
 
-import com.hq.simpleanimation.tween.event.EventEmitter
-import com.hq.simpleanimation.tween.tween.targetvalue.TargetValueAbstract
-import com.hq.simpleanimation.tween.tween.targetvalue.TargetValueManager
+import com.hq.tool.animation.tween.event.EventEmitter
+import com.hq.tool.animation.tween.tween.targetvalue.TargetValueAbstract
+import com.hq.tool.animation.tween.tween.targetvalue.TargetValueManager
 
 class Tween {
     //要修改的对象

@@ -1,10 +1,12 @@
-package com.hq.simpleanimation.tween.action
+package com.hq.tool.animation.tween.action
 
 import android.util.Log
 import android.view.View
-import com.hq.simpleanimation.tween.event.EventEmitter
-import com.hq.simpleanimation.tween.tween.Tween
-import com.hq.simpleanimation.tween.tween.TweenManager
+import com.hq.tool.animation.tween.event.EventEmitter
+import com.hq.tool.animation.tween.action.ActionData
+import com.hq.tool.animation.tween.tween.Tween
+import com.hq.tool.animation.tween.tween.TweenManager
+import com.hq.tool.animation.tween.action.ActionParse
 
 /**
  * 动画集合

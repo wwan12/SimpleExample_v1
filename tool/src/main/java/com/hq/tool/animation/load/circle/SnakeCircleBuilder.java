@@ -12,7 +12,7 @@ import android.graphics.PathMeasure;
 import android.graphics.RectF;
 import androidx.annotation.FloatRange;
 
-import com.hq.simpleanimation.load.ZLoadingBuilder;
+import com.hq.tool.animation.load.ZLoadingBuilder;
 
 public class SnakeCircleBuilder extends ZLoadingBuilder {
     //最终阶段

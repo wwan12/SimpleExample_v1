@@ -1,4 +1,4 @@
-package com.hq.simpleanimation.tween.action
+package com.hq.tool.animation.tween.action
 
 import android.app.Activity
 import android.app.Application

@@ -1,4 +1,4 @@
-package com.hq.simpleanimation.tween.tween
+package com.hq.tool.animation.tween.tween
 
 
 import android.os.Handler
@@ -6,6 +6,7 @@ import android.os.Looper
 import android.os.Message
 import android.os.SystemClock
 import android.view.Choreographer
+import com.hq.tool.animation.tween.tween.TweenManager
 import java.util.*
 
 class TweenAnimationHandler(var mTweenManager: TweenManager) {

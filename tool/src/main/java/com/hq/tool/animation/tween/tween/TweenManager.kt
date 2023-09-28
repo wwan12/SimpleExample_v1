@@ -1,4 +1,4 @@
-package com.hq.simpleanimation.tween.tween
+package com.hq.tool.animation.tween.tween
 
 import java.util.*
 

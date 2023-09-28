@@ -10,7 +10,7 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import androidx.annotation.FloatRange;
 
-import com.hq.simpleanimation.load.ZLoadingBuilder;
+import com.hq.tool.animation.load.ZLoadingBuilder;
 
 
 public class SingleCircleBuilder extends ZLoadingBuilder

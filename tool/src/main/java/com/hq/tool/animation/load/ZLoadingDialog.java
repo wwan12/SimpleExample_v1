@@ -8,8 +8,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
-import com.hq.simpleanimation.R;
-import com.hq.simpleanimation.load.ZLoadingTextView;
+import com.hq.tool.R;
+import com.hq.tool.animation.load.ZLoadingTextView;
 
 import java.lang.ref.WeakReference;
 

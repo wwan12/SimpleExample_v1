@@ -1,4 +1,4 @@
-package com.hq.simpleanimation.tween.tween.targetvalue
+package com.hq.tool.animation.tween.tween.targetvalue
 
 import java.lang.reflect.Field
 import java.lang.reflect.Method

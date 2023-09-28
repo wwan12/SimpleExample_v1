@@ -7,6 +7,7 @@
         <entry key="..\:/AndroidStudioProjects/SimpleExample_v2/app/src/main/res/drawable/red.xml" value="0.16145833333333334" />
         <entry key="..\:/AndroidStudioProjects/SimpleExample_v2/app/src/main/res/drawable/white.xml" value="0.16145833333333334" />
         <entry key="..\:/AndroidStudioProjects/SimpleExample_v2/app/src/main/res/layout/activity_circular.xml" value="0.13333333333333333" />
+        <entry key="..\:/AndroidStudioProjects/SimpleExample_v2/app/src/main/res/layout/activity_main.xml" value="0.2441123188405797" />
         <entry key="..\:/AndroidStudioProjects/SimpleExample_v2/app/src/main/res/layout/grid_item.xml" value="0.1453125" />
         <entry key="..\:/AndroidStudioProjects/SimpleExample_v2/app/src/main/res/layout/listview_item.xml" value="0.1453125" />
         <entry key="..\:/AndroidStudioProjects/SimpleExample_v2/app/src/main/res/layout/main.xml" value="0.1453882230328296" />
@@ -38,6 +39,7 @@
         <entry key="..\:/AndroidStudioProjects/SimpleExample_v2/tool/src/main/res/layout/listview_refresh.xml" value="0.286231884057971" />
         <entry key="..\:/AndroidStudioProjects/SimpleExample_v2/tool/src/main/res/layout/view_fragment_paper.xml" value="0.286231884057971" />
         <entry key="..\:/AndroidStudioProjects/SimpleExample_v2/tool/src/main/res/layout/view_listview_refresh.xml" value="0.3229166666666667" />
+        <entry key="..\:/AndroidStudioProjects/SimpleExample_v2/tool/src/main/res/menu/my.xml" value="0.25885416666666666" />
       </map>
     </option>
   </component>

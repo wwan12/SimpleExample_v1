@@ -3,7 +3,7 @@ package com.hq.tool.animation.spotlight;
 import android.graphics.PointF;
 import android.view.View;
 
-import com.hq.simpleanimation.spotlight.OnTargetStateChangedListener;
+import com.hq.tool.animation.spotlight.OnTargetStateChangedListener;
 
 /**
  * Target

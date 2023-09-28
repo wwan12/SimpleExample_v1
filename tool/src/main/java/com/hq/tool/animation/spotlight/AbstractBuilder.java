@@ -5,7 +5,7 @@ import android.graphics.PointF;
 import androidx.annotation.NonNull;
 import android.view.View;
 
-import com.hq.simpleanimation.spotlight.OnTargetStateChangedListener;
+import com.hq.tool.animation.spotlight.OnTargetStateChangedListener;
 
 import java.lang.ref.WeakReference;
 

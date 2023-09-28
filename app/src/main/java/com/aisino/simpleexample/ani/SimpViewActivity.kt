@@ -7,12 +7,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.Toast
-import com.aisino.simpleanimation.load.LOAD_TYPE
-import com.aisino.simpleanimation.load.ZLoadingDialog
-import com.aisino.simpleanimation.simpview.SimpView
-import com.aisino.simpleanimation.simpview.Techniques
 import com.aisino.simpleexample.R
 import com.aisino.simpleexample.createButtons
+import com.hq.tool.animation.simpview.SimpView
+import com.hq.tool.animation.simpview.Techniques
 import kotlinx.android.synthetic.main.activity_simpview.*
 
 /**

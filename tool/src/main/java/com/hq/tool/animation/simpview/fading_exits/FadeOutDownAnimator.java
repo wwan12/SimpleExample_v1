@@ -4,7 +4,7 @@ package com.hq.tool.animation.simpview.fading_exits;
 import android.animation.ObjectAnimator;
 import android.view.View;
 
-import com.hq.simpleanimation.simpview.BaseViewAnimator;
+import com.hq.tool.animation.simpview.BaseViewAnimator;
 
 public class FadeOutDownAnimator extends BaseViewAnimator {
     @Override

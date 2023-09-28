@@ -11,7 +11,7 @@ import androidx.annotation.FloatRange;
 import android.text.TextUtils;
 import android.view.animation.AccelerateInterpolator;
 
-import com.hq.simpleanimation.load.ZLoadingBuilder;
+import com.hq.tool.animation.load.ZLoadingBuilder;
 
 public class TextBuilder extends ZLoadingBuilder
 {

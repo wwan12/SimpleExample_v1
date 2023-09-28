@@ -13,7 +13,7 @@ import android.graphics.RectF;
 import androidx.annotation.FloatRange;
 import android.view.animation.DecelerateInterpolator;
 
-import com.hq.simpleanimation.load.ZLoadingBuilder;
+import com.hq.tool.animation.load.ZLoadingBuilder;
 
 
 public class SearchPathBuilder extends ZLoadingBuilder {

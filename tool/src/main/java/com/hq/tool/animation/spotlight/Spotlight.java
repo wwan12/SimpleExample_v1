@@ -11,9 +11,9 @@ import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.FrameLayout;
 
-import com.hq.simpleanimation.spotlight.OnSpotlightEndedListener;
-import com.hq.simpleanimation.spotlight.OnSpotlightStartedListener;
-import com.hq.simpleanimation.spotlight.SpotlightView;
+import com.hq.tool.animation.spotlight.OnSpotlightEndedListener;
+import com.hq.tool.animation.spotlight.OnSpotlightStartedListener;
+import com.hq.tool.animation.spotlight.SpotlightView;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;

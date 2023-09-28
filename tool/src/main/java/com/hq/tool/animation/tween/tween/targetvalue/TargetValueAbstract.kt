@@ -1,4 +1,4 @@
-package com.hq.simpleanimation.tween.tween.targetvalue
+package com.hq.tool.animation.tween.tween.targetvalue
 
 abstract class TargetValueAbstract {
     private val changeFieldNameSet = mutableSetOf<String>()

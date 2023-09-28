@@ -1,4 +1,4 @@
-package com.hq.simpleanimation.tween.tween.targetvalue
+package com.hq.tool.animation.tween.tween.targetvalue
 
 import android.view.View
 

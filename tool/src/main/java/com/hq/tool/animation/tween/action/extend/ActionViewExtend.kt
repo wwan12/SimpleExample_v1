@@ -1,10 +1,10 @@
-package com.hq.simpleanimation.tween.action.extend
+package com.hq.tool.animation.tween.action.extend
 
 import android.view.View
-import com.hq.simpleanimation.tween.action.ActionData
-import com.hq.simpleanimation.tween.action.RunAction
-import com.hq.simpleanimation.tween.action.chained.SequenceActionRunBuild
-import com.hq.simpleanimation.tween.action.chained.SpawnActionRunBuild
+import com.hq.tool.animation.tween.action.ActionData
+import com.hq.tool.animation.tween.action.RunAction
+import com.hq.tool.animation.tween.action.chained.SequenceActionRunBuild
+import com.hq.tool.animation.tween.action.chained.SpawnActionRunBuild
 
 /**
  * 运行动画

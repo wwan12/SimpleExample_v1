@@ -6,8 +6,8 @@ import androidx.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 
-import com.hq.simpleanimation.R;
-import com.hq.simpleanimation.load.text.TextBuilder;
+import com.hq.tool.R;
+import com.hq.tool.animation.load.text.TextBuilder;
 
 
 public class ZLoadingTextView extends ZLoadingView

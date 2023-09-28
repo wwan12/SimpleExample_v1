@@ -6,8 +6,8 @@ import android.view.View;
 
 import androidx.annotation.LayoutRes;
 
-import com.hq.simpleanimation.spotlight.AbstractBuilder;
-import com.hq.simpleanimation.spotlight.OnTargetStateChangedListener;
+import com.hq.tool.animation.spotlight.AbstractBuilder;
+import com.hq.tool.animation.spotlight.OnTargetStateChangedListener;
 
 /**
  * Target

@@ -11,9 +11,8 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.hq.simpleanimation.R;
-import com.hq.simpleanimation.spotlight.AbstractBuilder;
-import com.hq.simpleanimation.spotlight.OnTargetStateChangedListener;
+import com.hq.tool.R;
+
 
 /**
  * Position Target

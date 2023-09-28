@@ -5,7 +5,7 @@ package com.hq.tool.animation.simpview.attention;
 import android.animation.ObjectAnimator;
 import android.view.View;
 
-import com.hq.simpleanimation.simpview.BaseViewAnimator;
+import com.hq.tool.animation.simpview.BaseViewAnimator;
 
 public class ShakeAnimator extends BaseViewAnimator {
     @Override

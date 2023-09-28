@@ -9,9 +9,9 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.hq.simpleanimation.R;
-import com.hq.simpleanimation.load.ZLoadingBuilder;
-import com.hq.simpleanimation.load.ZLoadingDrawable;
+import com.hq.tool.R;
+import com.hq.tool.animation.load.ZLoadingBuilder;
+import com.hq.tool.animation.load.ZLoadingDrawable;
 
 @SuppressLint("AppCompatCustomView")
 public class ZLoadingView extends ImageView

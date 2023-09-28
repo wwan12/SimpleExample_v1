@@ -9,8 +9,8 @@ import android.view.animation.Interpolator;
 
 import androidx.core.view.ViewCompat;
 
-import com.hq.simpleanimation.simpview.BaseViewAnimator;
-import com.hq.simpleanimation.simpview.Techniques;
+import com.hq.tool.animation.simpview.BaseViewAnimator;
+import com.hq.tool.animation.simpview.Techniques;
 
 import java.util.ArrayList;
 import java.util.List;

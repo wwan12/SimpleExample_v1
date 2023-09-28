@@ -1,4 +1,4 @@
-package com.hq.simpleanimation.tween.action.chained
+package com.hq.tool.animation.tween.action.chained
 
 class SequenceActionBuild : AbstractActionBuild<SequenceActionBuild>() {
     override val type: ActionBuildTypeEnum

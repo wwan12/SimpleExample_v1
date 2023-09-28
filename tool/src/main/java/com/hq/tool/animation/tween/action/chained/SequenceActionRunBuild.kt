@@ -1,8 +1,8 @@
-package com.hq.simpleanimation.tween.action.chained
+package com.hq.tool.animation.tween.action.chained
 
 import android.view.View
-import com.hq.simpleanimation.tween.action.ActionData
-import com.hq.simpleanimation.tween.action.RunAction
+import com.hq.tool.animation.tween.action.ActionData
+import com.hq.tool.animation.tween.action.RunAction
 
 /**
  * 顺序动画  可以执行动画的class

@@ -1,6 +1,6 @@
-package com.hq.simpleanimation.tween.action
+package com.hq.tool.animation.tween.action
 
-import com.hq.simpleanimation.tween.tween.Tween
+import com.hq.tool.animation.tween.tween.Tween
 
 class ActionData {
     companion object {

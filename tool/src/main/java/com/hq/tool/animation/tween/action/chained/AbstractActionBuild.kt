@@ -1,7 +1,7 @@
-package com.hq.simpleanimation.tween.action.chained
+package com.hq.tool.animation.tween.action.chained
 
-import com.hq.simpleanimation.tween.action.Action
-import com.hq.simpleanimation.tween.action.ActionData
+import com.hq.tool.animation.tween.action.Action
+import com.hq.tool.animation.tween.action.ActionData
 
 /**
  * 抽象的  action 链式build

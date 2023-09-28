@@ -8,7 +8,7 @@ import android.graphics.ColorFilter;
 import android.graphics.Paint;
 import androidx.annotation.FloatRange;
 
-import com.hq.simpleanimation.load.ZLoadingBuilder;
+import com.hq.tool.animation.load.ZLoadingBuilder;
 
 
 public class RotateCircleBuilder extends ZLoadingBuilder

@@ -1,9 +1,9 @@
-package com.hq.simpleanimation.tween.action
+package com.hq.tool.animation.tween.action
 
 import android.view.View
-import com.hq.simpleanimation.tween.tween.Easing
-import com.hq.simpleanimation.tween.tween.Tween
-import com.hq.simpleanimation.tween.tween.TweenManager
+import com.hq.tool.animation.tween.tween.Easing
+import com.hq.tool.animation.tween.tween.Tween
+import com.hq.tool.animation.tween.tween.TweenManager
 
 class ActionParse {
     val component: View
@@ -114,13 +114,13 @@ class ActionParse {
                     )
                 )
             ActionData.rotateTo,
-            ActionData.rotateBy->
+            ActionData.rotateBy ->
                 tween.to(mutableMapOf("rotation" to animationData.rotation))
             ActionData.rotateXTo,
-            ActionData.rotateXBy->
+            ActionData.rotateXBy ->
                 tween.to(mutableMapOf("rotationX" to animationData.rotationX))
             ActionData.rotateYTo,
-            ActionData.rotateYBy->
+            ActionData.rotateYBy ->
                 tween.to(mutableMapOf("rotationY" to animationData.rotationY))
             ActionData.callFunc ->
                 if (animationData.callback != null) {
