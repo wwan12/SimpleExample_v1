@@ -1,4 +1,4 @@
-package com.aisino.zhly.utils
+package com.hq.tool.system
 
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.MainScope

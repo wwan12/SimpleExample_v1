@@ -3,48 +3,76 @@ package com.hq.generalsecurity.expand
 import com.hq.tool.http.Method
 import java.io.Serializable
 import java.util.ArrayList
-
-import com.google.gson.JsonDeserializationContext
-
-import com.google.gson.JsonElement
-
-import com.google.gson.JsonDeserializer
-import com.hq.tool.loge
-import java.lang.reflect.Type
+import com.hq.generalsecurity.expand.Expand.http
+import com.hq.tool.http.FailData
 
 
-
-//data class GX(var code :String, var msg: String,var data:MutableList<GXData>)
-//data class GXData(var id :String, var label: String,var children:MutableList<GXData>?)
 /**
  * rule 数据正则
  * serviceName 后端名称
  */
-data class PageSet(val version:VersionInfo, val load: UrlSet?,val post: UrlSet?, val pageType: PageType, val pageName:String, var actionType: FormAction, val lineSets: ArrayList<LineSet>,val extra:MutableMap<String,String>):Serializable
-
-data class VersionInfo(val code:String,val name:String)
-
-data class UrlSet(val loadUrl:String,val requestMethod: Method,val loadParams:ArrayList<LoadParam>):Serializable
-
-data class LoadParam(val name:String,var def:String,val cache:CacheType)
-
-open class LineSet(var dataType: DataType, var must:Boolean=false, var data:String="", var servicePath:ArrayList<String>?=null, var serviceName:String="", var onClick:ClickAction=ClickAction.None, var onLongClick:ClickAction=ClickAction.None):Serializable
-
-data class DataSet(var title:String): LineSet(DataType.OnlyData)
+open class PageSet(var version:VersionInfo, var pageType: PageType, var pageName:String, var action: PageAction,var theme: Theme?=null):Serializable
 
 
-data class TextSet(var type: TextType, var title:String, var hint:String, var rule: Rule?, var maxLength:Int, var options:ArrayList<Option>?): LineSet(
-    DataType.Text
+data class ListStandardPage( val load: UrlInfo?,val rowName:String,val onItemClick:ClickAction,val route: String,val lineSets: ArrayList<LineSet>) : PageSet(
+    VersionInfo("1",""),
+    PageType.ListStandard,
+    "",
+    PageAction(FormAction.None,FormAction.None)
+){
+    fun load(page:Int,pageSize:Int,successCall:(ArrayList<MutableMap<String, Any>>)->Unit,failCall:(FailData)->Unit): Unit {
+        val pageName= load!!.loadParams.find { it.name=="PageName" }
+        if (pageName!=null){
+            pageName.def=page.toString()
+        }else{
+            load.loadParams.add(LoadParam("page",page.toString(),CacheType.None))
+        }
+        val pageSizeName= load.loadParams.find { it.name=="PageSizeName" }
+        if (pageSizeName!=null){
+            pageSizeName.def=pageSize.toString()
+        }else{
+            load.loadParams.add(LoadParam("pageSize","10",CacheType.None))
+        }
+        http(load, {
+            val list = it.tryGet<ArrayList<MutableMap<String, Any>>>(rowName)
+            if (list!=null){
+                successCall(list)
+            }else{
+                failCall(FailData(load.loadUrl,"No Data"))
+            }
+        },failCall)
+    }
+}
+
+data class FreeStandardPage( val load: UrlInfo?,val lineSets: ArrayList<LineSet>) : PageSet(
+    VersionInfo("1",""),
+    PageType.FreeStandard,
+    "",
+    PageAction(FormAction.None,FormAction.None)
 )
 
-data class Option(val id:String,val title:String,val childOptions:ArrayList<Option>):Serializable
+data class ViewPagerStandardPage(val pageNames: ArrayList<Link>) : PageSet(
+    VersionInfo("1",""),
+    PageType.ViewPagerStandard,
+    "",
+    PageAction(FormAction.None,FormAction.None)
+)
 
-data class ImgSet(var title:String,var format:ImgFormat,var action:ClickAction): LineSet(DataType.Img)
+data class VersionInfo(val code:String,val name:String):Serializable
+
+data class PageAction(val barRight:FormAction,val pageBottom:FormAction):Serializable
+
+data class UrlInfo(val loadUrl:String,val requestMethod: Method,val loadParams:ArrayList<LoadParam>):Serializable
+
+data class LoadParam(val name:String,var def:String,val cache:CacheType):Serializable
+
+data class Link(val pageName: String):Serializable
 
 enum class PageType{
     FormStandard,
     ListStandard,
-    FreeStandard
+    FreeStandard,
+    ViewPagerStandard
 }
 
 enum class CacheType{
@@ -58,40 +86,12 @@ enum class FormAction{
     Add,
     Save,
     Change,
-    Delete
+    Delete,
+    Go
 }
 
 
 
-enum class TextType{
-    Text,
-    TextInput,
-    TextSelect,
-    TextCheck,
-}
 
-enum class DataType{
-    OnlyData,
-    Text,
-    Img,
-}
-enum class Rule{
-    None,
-    Number,
-    Phone,
-    IdCard,
-    Reg,
-}
-enum class ImgFormat{
-    Base64,
-    Stream
-}
-
-enum class ClickAction{
-    None,
-    Camera,
-    Gallery,
-    Total
-}
 
 

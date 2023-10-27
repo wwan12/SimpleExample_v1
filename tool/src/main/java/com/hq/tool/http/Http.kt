@@ -67,6 +67,7 @@ object Http {
         val sub = Submit()
         sub.function()
         sub.method = Method.DOWNLOAD
+        sub.returnType = ReturnType.FILE
         sub.run()
     }
     var put = fun(function: Submit.() -> Unit) {

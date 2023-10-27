@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
 
             android:layout_weight="1"
-            android:text="@string/jurisdiction_unit" />
+             />
 
         <ImageView
             android:id="@+id/gx_close"
@@ -31,7 +31,7 @@
         android:layout_height="1dp"
         android:layout_marginLeft="@dimen/dp_16"
         android:layout_marginRight="@dimen/dp_16"
-        app:srcCompat="@color/garyback" />
+        app:srcCompat="@color/gray" />
     <ListView
         android:id="@+id/gx_list"
         android:layout_width="match_parent"

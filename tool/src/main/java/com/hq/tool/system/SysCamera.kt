@@ -154,7 +154,7 @@ fun Activity.openGalleryPro(call:(Bitmap)->Unit) {
 }
 
 
-fun Activity.openGalleryPathPro(call:(String)->Unit) {
+fun Activity.openGalleryPathPro(call:(String?)->Unit) {
 
     PictureSelector.create(this)
         .openGallery(ofImage())
@@ -169,11 +169,31 @@ fun Activity.openGalleryPathPro(call:(String)->Unit) {
             override fun onResult(result: MutableList<LocalMedia>) {
                 call(result[0].path)
             }
-            override fun onCancel() {}
+            override fun onCancel() {
+                call(null)
+            }
 
 
         })
 }
+fun Activity.openCameraPathPro(call:(String?)->Unit): Unit {
+    PictureSelector.create(this)
+        .openCamera(ofImage())
+        .maxSelectNum(1)
+        .minSelectNum(1)
+        .isCompress(true)
+        .isWeChatStyle(true)
+        .forResult(object : OnResultCallbackListener<LocalMedia> {
+            override fun onResult(result: MutableList<LocalMedia>) {
+                call(result[0].path)
+            }
+            override fun onCancel() {
+                call(null)
+            }
+        })
+}
+
+
 fun Activity.openCameraPro(call:(Bitmap)->Unit): Unit {
     PictureSelector.create(this)
         .openCamera(ofImage())

@@ -80,7 +80,7 @@ val ACCOUNT_NUMBER_PATTERN: Pattern = Pattern
          * @param s
          * @return
          */
-        fun String.isIDCode(s: String?): Boolean {
+        fun String.isIDCode(): Boolean {
             val m: Matcher = ID_CARD.matcher(this)
             return m.matches()
         }
@@ -91,7 +91,7 @@ val ACCOUNT_NUMBER_PATTERN: Pattern = Pattern
          * @param s
          * @return
          */
-        fun String.isCode(s: String?): Boolean {
+        fun String.isCode(): Boolean {
             val m: Matcher = CODE_PATTERN.matcher(this)
             return m.matches()
         }
@@ -102,7 +102,7 @@ val ACCOUNT_NUMBER_PATTERN: Pattern = Pattern
          * @param s
          * @return
          */
-        fun String.isPhoneNumber(s: String?): Boolean {
+        fun String.isPhoneNumber(): Boolean {
             val m: Matcher = PHONE_NUMBER_PATTERN.matcher(this)
             return m.matches()
         }
@@ -113,7 +113,7 @@ val ACCOUNT_NUMBER_PATTERN: Pattern = Pattern
          * @param s
          * @return
          */
-        fun String.isPostCode(s: String?): Boolean {
+        fun String.isPostCode(): Boolean {
             val m: Matcher = POST_CODE_PATTERN.matcher(this)
             return m.matches()
         }
@@ -124,7 +124,7 @@ val ACCOUNT_NUMBER_PATTERN: Pattern = Pattern
          * @param s
          * @return
          */
-        fun String.isArea(s: String?): Boolean {
+        fun String.isArea(): Boolean {
             val m: Matcher = AREA_PATTERN.matcher(this)
             return m.matches()
         }
@@ -135,7 +135,7 @@ val ACCOUNT_NUMBER_PATTERN: Pattern = Pattern
          * @param s
          * @return
          */
-        fun String.isMobileNumber(s: String?): Boolean {
+        fun String.isMobileNumber(): Boolean {
             val m: Matcher = MOBILE_NUMBER_PATTERN.matcher(this)
             return m.matches()
         }

@@ -1,2 +1,3 @@
 include ':pdfread'
+include ':zip'
 include ':app', ':simpleanimation', ':tool', ':danmuku', ':independentmodule', ':qrcode','general'

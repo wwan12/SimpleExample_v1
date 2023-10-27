@@ -27,7 +27,7 @@ override fun onTabReselected(tab: TabLayout.Tab?) {
 })
  *
  */
-class FragmentAdapter(private val context: Context, fm: FragmentManager, private val list: List<Fragment>, private val titles: Array<String>) : FragmentPagerAdapter(fm) {
+class FragmentAdapter(fm: FragmentManager, private val list: List<Fragment>, private val titles: Array<String>) : FragmentPagerAdapter(fm) {
     override fun getItem(position: Int): Fragment {
         return list[position]
     }

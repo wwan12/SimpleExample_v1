@@ -3,9 +3,10 @@
     package="com.hq.generalsecurity">
 
     <application>
-        <activity android:name=".activity.MainActivity" android:screenOrientation="portrait"/>
         <activity android:name=".standardform.StandardFormActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".staff.SecurityAddActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".staff.SecurityListActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".standardform.StandardFreeActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".standardform.ListActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".standardform.WebActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".standardform.ViewPagerActivity" android:screenOrientation="portrait"/>
     </application>
 </manifest>

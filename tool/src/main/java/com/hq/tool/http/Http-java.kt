@@ -1,6 +1,8 @@
 package com.hq.tool.http
 
 import android.util.Log
+import com.hq.tool.log
+import com.hq.tool.loge
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -89,11 +91,4 @@ fun postJson(url: String?,headers: Headers, json: String?, kCall: KCall) {
 interface KCall {
     fun successCall(json:String)
     fun failCall(msg:String)
-}
-
-fun String.log( msg:String): Unit {
-    Log.e(msg,this)
-}
-fun String.loge( msg:String): Unit {
-    Log.e(msg,this)
 }

@@ -18,6 +18,7 @@
             <option value="$PROJECT_DIR$/qrcode" />
             <option value="$PROJECT_DIR$/simpleanimation" />
             <option value="$PROJECT_DIR$/tool" />
+            <option value="$PROJECT_DIR$/zip" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

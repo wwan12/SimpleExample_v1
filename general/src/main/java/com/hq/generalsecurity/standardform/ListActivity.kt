@@ -1,25 +1,26 @@
 package com.hq.generalsecurity.standardform
 
-import android.view.View
 import android.widget.BaseAdapter
-import androidx.viewbinding.ViewBinding
 import com.hq.generalsecurity.BaseActivity
 import com.hq.generalsecurity.databinding.ActivityListBinding
 import com.hq.generalsecurity.databinding.ItemListBinding
 import com.hq.generalsecurity.expand.*
-import com.hq.generalsecurity.formwidget.Parent
-import com.hq.generalsecurity.formwidget.ParentLayout
-import com.hq.tool.http.Http
+import com.hq.generalsecurity.expand.Expand.http
+import com.hq.generalsecurity.widget.form.ParentLayout
+import com.hq.generalsecurity.set.Flag
+import com.hq.tool.toStringPro
 import com.hq.tool.toast
 import com.hq.tool.widget.adapter.SimpleBindAdapter
-import okhttp3.Headers
 
+/**
+ * 单列表页面
+ */
 class ListActivity: BaseActivity<ActivityListBinding>() {
 
-    lateinit var pageSet: PageSet
+    lateinit var pageSet: ListStandardPage
 
     var page=1
-    var pageSize="10"
+    var pageSize=10
 
     val layouts= mutableListOf<ParentLayout>()
 
@@ -29,8 +30,8 @@ class ListActivity: BaseActivity<ActivityListBinding>() {
 
     override fun initView() {
 
-        pageSet = intent.getSerializableExtra(PageFlag) as PageSet
-
+        pageSet = intent.getSerializableExtra(Flag.PAGE_FLAG) as ListStandardPage
+        setTitle(pageSet.pageName)
         viewBinding.listRefreshLayout.setOnRefreshListener {
             page=1
             load(true)
@@ -45,36 +46,30 @@ class ListActivity: BaseActivity<ActivityListBinding>() {
     }
 
     fun load(clear:Boolean): Unit {
-        val pageName= pageSet.load!!.loadParams.find { it.name=="PageName" }
-        if (pageName!=null){
-            pageName.def=page.toString()
-        }
-        val pageSizeName= pageSet.load!!.loadParams.find { it.name=="PageSizeName" }
-        if (pageSizeName!=null){
-            pageSizeName.def=pageSize
-        }
-        http(pageSet.load, {
+
+        pageSet.load(page,pageSize,{
             if (clear){
                 layouts.clear()
             }
-            val list = it.tryGet<ArrayList<MutableMap<String, Any>>>(pageSet.extra["rowName"].toString())
-            if (list!=null){
-                for (m in list){
-                    layouts.add(ParentLayout(this))
-                }
+            for (m in it){
+                layouts.add(ParentLayout(this))
             }
             if (viewBinding.listRefresh.adapter==null){
+                if (pageSet.theme!=null){
+
+                }
                 viewBinding.listRefresh.adapter = SimpleBindAdapter(
                     this@ListActivity,
                     ItemListBinding::class.java,
                     layouts
                 ) { layout, bind ->
-                    layout.show(bind.root,pageSet.lineSets,list!![layouts.indexOf(layout)])
+                    layout.show(bind.root,pageSet.lineSets,it[layouts.indexOf(layout)])
                 }
             }else{
                 (viewBinding.listRefresh.adapter as BaseAdapter).notifyDataSetChanged()
             }
-
-        }, { "连接超时，请确认网络状态是否联通".toast(this@ListActivity) })
+        },{
+            "连接超时，请确认网络状态是否联通".toast(this@ListActivity)
+        })
     }
 }

@@ -135,7 +135,24 @@ fun ImageView.downloadBitmap(imageUrl: String){
         }
     }
 }
+/**
+ * 从网上下载图片
+ *
+ * @param imageUrl
+ * @return
+ */
+fun String.downloadBitmap(call:(Bitmap?)->Unit){
+    var bitmap: Bitmap? = null
+    thread(start = true) {
+        try {
+            bitmap = BitmapFactory.decodeStream(URL(this).openStream())
+            call(bitmap)
+        }catch (e:Exception){
+            call(null)
+        }
 
+    }
+}
 /**
  * drawable 转bitmap
  *
@@ -564,20 +581,19 @@ fun Bitmap.copy(path: String): Bitmap {
 /*
      * bitmap转base64
      * */
-fun Bitmap.bitmapToBase64(): String? {
-    var result: String? = null
+fun Bitmap.bitmapToBase64(): String {
+    var result: String
     var baos: ByteArrayOutputStream? = null
     try {
-        if (this != null) {
-            baos = ByteArrayOutputStream()
-            this.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-            baos.flush()
-            baos.close()
-            val bitmapBytes = baos.toByteArray()
-            result = Base64.encodeToString(bitmapBytes, Base64.NO_WRAP)
-        }
+        baos = ByteArrayOutputStream()
+        this.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+        baos.flush()
+        baos.close()
+        val bitmapBytes = baos.toByteArray()
+        result = Base64.encodeToString(bitmapBytes, Base64.NO_WRAP)
     } catch (e: IOException) {
         e.printStackTrace()
+        result=""
     } finally {
         try {
             if (baos != null) {
@@ -598,13 +614,18 @@ fun Bitmap.bitmapToBase64(): String? {
  * @return
  */
 fun String.base64ToBitmap(): Bitmap? {
-  val bytes:ByteArray = if (startsWith("data:image/jpeg;base64,")){
-        val s=  substring("data:image/jpeg;base64,".length,length)
-        Base64.decode(s, Base64.NO_WRAP)
-    }else {
-        Base64.decode(this, Base64.NO_WRAP)
+    return try {
+        val bytes: ByteArray = if (startsWith("data:image/jpeg;base64,")) {
+            val s = substring("data:image/jpeg;base64,".length, length)
+            Base64.decode(s, Base64.NO_WRAP)
+        } else {
+            Base64.decode(this, Base64.NO_WRAP)
+        }
+        BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+    } catch (e: Exception) {
+        null
     }
-    return BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+
 }
 
 

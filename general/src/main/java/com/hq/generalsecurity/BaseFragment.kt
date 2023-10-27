@@ -16,8 +16,8 @@ import java.lang.reflect.ParameterizedType
  * 时间: 2021/8/10 10:52
  * 功能:
  */
-abstract class BaseFragment<T : ViewBinding?> : Fragment() {
-    protected var viewBinding: T? = null
+abstract class BaseFragment<T : ViewBinding> : Fragment() {
+    lateinit var viewBinding: T
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -39,7 +39,7 @@ abstract class BaseFragment<T : ViewBinding?> : Fragment() {
         } catch (e: InvocationTargetException) {
             e.printStackTrace()
         }
-        return viewBinding!!.root
+        return viewBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -133,7 +133,8 @@ class Submit {
             }
         }
         if (url == ""||!url.contains("http")){
-            "url设置错误".loge("http")
+//            "url设置错误".loge("http")
+            _fail(FailData(url,"url设置错误"))
             return
         }
         tag = method.name
@@ -231,7 +232,7 @@ class Submit {
     }
 
     private fun post(): Unit {
-        val okHttpClient = OkHttpClient.Builder().cookieJar(cookjar).connectTimeout(outTime, TimeUnit.SECONDS)
+        val okHttpClient = OkHttpClient.Builder().cookieJar(cookjar).connectTimeout(outTime, TimeUnit.SECONDS).readTimeout(outTime, TimeUnit.SECONDS)
         val build = FormBody.Builder()
         url.log("post")
         for (p in _params) {
@@ -256,7 +257,7 @@ class Submit {
 
     private fun postJson(): Unit {
          val okHttpClient = OkHttpClient.Builder()
-        okHttpClient.connectTimeout(5, TimeUnit.SECONDS)
+        okHttpClient.connectTimeout(5, TimeUnit.SECONDS).readTimeout(outTime, TimeUnit.SECONDS)
         //     "".toRequestBody("application/json".toMediaTypeOrNull())
         val json:String=_params.get("json") as String
         json.loge()
@@ -276,7 +277,7 @@ class Submit {
     }
 
     private fun put(): Unit {
-        val okHttpClient = OkHttpClient.Builder().cookieJar(cookjar).connectTimeout(outTime, TimeUnit.SECONDS)
+        val okHttpClient = OkHttpClient.Builder().cookieJar(cookjar).connectTimeout(outTime, TimeUnit.SECONDS).readTimeout(outTime, TimeUnit.SECONDS)
         val build = FormBody.Builder()
         url.log("post")
         for (p in _params) {
@@ -320,7 +321,7 @@ class Submit {
     }
 
     private fun upImage() {
-        val mOkHttpClient = OkHttpClient.Builder().cookieJar(cookjar).connectTimeout(outTime, TimeUnit.SECONDS)
+        val mOkHttpClient = OkHttpClient.Builder().cookieJar(cookjar).connectTimeout(outTime, TimeUnit.SECONDS).readTimeout(outTime, TimeUnit.SECONDS)
         val build = MultipartBody.Builder().setType(MultipartBody.FORM)
         for (p in _params) {
             if (p.value is File) {
@@ -350,7 +351,7 @@ class Submit {
     }
 
     private fun upFile(){
-        val mOkHttpClient = OkHttpClient.Builder().cookieJar(cookjar).connectTimeout(outTime, TimeUnit.SECONDS)
+        val mOkHttpClient = OkHttpClient.Builder().cookieJar(cookjar).connectTimeout(outTime, TimeUnit.SECONDS).writeTimeout(outTime, TimeUnit.SECONDS)
         val build = MultipartBody.Builder().setType(MultipartBody.FORM)
         for (p in _params) {
             if (p.value is File) {
@@ -448,7 +449,7 @@ class Submit {
 
 
     private fun download(): Unit {
-        val mOkHttpClient = OkHttpClient.Builder().cookieJar(cookjar).connectTimeout(outTime, TimeUnit.SECONDS)
+        val mOkHttpClient = OkHttpClient.Builder().cookieJar(cookjar).connectTimeout(outTime, TimeUnit.SECONDS).readTimeout(outTime, TimeUnit.SECONDS)
         val request = Request.Builder().url(cacheUrl).build()
         mOkHttpClient.build().newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
@@ -505,6 +506,9 @@ class Submit {
             }
             ReturnType.STRING -> {
                 _response.put(ReturnType.STRING.name, response.body!!.string())
+            }
+            ReturnType.FILE -> {
+                _response.put(ReturnType.FILE.name, downloadPath)
             }
         }
         toUI.post {

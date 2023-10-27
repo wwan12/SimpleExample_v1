@@ -81,7 +81,6 @@ class WebActivity:BaseActivity<ActivityWebBinding>() {
         viewBinding.webView.settings.setRenderPriority(WebSettings.RenderPriority.HIGH)
         viewBinding.webView.settings.javaScriptEnabled = true
         viewBinding.webView.settings.domStorageEnabled = true
-        viewBinding.webView.settings.setAppCacheMaxSize(1024 * 1024 * 8)
         viewBinding.webView.settings.domStorageEnabled = true;//设置适应HTML5的一些方法
         viewBinding.webView.settings.blockNetworkImage = false//是否阻塞加载网络图片  协议http or https
         viewBinding.webView.settings.allowFileAccess = true //允许加载本地文件html  file协议, 这可能会造成不安全 , 建议重写关闭

@@ -15,17 +15,20 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
 import com.hq.generalsecurity.databinding.ActivityBaseBinding
 import com.hq.generalsecurity.expand.*
-import com.hq.generalsecurity.formwidget.*
+import com.hq.generalsecurity.widget.form.*
+import com.hq.generalsecurity.set.UrlSet
 import com.hq.tool.http.FailData
 import com.hq.tool.http.Http
 import com.hq.tool.http.SuccessData
 import com.hq.tool.loge
-import com.hq.tool.toast
-import okhttp3.Headers
 
 abstract class BaseActivity<T : ViewBinding> : AppCompatActivity() {
 
-    var baseBinding: ActivityBaseBinding? = null
+    companion object{
+        lateinit var active:AppCompatActivity
+    }
+
+    lateinit var baseBinding: ActivityBaseBinding
 
     lateinit var viewBinding: T
 
@@ -33,11 +36,12 @@ abstract class BaseActivity<T : ViewBinding> : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        active=this
         baseBinding = ActivityBaseBinding.inflate(layoutInflater)
-        setContentView(baseBinding!!.root)
+        setContentView(baseBinding.root)
         viewBinding = getBinding()
-        baseBinding!!.llActBack.setOnClickListener { v: View? -> onBackPressed() }
-        baseBinding!!.imgActMenu.setOnClickListener { v: View? -> onBackPressed() }
+        baseBinding.llActBack.setOnClickListener { v: View? -> onBackPressed() }
+        baseBinding.imgActMenu.setOnClickListener { v: View? -> onBackPressed() }
         initView()
     }
 
@@ -49,14 +53,19 @@ abstract class BaseActivity<T : ViewBinding> : AppCompatActivity() {
      * @param title
      */
     fun setTitle(title: String?) {
-        baseBinding!!.txtTitleBaseAct.text = title
+        baseBinding.txtTitleBaseAct.text = title
+    }
+
+    fun closeTitle(): Unit {
+        baseBinding.baseToolBar.visibility=View.GONE
     }
 
     protected abstract fun initView()
+
     val menu: ImageView
-        get() = baseBinding!!.imgActMenu
+        get() = baseBinding.imgActMenu
     val set: TextView
-        get() = baseBinding!!.txtSetBaseAct
+        get() = baseBinding.txtSetBaseAct
 
     override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
         if (ev.action == MotionEvent.ACTION_DOWN) {
@@ -107,89 +116,16 @@ abstract class BaseActivity<T : ViewBinding> : AppCompatActivity() {
     }
 
     /**
-     * 解析Text标签
-     */
-    fun placeText(textSet: TextSet): Parent<*,*> {
-        val text = when(textSet.type){
-            TextType.Text-> {
-                val text= Text()
-                text.viewBinding = getViewBinding(text.getViewBindingCls())
-                text
-            }
-            TextType.TextInput-> {
-                val text= TextInput()
-                text.viewBinding = getViewBinding(text.getViewBindingCls())
-                text
-            }
-            TextType.TextSelect-> {
-                val text= TextSelect()
-                text.viewBinding = getViewBinding(text.getViewBindingCls())
-                text
-            }
-            TextType.TextCheck-> {
-                val text= TextCheck()
-                text.viewBinding = getViewBinding(text.getViewBindingCls())
-                text
-            }
-        }
-
-        text.line=textSet
-
-        return text
-    }
-    /**
-     * 解析Img标签
-     */
-    fun placeImg(imgSet: ImgSet): Parent<*,*> {
-        val img= Img()
-        img.viewBinding = getViewBinding(img.getViewBindingCls())
-        img.line=imgSet
-
-        return  img
-    }
-
-    fun http(set:UrlSet?,success:(SuccessData)->Unit,fail:(FailData)->Unit): Unit {
-        if(set!=null){
-            Http.any(set.requestMethod){
-                url= BASE_URL + set.loadUrl
-                _headers= Headers.headersOf("Authorization","Bearer ${user?.token}")
-                params(getLoadParams(set.loadParams))
-                success(success)
-                fail(fail)
-            }
-        }else{
-           // fail(FailData("",""))
-        }
-
-    }
-    private fun getLoadParams(params:ArrayList<LoadParam>): MutableMap<String,Any> {
-        val m= mutableMapOf<String,Any>()
-        for (p in params){
-            when(p.cache){
-                CacheType.None-> m.put(p.name,p.def)
-                CacheType.Local-> m.put(p.name,getLocalData(p.name))
-//                CacheType.Net-> m.put(p.name,getLocalData(p.name))
-            }
-
-        }
-        return  m
-    }
-
-    fun getLocalData(name:String): Any {
-        return  ""
-    }
-
-    /**
      *
      */
-    fun <T: ViewBinding> getViewBinding(cls:Class<T>): T {
-        val inflate = cls.getDeclaredMethod(
-            "inflate",
-            LayoutInflater::class.java,
-            ViewGroup::class.java,
-            Boolean::class.javaPrimitiveType
-        )
-        val viewBinding = inflate.invoke(null, layoutInflater, parent, false)
-        return viewBinding as T
-    }
+//    fun <T: ViewBinding> getViewBinding(cls:Class<T>): T {
+//        val inflate = cls.getDeclaredMethod(
+//            "inflate",
+//            LayoutInflater::class.java,
+//            ViewGroup::class.java,
+//            Boolean::class.javaPrimitiveType
+//        )
+//        val viewBinding = inflate.invoke(null, layoutInflater, parent, false)
+//        return viewBinding as T
+//    }
 }

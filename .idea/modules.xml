@@ -11,6 +11,7 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/qrcode/SimpleExample_v2.qrcode.iml" filepath="$PROJECT_DIR$/.idea/modules/qrcode/SimpleExample_v2.qrcode.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/simpleanimation/SimpleExample_v2.simpleanimation.iml" filepath="$PROJECT_DIR$/.idea/modules/simpleanimation/SimpleExample_v2.simpleanimation.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/tool/SimpleExample_v2.tool.iml" filepath="$PROJECT_DIR$/.idea/modules/tool/SimpleExample_v2.tool.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/zip/SimpleExample_v2.zip.iml" filepath="$PROJECT_DIR$/.idea/modules/zip/SimpleExample_v2.zip.iml" />
     </modules>
   </component>
 </project>

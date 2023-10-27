@@ -32,9 +32,8 @@
         android:maxLines="1"
         android:background="@null"
         android:gravity="right"
-        android:hint="@string/pls_select"
         android:drawablePadding="@dimen/dp_6"
-        android:drawableRight="@mipmap/into1_icon_1"
+        android:drawableRight="@mipmap/right_arrow"
         android:textColor="@color/blackPrimary"
         android:textSize="@dimen/sp_content" />
 </LinearLayout>
