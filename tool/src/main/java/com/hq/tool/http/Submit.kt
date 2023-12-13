@@ -39,13 +39,21 @@ val cookjar: CookieJar = object : CookieJar {
     }
 
     override fun loadForRequest(url: HttpUrl): List<Cookie> {
-        val cookies = cookieStore[url.host]
+        var cookies:List<Cookie>?=null
+        for (key in cookieStore.keys){
+            if (key.contains(url.host)){
+                cookies = cookieStore[url.host]
+            }
+        }
+//        val cookies = cookieStore[url.host]
         return cookies ?: ArrayList()
     }
 }
 val cookieStore = HashMap<String, List<Cookie>>()//cookie缓存
 //url : result
 val testResult=HashMap<String,Submit.TestResult>()
+
+val interceptors= mutableListOf<Interceptor>()
 
 //private var socket: WebSocket?=null
 
@@ -61,15 +69,6 @@ val testResult=HashMap<String,Submit.TestResult>()
 //    }
 //}
 
-/**
- * 正式访问前缀
- */
-var RELEASEAPI = ""
-/**
- * debug访问前缀
- */
-var DEBUGAPI = ""
-
 class Submit {
     //可配置属性
     var url = ""
@@ -81,6 +80,7 @@ class Submit {
     var outTime = 20L//单位为秒
     //出错是否重启请求
     var isRetry = false
+    var retryCount=0
     private val _params: MutableMap<String, Any> = mutableMapOf()
   //  val _fileParams: MutableMap<String, String> = mutableMapOf()
   var _headers:Headers?=null
@@ -93,6 +93,7 @@ class Submit {
     private var _fail: (FailData) -> Unit = {}
 
     var beat:SocketHeart?=null
+
  //   var socketSave=false//是否保留长连接回调
 
     //    var cookjar: CookieJar
@@ -119,10 +120,7 @@ class Submit {
 
     private fun tryInit(): Unit { //检查配置单
         toUI = if (Looper.myLooper() != Looper.getMainLooper()) {
-         //   Looper.prepare()
-         //   Looper.loop()
             Handler(Looper.getMainLooper())
-            //  Looper.getMainLooper().run { toUI =  Handler()  }
         } else {
             Handler()
         }
@@ -133,25 +131,28 @@ class Submit {
             }
         }
         if (url == ""||!url.contains("http")){
-//            "url设置错误".loge("http")
             _fail(FailData(url,"url设置错误"))
             return
         }
         tag = method.name
         cacheUrl=url
-        _start()
-//        if (DEBUG) {
-//            url = DEBUGAPI + url
-//            if (testResult.containsKey(url)){
-//                testSuccessCall(testResult[url]!!)
-//                return
-//            }
-//        } else {
-//            url = RELEASEAPI + url
-//        }
         if (_headers==null){
             _headers= Headers.headersOf()
         }
+        _start()
+        for (interceptor in interceptors){
+            if (interceptor.check(url)){
+                interceptor.outPut(_params)
+            }
+        }
+        if (Http.isDebug) {
+            if (testResult.containsKey(url)){
+                testSuccessCall(testResult[url]!!)
+                return
+            }
+        }
+
+
         when (method) {//分类请求
             Method.GET -> get()
 
@@ -170,6 +171,8 @@ class Submit {
             Method.FILE -> upFile()
 
             Method.SOCKET ->  socketOpen()
+
+            Method.STRING ->  postJson(_params[ ReturnType.STRING.name] as String)
         }
 
     }
@@ -255,11 +258,11 @@ class Submit {
     }
 
 
-    private fun postJson(): Unit {
+    private fun postJson(js:String?=null): Unit {
          val okHttpClient = OkHttpClient.Builder()
-        okHttpClient.connectTimeout(5, TimeUnit.SECONDS).readTimeout(outTime, TimeUnit.SECONDS)
+        okHttpClient.connectTimeout(outTime, TimeUnit.SECONDS).readTimeout(outTime, TimeUnit.SECONDS)
         //     "".toRequestBody("application/json".toMediaTypeOrNull())
-        val json:String=_params.get("json") as String
+        val json= js ?: Gson().toJson(_params)
         json.loge()
         val build = json.toRequestBody("application/json".toMediaTypeOrNull())
         val request = Request.Builder().addheaders(_headers).url(url).post(build).build()
@@ -491,12 +494,17 @@ class Submit {
                 return@post
             }
         }
-        response.request.url.toString().log("successCall")
-        _params.toString()?.log("successCall")
+        response.request.url.toString().log("successCall_req_url")
+        _params.toString().log("successCall_params")
         when (returnType) {
             ReturnType.JSON -> {
                 var jsonString = response.body?.string()
                 jsonString?.log("successCall")
+                for (interceptor in interceptors){
+                    if (interceptor.check(url)){
+                        jsonString= interceptor.inPut(jsonString!!)
+                    }
+                }
                 pullJson(jsonString!!)
             }
             ReturnType.XML -> {
@@ -505,10 +513,16 @@ class Submit {
 //                    pullXML(s)
             }
             ReturnType.STRING -> {
-                _response.put(ReturnType.STRING.name, response.body!!.string())
+                var body=  response.body!!.string()
+                for (interceptor in interceptors){
+                    if (interceptor.check(url)){
+                        body=  interceptor.inPut(body)
+                    }
+                }
+                _response[ReturnType.STRING.name] = body
             }
             ReturnType.FILE -> {
-                _response.put(ReturnType.FILE.name, downloadPath)
+                _response[ReturnType.FILE.name] = downloadPath
             }
         }
         toUI.post {
@@ -528,8 +542,13 @@ class Submit {
         when (returnType) {
             ReturnType.JSON -> {
                 var jsonString = vback
-                jsonString?.log("successCall")
-                pullJson(jsonString!!)
+                jsonString.log("successCall")
+                for (interceptor in interceptors){
+                    if (interceptor.check(url)){
+                        jsonString= interceptor.inPut(jsonString!!)
+                    }
+                }
+                pullJson(jsonString)
             }
             ReturnType.XML -> {
 //                    val s = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<ROOT><RESULT><CODE>9999</CODE><POS><PO>1111</PO><PO>2222</PO></POS><CONTENT>java.lang.NullPointerException\ncom.aisino.heb.xlg.web.servlet.XlgServlet.doPost(XlgServlet.java:135)</CONTENT></RESULT></ROOT>".byteInputStream()
@@ -537,7 +556,13 @@ class Submit {
 //                    pullXML(s)
             }
             ReturnType.STRING -> {
-                _response.put(ReturnType.STRING.name,vback)
+                var body= vback
+                for (interceptor in interceptors){
+                    if (interceptor.check(url)){
+                        body=  interceptor.inPut(body)
+                    }
+                }
+                _response.put(ReturnType.STRING.name,body)
             }
         }
         toUI.post {
@@ -603,6 +628,22 @@ class Submit {
     operator fun <E> String.rangeTo(tag: String): E {
         val c = _response[this] as MutableMap<*, *>
         return c[tag] as E
+    }
+
+    fun getJsonMap(jsonData: String): MutableMap<String,Any> {
+        val response= mutableMapOf<String,Any>()
+        val reader = JsonReader(StringReader(jsonData))
+        if (jsonData.startsWith("[")){
+            loopJson(JsonToken.BEGIN_ARRAY.name, reader, response)
+        }else{
+            reader.beginObject()
+            while (reader.hasNext()) {
+                val jName = reader.nextName()
+                loopJson(jName, reader, response)
+            }
+            reader.endObject()
+        }
+        return response
     }
 
 
@@ -762,7 +803,8 @@ class Submit {
     fun retrySubmit(): Unit {
 
         toUI.postDelayed({
-            if(isRetry){
+            if(isRetry&&retryCount<5){
+                retryCount++
                 tryInit()
             }else{
 

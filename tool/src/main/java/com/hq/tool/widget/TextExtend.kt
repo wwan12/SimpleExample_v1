@@ -69,7 +69,7 @@ class URLDrawable : BitmapDrawable() {
     }
 }
 
-fun TextView.openDateSelect(context: Context, call: ((String) -> Unit)? =null){
+fun TextView.openDateSelect( call: ((String) -> Unit)? =null){
     val ca: Calendar = Calendar.getInstance()
     var mYear: Int = ca.get(Calendar.YEAR)
     var mMonth: Int = ca.get(Calendar.MONTH)
@@ -94,7 +94,7 @@ fun TextView.openDateSelect(context: Context, call: ((String) -> Unit)? =null){
     datePickerDialog.show()
 }
 
-fun TextView.openDateSelect(context: Context,maxDate:Long){
+fun TextView.openDateSelect(maxDate:Long){
     val ca: Calendar = Calendar.getInstance()
     var mYear: Int = ca.get(Calendar.YEAR)
     var mMonth: Int = ca.get(Calendar.MONTH)
@@ -115,16 +115,16 @@ fun TextView.openDateSelect(context: Context,maxDate:Long){
     datePickerDialog.show()
 }
 
-fun TextView.openTimeSelect(context: Context, call: ((String) -> Unit)? =null): Unit {
+fun TextView.openTimeSelect(call: ((String) -> Unit)? =null): Unit {
     val ca: Calendar = Calendar.getInstance()
     var mHour: Int = ca.get(Calendar.HOUR_OF_DAY)
     var mMin: Int = ca.get(Calendar.MINUTE)
     TimePickerDialog(
         context, { view, hourOfDay, minute ->
             if (call==null){
-                this.text = String.format("%d:%d", hourOfDay, minute)
+                this.text = String.format("%d:%d:00", hourOfDay, minute)
             }else{
-                call(String.format("%d:%d", hourOfDay, minute))
+                call(String.format("%d:%d:00", hourOfDay, minute))
             }
 
         }, //0,0指的是时间，true表示是否为24小时，true为24小时制

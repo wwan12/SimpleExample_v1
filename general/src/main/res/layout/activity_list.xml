@@ -4,7 +4,10 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
+    <include
+        android:id="@+id/bar_search"
+        layout="@layout/bar_search"
+        android:visibility="gone"/>
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/list_refresh_layout"
         android:layout_width="match_parent"
@@ -18,9 +21,11 @@
             />
 
         <ListView
-            android:id="@+id/list_refresh"
+            android:id="@+id/list"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:dividerHeight="@dimen/dp_12"
+            android:divider="@color/gray">
 
         </ListView>
 

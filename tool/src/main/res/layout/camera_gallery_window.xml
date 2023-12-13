@@ -6,8 +6,6 @@
         android:id="@+id/pop_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="36dip"
-        android:layout_marginRight="36dip"
         android:layout_alignParentBottom="true"
         android:background="#ffffff"
         android:gravity="center_horizontal"

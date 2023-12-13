@@ -80,9 +80,10 @@ fun Activity.openAnyViewWindowCenter(layoutId: Int, width:Int=LinearLayout.Layou
     val mPopupWindow = PopupWindow(mPopView,
             width,
             height)
+    var cacheAlpha=1f
     // 点击popuwindow外让其消失
-    mPopupWindow.setOutsideTouchable(true)
-    mPopupWindow.setFocusable(true)
+    mPopupWindow.isOutsideTouchable = true
+    mPopupWindow.isFocusable = true
     mPopView.setOnKeyListener { view, i, keyEvent ->
         if (i == KeyEvent.KEYCODE_BACK) {//返回自动关闭pop
             if (mPopupWindow.isShowing()) {
@@ -93,21 +94,22 @@ fun Activity.openAnyViewWindowCenter(layoutId: Int, width:Int=LinearLayout.Layou
         return@setOnKeyListener false
     }
     mPopupWindow.setOnDismissListener {
-        val params = this.getWindow().getAttributes()
-        params.alpha = 1f
-        this.getWindow().setAttributes(params)
+        val params = this.window.attributes
+        params.alpha = cacheAlpha
+        this.window.attributes = params
     }
 
-    if (mPopupWindow.isShowing()) {
+    if (mPopupWindow.isShowing) {
         mPopupWindow.dismiss();
     } else {
         // 设置PopupWindow 显示的形式 底部或者下拉等
         // 在某个位置显示
         //   mPopupWindow.showAsDropDown(view,0,0)
         // 作为下拉视图显示
-        val params = this.getWindow().getAttributes()
+        val params = this.window.attributes
+        cacheAlpha=params.alpha
         params.alpha = 0.7f
-        this.getWindow().setAttributes(params)
+        this.window.attributes = params
         mPopupWindow.showAtLocation(mPopView, gravity, 0, 0);
     }
     return mPopupWindow

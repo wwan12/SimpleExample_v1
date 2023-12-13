@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="@dimen/dp_16"
+    android:paddingRight="@dimen/dp_16"
+    android:paddingTop="@dimen/dp_8"
+    android:paddingBottom="@dimen/dp_8">
+
+    <EditText
+        android:id="@+id/search_et"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/editview_bg"
+        android:drawableLeft="@drawable/baseline_search_gray"
+        android:drawablePadding="@dimen/dp_6"
+        android:ems="10"
+        android:paddingLeft="@dimen/dp_12"
+        android:paddingTop="@dimen/dp_8"
+        android:paddingRight="@dimen/dp_12"
+        android:paddingBottom="@dimen/dp_8"
+        android:textSize="@dimen/sp_content" />
+
+</LinearLayout>

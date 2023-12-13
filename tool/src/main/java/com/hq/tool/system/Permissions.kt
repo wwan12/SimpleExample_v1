@@ -62,11 +62,10 @@ fun Activity.signPermissions() {
 /**
  * 单个权限申请
  */
-fun Activity.signPermission(vararg perms:String,sign: () -> Unit={}) {
+fun Activity.signPermission(vararg perms:String) {
     if (EasyPermissions.hasPermissions(this, *perms)) {
-        sign()
     } else {
-        ActivityCompat.requestPermissions(this, perms,0);
+        EasyPermissions.requestPermissions(this,"为了使用该功能，请同意此权限",0 ,*perms)
     }
 }
 

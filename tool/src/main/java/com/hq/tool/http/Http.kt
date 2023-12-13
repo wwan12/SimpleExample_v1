@@ -20,6 +20,8 @@ package com.hq.tool.http
  */
 object Http {
 
+    var isDebug=false
+
     var any = fun(method:Method,function: Submit.() -> Unit) {
         val sub = Submit()
         sub.method = method
@@ -83,6 +85,12 @@ object Http {
         sub.method = Method.PUTJSON
         sub.run()
     }
+    var stringJson = fun(function: Submit.() -> Unit) {
+        val sub = Submit()
+        sub.function()
+        sub.method = Method.STRING
+        sub.run()
+    }
 
     var test = fun(function: HashMap<String,Submit.TestResult>.() -> Unit) {
         val h = HashMap<String,Submit.TestResult>()
@@ -103,12 +111,18 @@ object Http {
         sub.returnType=ReturnType.STRING
         sub.run()
     }
-//    var socketSend = fun(function: Submit.() -> Unit) {
-//        val sub = Submit()
-//        sub.function()
-//        sub.method = Method.SOCKETSEND
-//       // sub.returnType=ReturnType.STRING
-//        sub.run()
-//    }
+
+
+    fun addInterceptor(interceptor:Interceptor): Unit {
+        interceptors.add(interceptor)
+    }
+
+    fun removeInterceptor(interceptor:Interceptor?=null): Unit {
+        if (interceptor!=null){
+            interceptors.remove(interceptor)
+        }else{
+            interceptors.clear()
+        }
+    }
 }
 

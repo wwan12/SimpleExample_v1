@@ -13,7 +13,8 @@ enum class Method {
     FILE,
     DOWNLOAD,
     SOCKET,
-    SOCKETSEND
+    SOCKETSEND,
+    STRING
 }
 
 enum class ReturnType{

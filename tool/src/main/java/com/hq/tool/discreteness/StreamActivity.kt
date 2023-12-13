@@ -14,7 +14,7 @@ import com.hq.tool.discreteness.StreamActivity.app.mApplication
  * Created by lenovo on 2017/12/6.
  */
 
-class StreamActivity : AppCompatActivity() {
+abstract class StreamActivity : AppCompatActivity() {
 
     object app{
         lateinit var mApplication:Application

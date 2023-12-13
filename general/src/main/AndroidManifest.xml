@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.hq.generalsecurity">
+    package="com.hq.general">
 
     <application>
         <activity android:name=".standardform.StandardFormActivity" android:screenOrientation="portrait"/>

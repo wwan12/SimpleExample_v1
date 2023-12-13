@@ -1,4 +1,4 @@
-package com.hq.generalsecurity
+package com.hq.general
 
 import org.junit.Test
 

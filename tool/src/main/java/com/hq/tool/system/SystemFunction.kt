@@ -6,6 +6,7 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.util.Log
@@ -18,11 +19,9 @@ import java.io.File
 import java.io.IOException
 import android.text.method.Touch.onTouchEvent
 import android.view.MotionEvent
+import android.webkit.MimeTypeMap
 import android.widget.EditText
-
-import androidx.core.content.ContextCompat.getSystemService
-
-
+import com.hq.tool.toast
 
 
 /**
@@ -49,6 +48,8 @@ fun Activity.getShearText(): CharSequence? {
         clip.getItemAt(0).coerceToText(this)
     } else null
 }
+
+
 
 @SuppressLint("MissingPermission")
 fun Activity.openCall(phone: String) {
@@ -96,7 +97,7 @@ fun Activity.closeInput() {
 /**
  * 反向输入法
  */
-fun Activity.closeInput(view: View) {
+fun Context.closeInput(view: View) {
     val imm = (this
         .getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
     imm.hideSoftInputFromWindow(view.windowToken,0)
@@ -161,8 +162,20 @@ fun Activity.openHtml(url:String,errorUrl:String="",isSingle:Boolean=false,isAut
     ins.putExtra("ISAUTOSTYLE",isAutoStyle)
     this.startActivity(ins)
 }
+inline fun <reified T : Activity> Context.startActivitySingle(call:(Intent)->Unit) {
+    val intent = Intent(this, T::class.java)
+    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+    call(intent)
+    startActivity(intent)
+}
+
 inline fun <reified T : Activity> Context.startActivity(call:(Intent)->Unit) {
     val intent = Intent(this, T::class.java)
     call(intent)
     startActivity(intent)
+}
+inline fun <reified T : Activity> Context.startActivity(code:Int,call:(Intent)->Unit) {
+    val intent = Intent(this, T::class.java)
+    call(intent)
+    (this as Activity). startActivityForResult(intent,code)
 }

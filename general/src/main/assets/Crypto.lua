@@ -1,2 +1,2 @@
-Object:typeMapping("android", "com.hq.generalsecurity.lua", "LuaCrypto");
+Object:typeMapping("android", "com.hq.general.lua", "LuaCrypto");
 

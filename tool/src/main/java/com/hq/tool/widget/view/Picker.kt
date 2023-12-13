@@ -296,6 +296,5 @@ class Picker : View {
         const val SPEED = 2f
     }
 
-    data class GetConfigReq ( var id:String, var msg: String)
-
+    data class GetConfigReq ( var id:String, var msg: String,  var data:String?=null)
 }

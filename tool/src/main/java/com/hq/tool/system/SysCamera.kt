@@ -1,5 +1,6 @@
 package com.hq.tool.system
 
+import android.Manifest
 import android.app.Activity
 import android.content.ContentUris
 import android.content.Context
@@ -36,7 +37,6 @@ import com.luck.picture.lib.listener.OnResultCallbackListener
 import java.io.File
 import java.io.InputStream
 import java.util.*
-
 
 
 /**
@@ -83,13 +83,11 @@ fun Activity.openCameraAndGalleryWindowPro(call:(Bitmap?)->Unit,delete: Boolean=
             mPopupWindow.dismiss();
         }
     }
-    if (deleteBitmap!=null){
-        deleteBitmap.setOnClickListener{
-            if (mPopupWindow.isShowing()) {
-                mPopupWindow.dismiss();
-            }
-            call(null)
+    deleteBitmap?.setOnClickListener{
+        if (mPopupWindow.isShowing()) {
+            mPopupWindow.dismiss();
         }
+        call(null)
     }
     mPopupWindow.setOnDismissListener {
         val params = this.getWindow().getAttributes()
@@ -109,7 +107,7 @@ fun Activity.openCameraAndGalleryWindowPro(call:(Bitmap?)->Unit,delete: Boolean=
         // mPopupWindow.showAsDropDown(mPopView, Gravity.CENTER, 200, 300);
     }
 }
-fun Activity.openGalleryPro(call:(Bitmap)->Unit) {
+fun Activity.openGalleryPro(call:(Bitmap?)->Unit) {
 
     PictureSelector.create(this)
         .openGallery(ofImage())
@@ -147,7 +145,9 @@ fun Activity.openGalleryPro(call:(Bitmap)->Unit) {
                     call(b)
                 }
             }
-            override fun onCancel() {}
+            override fun onCancel() {
+                call(null)
+            }
 
 
         })
@@ -194,7 +194,11 @@ fun Activity.openCameraPathPro(call:(String?)->Unit): Unit {
 }
 
 
-fun Activity.openCameraPro(call:(Bitmap)->Unit): Unit {
+fun Activity.openCameraPro(call:(Bitmap?)->Unit): Unit {
+    if (!checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.CAMERA)){
+        signPermission(Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.CAMERA)
+        return
+    }
     PictureSelector.create(this)
         .openCamera(ofImage())
         .maxSelectNum(1)
@@ -223,7 +227,9 @@ fun Activity.openCameraPro(call:(Bitmap)->Unit): Unit {
                 }
                 result[0].path.loge()
             }
-            override fun onCancel() {}
+            override fun onCancel() {
+                call(null)
+            }
         })
 }
 
