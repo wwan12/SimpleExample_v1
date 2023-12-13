@@ -212,7 +212,15 @@ object Expand {
                     if (formAction.isCheck){
                         pageSet.check(this,lines){
                             pageSet.collectData(lines)
-                            control?.onActionClick(formAction){
+                            if (control!=null){
+                                control.onActionClick(formAction){
+                                    pageSet.upload(this){
+                                        if (it&&formAction.isClose){
+                                            finish()
+                                        }
+                                    }
+                                }
+                            }else{
                                 pageSet.upload(this){
                                     if (it&&formAction.isClose){
                                         finish()
@@ -220,16 +228,26 @@ object Expand {
                                 }
                             }
 
+
                         }
                     }else{
                         pageSet.collectData(lines)
-                        control?.onActionClick(formAction){
+                        if (control!=null){
+                            control.onActionClick(formAction){
+                                pageSet.upload(this){
+                                    if (it&&formAction.isClose){
+                                        finish()
+                                    }
+                                }
+                            }
+                        }else{
                             pageSet.upload(this){
                                 if (it&&formAction.isClose){
                                     finish()
                                 }
                             }
                         }
+
 
                     }
                 }

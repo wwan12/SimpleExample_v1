@@ -77,13 +77,16 @@ class Text : Parent<TextSet, LayerStandardTextBinding>() {
     }
 
     override fun check(): Boolean {
-      return  when(line.onClick){
-            ClickAction.Time, ClickAction.Date,ClickAction.DateTime->{
-                viewBinding.textContent.text.toString().isNotEmpty()
+        return if (line.must){
+            when(line.onClick){
+                ClickAction.Time, ClickAction.Date,ClickAction.DateTime->{
+                    viewBinding.textContent.text.toString().isNotEmpty()
+                }
+                else->{ true }
             }
-            else->{ true }
+        }else{
+            true
         }
-
     }
 
     override fun getTargetView(): View {

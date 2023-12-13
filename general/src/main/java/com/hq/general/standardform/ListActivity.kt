@@ -73,7 +73,7 @@ class ListActivity: FormBaseActivity<ActivityListBinding,ListStandardPage>() {
             viewBinding.list.adapter =
                 SimpleBindAdapter(this, control.getViewBindingCls(), showList)
                 { t, e ->
-                    control.getView(t, pageSet.lineSets, e)
+                    control.getView(viewBinding.list,t, pageSet.lineSets, e)
                 }
         }else{
             viewBinding.list.adapter=SimpleBindAdapter(this,ItemListBinding::class.java,showList)

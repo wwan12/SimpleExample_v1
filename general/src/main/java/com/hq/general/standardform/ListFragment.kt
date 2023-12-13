@@ -68,7 +68,7 @@ class ListFragment<T,E: ViewBinding>( pageSet: ListStandardPage, val cls:(Class<
                 val control= Reflect.getEntity<ItemControl<ViewBinding>>(pageSet.itemLayoutName!!)
                  viewBinding.list.adapter=SimpleBindAdapter(requireActivity(), control.getViewBindingCls(),showList)
                  { t, e ->
-                     control.getView(t,pageSet.lineSets, e)
+                     control.getView(viewBinding.list,t,pageSet.lineSets, e)
                  }
             }else{
                  viewBinding.list.adapter=SimpleBindAdapter(requireActivity(), ItemListBinding::class.java,showList)

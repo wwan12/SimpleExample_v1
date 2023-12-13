@@ -117,6 +117,7 @@ data class FormStandardPage(var load: UrlInfo?, var post: UrlInfo?, var lineSets
                         "请上传${r.line.title }".toast(activity)
                     }
                 }
+                "${r.line.title}未通过".loge()
                 return
             }
         }
