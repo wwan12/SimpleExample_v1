@@ -5,10 +5,15 @@ import android.widget.BaseAdapter
 import android.widget.ListView
 import androidx.viewbinding.ViewBinding
 import com.hq.general.model.LineSet
+import com.scwang.smartrefresh.layout.SmartRefreshLayout
 
-abstract class ItemControl<E:ViewBinding> {
+abstract class ItemControl<E:ViewBinding> (){
 
-    abstract fun getView(adapterView: AdapterView<*>, data:MutableMap<String,Any>, lineSets:ArrayList<LineSet>, viewBinding: E)
+    var refresh: SmartRefreshLayout?=null
+
+    var adapterView: AdapterView<*>?=null
+
+    abstract fun getView( data:MutableMap<String,Any>, lineSets:ArrayList<LineSet>, viewBinding: E)
 
     abstract fun getViewBindingCls(): Class<E>
 

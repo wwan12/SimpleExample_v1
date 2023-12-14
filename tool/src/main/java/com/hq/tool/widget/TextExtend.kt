@@ -15,6 +15,7 @@ import android.text.Html.ImageGetter
 import android.text.TextWatcher
 import android.view.Gravity
 import android.view.View
+import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -92,6 +93,42 @@ fun TextView.openDateSelect( call: ((String) -> Unit)? =null){
             mYear, mMonth, mDay
     )
     datePickerDialog.show()
+}
+
+//仅选择年月
+fun TextView.openDateMonthSelect( call: ((String) -> Unit)? =null) {
+    val calendar = Calendar.getInstance()
+    var mYear: Int = calendar.get(Calendar.YEAR)
+    var mMonth: Int = calendar.get(Calendar.MONTH)
+    var mDay: Int = calendar.get(Calendar.DAY_OF_MONTH)
+    //一定要设置 DatePickerDialog 的 style
+    val datePickerDialog = DatePickerDialog(
+        context,
+//        DatePickerDialog.THEME_HOLO_LIGHT,
+        { view, year, month, dayOfMonth ->
+//            calendar.set(year, month, dayOfMonth, 0, 0)
+//            val time = calendar.timeInMillis / 1000
+//        val day = time.dateSecondToString("yyyy-MM-dd")!!
+            mYear = year
+            mMonth = month
+            mDay = dayOfMonth
+            val sMonth= if ((month + 1)<10){ "0"+(month + 1)  }else{(month + 1).toString()}
+//            val sDay= if (dayOfMonth<10){ "0$dayOfMonth" }else{dayOfMonth.toString()}
+            val data = "${year}-${sMonth}"
+
+            if (call==null){
+                this.text = data
+            }else{
+                call(data)
+            }
+        },
+        mYear, mMonth, mDay
+    )
+    val datePicker = datePickerDialog.datePicker
+    datePicker.maxDate = Date().time //限制最大时间
+    datePickerDialog.show()
+//    ((datePicker.getChildAt(0) as ViewGroup?)?.getChildAt(0) as ViewGroup?)?.getChildAt(0)?.visibility =
+//        View.GONE
 }
 
 fun TextView.openDateSelect(maxDate:Long){

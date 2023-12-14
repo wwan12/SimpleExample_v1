@@ -70,10 +70,12 @@ class ListActivity: FormBaseActivity<ActivityListBinding,ListStandardPage>() {
         }
         if (pageSet.itemLayoutName!=null) {
             val control = Reflect.getEntity<ItemControl<ViewBinding>>(pageSet.itemLayoutName!!)
+            control.refresh=viewBinding.listRefreshLayout
+            control.adapterView=viewBinding.list
             viewBinding.list.adapter =
                 SimpleBindAdapter(this, control.getViewBindingCls(), showList)
                 { t, e ->
-                    control.getView(viewBinding.list,t, pageSet.lineSets, e)
+                    control.getView(t, pageSet.lineSets, e)
                 }
         }else{
             viewBinding.list.adapter=SimpleBindAdapter(this,ItemListBinding::class.java,showList)

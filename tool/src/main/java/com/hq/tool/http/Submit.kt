@@ -453,7 +453,7 @@ class Submit {
 
     private fun download(): Unit {
         val mOkHttpClient = OkHttpClient.Builder().cookieJar(cookjar).connectTimeout(outTime, TimeUnit.SECONDS).readTimeout(outTime, TimeUnit.SECONDS)
-        val request = Request.Builder().url(cacheUrl).build()
+        val request = Request.Builder().addheaders(_headers).url(cacheUrl).build()
         mOkHttpClient.build().newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 failCall(e.toString())

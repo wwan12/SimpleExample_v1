@@ -1,6 +1,7 @@
 package com.hq.tool.system
 
 import android.app.Activity
+import android.content.Context
 import androidx.core.app.ActivityCompat
 //import com.hjq.permissions.OnPermissionCallback
 //import com.hjq.permissions.Permission
@@ -76,6 +77,7 @@ fun Activity.signPermission(vararg perms:String) {
 fun Activity.checkPermission(vararg perms:String): Boolean {
    return EasyPermissions.hasPermissions(this, *perms)
 }
+
 
 //fun Activity.signPermissionNew(sign: (PermissionState,permissions: MutableList<String>) -> Unit): Unit {
 //    var perms:Array<String> = this.getAllPermissions()
