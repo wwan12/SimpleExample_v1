@@ -90,6 +90,7 @@ class FileDialog : Parent<FileSet, LayerStandardFileBinding>() {
                         viewBinding.fileContent.setImageResource(R.mipmap.file_edit)
                         viewBinding.fileName.text = it.name
                         file = it
+                        line.data=""
                     }
                     val filePicker = FilePicker(viewBinding.root.context as Activity)
                     filePicker.setExplorerConfig(config)
@@ -110,6 +111,9 @@ class FileDialog : Parent<FileSet, LayerStandardFileBinding>() {
     }
 
     override fun data(): Any? {
+        if (line.data.isNotEmpty()){
+            return line.data
+        }
         if (file==null||file?.exists()==false){
             return null
         }
@@ -166,7 +170,7 @@ class FileDialog : Parent<FileSet, LayerStandardFileBinding>() {
     
     override fun check(): Boolean {
         return if (line.must){
-            file!=null
+            file!=null||line.data.isNotEmpty()
         }else{
             true
         }
@@ -187,7 +191,7 @@ class FileDialog : Parent<FileSet, LayerStandardFileBinding>() {
                     file=data.data as File
                     viewBinding.fileName.text=file?.name
                     viewBinding.fileContent.setImageResource(R.mipmap.file_edit)
-
+                    line.data=""
                 }
                 is String->{
                     line.data = data.data.toStringPro()

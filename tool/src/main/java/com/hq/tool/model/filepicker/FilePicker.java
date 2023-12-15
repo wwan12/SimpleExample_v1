@@ -14,6 +14,7 @@
 package com.hq.tool.model.filepicker;
 
 import android.app.Activity;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 

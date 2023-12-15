@@ -50,7 +50,9 @@ object FileTool {
         config.isShowHideDir = true
         val extensions = arrayOfNulls<String>(supports.size)
         config.allowExtensions = supports.toArray(extensions)
-        config.setOnFileClickedListener(call)
+        config.setOnFilePickedListener {
+            call(it)
+        }
         val filePicker = FilePicker(activity)
         filePicker.setExplorerConfig(config)
         filePicker.show()
