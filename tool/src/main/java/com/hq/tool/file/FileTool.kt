@@ -9,6 +9,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.view.Gravity
+import android.view.View
 import android.webkit.MimeTypeMap
 import android.widget.Button
 import android.widget.LinearLayout
@@ -25,6 +26,7 @@ import com.hq.tool.system.*
 import com.hq.tool.toast
 import okhttp3.Headers
 import java.io.File
+import java.text.DecimalFormat
 
 object FileTool {
 
@@ -58,7 +60,7 @@ object FileTool {
         filePicker.show()
     }
 
-    fun openLocalFileWindow(activity: Activity, open:()->Unit,select:()->Unit) {
+    fun openLocalFileWindow(activity: Activity, open:(()->Unit)?=null,select:(()->Unit)?=null) {
         // 将布局文件转换成View对象，popupview 内容视图
         val viewBinding=FileSelectWindowBinding.inflate(activity.layoutInflater,null,false)
         val mPopView= viewBinding.root
@@ -67,19 +69,29 @@ object FileTool {
             LinearLayout.LayoutParams.MATCH_PARENT,
             LinearLayout.LayoutParams.WRAP_CONTENT)
         // 点击popuwindow外让其消失
+        var cacheAlpha=1f
         mPopupWindow.isOutsideTouchable = true
-        viewBinding.btnDownloadOpen.setOnClickListener{
-            if (mPopupWindow.isShowing) {
-                mPopupWindow.dismiss()
-            }
-            open()
+        if (open==null){
+            viewBinding.btnDownloadOpen.visibility=View.GONE
+        }else{
+            viewBinding.btnDownloadOpen.setOnClickListener{
+                if (mPopupWindow.isShowing) {
+                    mPopupWindow.dismiss()
+                }
+                open()
 
-        }
-        viewBinding.btnReSelect.setOnClickListener{
-            if (mPopupWindow.isShowing) {
-                mPopupWindow.dismiss();
             }
-            select()
+        }
+        if (select==null){
+            viewBinding.btnReSelect.visibility=View.GONE
+        }else{
+            viewBinding.btnReSelect.setOnClickListener{
+                if (mPopupWindow.isShowing) {
+                    mPopupWindow.dismiss()
+                }
+                select()
+
+            }
         }
         viewBinding.btnCancel.setOnClickListener{
             if (mPopupWindow.isShowing) {
@@ -88,16 +100,17 @@ object FileTool {
         }
 
         mPopupWindow.setOnDismissListener {
-            val params = activity.getWindow().getAttributes()
-            params.alpha = 1f
-            activity.getWindow().setAttributes(params)
+            val params = activity.window.attributes
+            params.alpha = cacheAlpha
+            activity.window.attributes = params
         }
-        if (mPopupWindow.isShowing()) {
+        if (mPopupWindow.isShowing) {
             mPopupWindow.dismiss();
         } else {
             val params = activity.window.getAttributes()
+            cacheAlpha=params.alpha
             params.alpha = 0.7f
-            activity.window.setAttributes(params)
+            activity.window.attributes = params
             // 设置PopupWindow 显示的形式 底部或者下拉等
             // 在某个位置显示
             mPopupWindow.showAtLocation(mPopView, Gravity.BOTTOM, 0, 0);
@@ -149,5 +162,33 @@ object FileTool {
             "文件不存在".toast(activity)
         }
 
+    }
+
+    /**
+     * 将字节数转换为KB、MB、GB
+     *
+     * @param size 字节大小
+     * @return
+     */
+     fun formatKMGByBytes(size: Long): String {
+        val bytes = StringBuffer()
+        val format = DecimalFormat("###.00")
+        if (size >= 1024 * 1024 * 1024) {
+            val i = size / (1024.0 * 1024.0 * 1024.0)
+            bytes.append(format.format(i)).append("GB")
+        } else if (size >= 1024 * 1024) {
+            val i = size / (1024.0 * 1024.0)
+            bytes.append(format.format(i)).append("MB")
+        } else if (size >= 1024) {
+            val i = size / 1024.0
+            bytes.append(format.format(i)).append("KB")
+        } else if (size < 1024) {
+            if (size <= 0) {
+                bytes.append("0B")
+            } else {
+                bytes.append(size.toInt()).append("B")
+            }
+        }
+        return bytes.toString()
     }
 }

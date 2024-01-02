@@ -30,6 +30,7 @@ open class LineSet(var dataType: DataType, var name:String="", var title:String=
 data class DataSet(var update:Boolean): LineSet(DataType.OnlyData){
     override fun place(activity: Activity, data: DataExtraction): Parent<*, *> {
         val od=OnlyData()
+        od.viewBinding = Expand.getViewBinding(activity, od.getViewBindingCls())
         od.line=this
         od.data=data
         od.init()

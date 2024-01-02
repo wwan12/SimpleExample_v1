@@ -10,6 +10,7 @@ import com.hq.general.extraction.DataExtraction
 import com.hq.general.model.ClickAction
 import com.hq.general.model.TextSet
 import com.hq.general.widget.form.Parent
+import com.hq.tool.loge
 import com.hq.tool.misc.Reflect
 import com.hq.tool.toStringPro
 import com.hq.tool.widget.openDateSelect
@@ -35,6 +36,12 @@ class Text : Parent<TextSet, LayerStandardTextBinding>() {
             viewBinding.textContent.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(line.maxLength))
         }
 
+        if (line.theme?.icon!=null){
+            val id= Reflect.getFieldValue("mipmap",line.theme?.icon!!, viewBinding.root.context)
+            val map=viewBinding.root.context.resources.getDrawable(id)
+            map.bounds.set(0,0,30,30)
+            viewBinding.textTitle.setCompoundDrawables(map,null,null,null)
+        }
         if (line.onClick!=null){
             viewBinding.textContent.setOnClickListener {
                 when(line.onClick){

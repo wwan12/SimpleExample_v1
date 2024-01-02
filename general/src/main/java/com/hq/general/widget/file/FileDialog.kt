@@ -11,6 +11,7 @@ import com.hq.general.model.ClickAction
 import com.hq.general.model.FileFormat
 import com.hq.general.model.FileSet
 import com.hq.general.widget.form.Parent
+import com.hq.tool.file.FileTool
 import com.hq.tool.http.Http
 import com.hq.tool.loge
 import com.hq.tool.model.filepicker.FilePicker
@@ -77,24 +78,29 @@ class FileDialog : Parent<FileSet, LayerStandardFileBinding>() {
                         return@setOnClickListener
                     }
 
-                    val config = ExplorerConfig(viewBinding.root.context)
-                    config.rootDir = Environment.getExternalStorageDirectory()
-                    config.isLoadAsync = false
-                    config.explorerMode = ExplorerMode.FILE
-                    config.isShowHomeDir = true
-                    config.isShowUpDir = true
-                    config.isShowHideDir = true
-                    val extensions = arrayOfNulls<String>(line.supports.size)
-                    config.allowExtensions = line.supports.toArray(extensions)
-                    config.setOnFilePickedListener {
-                        viewBinding.fileContent.setImageResource(R.mipmap.file_edit)
-                        viewBinding.fileName.text = it.name
-                        file = it
-                        line.data=""
+                    if (file!=null&&line.openBySys){
+                        FileTool.openLocalFileWindow(viewBinding.root.context as Activity,{
+                            FileTool.openFile(viewBinding.root.context as Activity,file!!)
+                        },{
+                            FileTool.openFilePicker(viewBinding.root.context as Activity,line.supports){
+                                if(it!=null){
+                                    viewBinding.fileContent.setImageResource(R.mipmap.file_edit)
+                                    viewBinding.fileName.text = it.name
+                                    file = it
+                                    line.data=""
+                                }
+                            }
+                        })
+                    }else{
+                        FileTool.openFilePicker(viewBinding.root.context as Activity,line.supports){
+                            if(it!=null){
+                                viewBinding.fileContent.setImageResource(R.mipmap.file_edit)
+                                viewBinding.fileName.text = it.name
+                                file = it
+                                line.data=""
+                            }
+                        }
                     }
-                    val filePicker = FilePicker(viewBinding.root.context as Activity)
-                    filePicker.setExplorerConfig(config)
-                    filePicker.show()
 
                 }
                 ClickAction.Go -> {

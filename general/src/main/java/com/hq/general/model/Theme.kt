@@ -13,7 +13,7 @@ import com.hq.tool.misc.Reflect
 import java.io.Serializable
 
 data class Theme(val padding:Padding?,val width:Int?,val height:Int?,val  orientation:Int?,
-val back:String?):Serializable{
+val back:String?,val icon:String?):Serializable{
 
     fun setTheme(parent: Parent<*,*>): Unit {
         if (padding!=null)

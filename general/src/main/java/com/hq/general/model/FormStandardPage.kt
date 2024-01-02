@@ -50,27 +50,35 @@ data class FormStandardPage(var load: UrlInfo?, var post: UrlInfo?, var lineSets
                     val de= Global.getDataExtraction(it.url,line.source ?: CacheType.None,line.serviceName,line.dataType)
                     de.fromData(it)
                     val ts = line.place(activity,de)
+                    control?.onLayoutCreate(ts)
                     lines.add(ts)
+                    view = ts.viewBinding.root
                     when (line.dataType) {
                         DataType.OnlyData -> {
-
+                            binding.standardLl.addView(view)
                         }
                         else -> {
-                            view = ts.viewBinding.root
+                            if (line.serviceName.isNotEmpty()) {
+                                view.tag =
+                                    "${line.dataType}:${line.servicePath}:${line.serviceName}"
+                            }
+                            val lineBinding = LayerStandardLineBinding.inflate(activity.layoutInflater)
+                            binding.standardLl.addView(view)
+                            binding.standardLl.addView(lineBinding.root)
                         }
                     }
 
-                    if (view != null) {
-                        if (line.serviceName.isNotEmpty()) {
-                            view.tag =
-                                "${line.dataType}:${line.servicePath}:${line.serviceName}"
-                        }
-                        val lineBinding = LayerStandardLineBinding.inflate(activity.layoutInflater)
-
-                        binding.standardLl.addView(view)
-                        binding.standardLl.addView(lineBinding.root)
-                    }
-                    control?.onLayoutCreate(ts)
+//                    if (view != null) {
+//                        if (line.serviceName.isNotEmpty()) {
+//                            view.tag =
+//                                "${line.dataType}:${line.servicePath}:${line.serviceName}"
+//                        }
+//                        val lineBinding = LayerStandardLineBinding.inflate(activity.layoutInflater)
+//
+//                        binding.standardLl.addView(view)
+//                        binding.standardLl.addView(lineBinding.root)
+//                    }
+                   // control?.onLayoutCreate(ts)
                 }
             }else{
                 for (line in lineSets) {

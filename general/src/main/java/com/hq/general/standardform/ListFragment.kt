@@ -2,6 +2,7 @@ package com.hq.general.standardform
 
 import android.app.Activity
 import android.content.Intent
+import android.text.method.DigitsKeyListener
 import android.view.View
 import android.widget.BaseAdapter
 import androidx.core.widget.addTextChangedListener
@@ -50,12 +51,18 @@ class ListFragment<T,E: ViewBinding>( pageSet: ListStandardPage, val cls:(Class<
             load(cacheWordKey, pageSet.paging != true)
         }
 
-        if (pageSet.launchSearch==true){
+        if (pageSet.launchSearch!=null){
             viewBinding.barSearch.root.visibility= View.VISIBLE
+            if (pageSet.launchSearch.digits!=null){
+                viewBinding.barSearch.searchEt.keyListener = DigitsKeyListener.getInstance(pageSet.launchSearch?.digits!!)
+            }
+            if (pageSet.launchSearch.hint!=null){
+                viewBinding.barSearch.searchEt.hint=pageSet.launchSearch.hint.toStringPro()
+            }
+            if (pageSet.launchSearch.def!=null){
+                viewBinding.barSearch.searchEt.setText(pageSet.launchSearch.def.toStringPro())
+            }
             viewBinding.barSearch.searchEt.addTextChangedListener {
-//                if (it.toString()!=cacheWordKey){
-//                    loadStack.add(it.toStringPro())
-//                }
                 cacheWordKey=it.toStringPro()
                 load(cacheWordKey,true)
             }

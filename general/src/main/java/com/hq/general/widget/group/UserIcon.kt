@@ -2,12 +2,15 @@ package com.hq.general.widget.group
 
 import android.app.Activity
 import android.view.View
+import com.bumptech.glide.Glide
 import com.hq.general.databinding.LayerStandardGroupBinding
 import com.hq.general.databinding.LayerStandardUserIconBinding
 import com.hq.general.expand.StorageExpand
 import com.hq.general.extraction.DataExtraction
+import com.hq.general.model.CacheType
 import com.hq.general.model.GroupSet
 import com.hq.general.widget.form.Parent
+import com.hq.tool.misc.Reflect
 import com.hq.tool.toStringPro
 
 
@@ -18,6 +21,17 @@ class UserIcon : Parent<GroupSet, LayerStandardUserIconBinding>() {
     }
 
     override fun init() {
+        when(line.source){
+            CacheType.Local->{
+                viewBinding.userHead.setImageResource(Reflect.getFieldValue("mipmap",line.data,viewBinding.root.context))
+            }
+            CacheType.Net->{
+                Glide.with(viewBinding.userHead).load(line.data)
+            }
+            else->{
+
+            }
+        }
         for (child in line.childs){
             when(child.title){
                 "Name"->{

@@ -21,6 +21,7 @@
             android:layout_width="@dimen/dp_150"
             android:layout_height="wrap_content"
             android:textColor="@color/blackPrimary"
+            android:drawablePadding="4dp"
             android:textSize="@dimen/sp_content" />
 
         <TextView

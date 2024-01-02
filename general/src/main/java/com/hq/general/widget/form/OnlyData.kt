@@ -1,16 +1,17 @@
 package com.hq.general.widget.form
 
 import android.view.View
+import com.hq.general.databinding.LayerStandardNullBinding
 import com.hq.general.databinding.LayerStandardTextBinding
 import com.hq.general.extraction.DataExtraction
 import com.hq.general.model.LineSet
 import com.hq.tool.toStringPro
 
-class OnlyData:Parent<LineSet, LayerStandardTextBinding>()  {
+class OnlyData:Parent<LineSet, LayerStandardNullBinding>()  {
 
 
-    override fun getViewBindingCls(): Class<LayerStandardTextBinding> {
-        return LayerStandardTextBinding::class.java
+    override fun getViewBindingCls(): Class<LayerStandardNullBinding> {
+        return LayerStandardNullBinding::class.java
     }
     override fun init() {
         if (line.serviceName.isNotEmpty()) {

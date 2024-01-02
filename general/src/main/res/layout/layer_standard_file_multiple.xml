@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:paddingLeft="@dimen/dp_16"
+    android:paddingTop="@dimen/dp_16"
+    android:paddingRight="@dimen/dp_16"
+    android:paddingBottom="@dimen/dp_16">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+    >
+        <TextView
+            android:id="@+id/text_must"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="*"
+            android:padding="@dimen/dp_2"
+            android:textColor="@color/redPrimary"
+            android:textSize="@dimen/sp_content" />
+        <TextView
+            android:id="@+id/text_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/blackPrimary"
+            android:layout_weight="1"
+            android:textSize="@dimen/sp_content" />
+
+        <TextView
+            android:id="@+id/add_file"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/editview_bg"
+            android:drawableLeft="@drawable/baseline_add_24"
+            android:gravity="center"
+            android:drawablePadding="@dimen/dp_4"
+            android:padding="@dimen/dp_6"
+            android:textColor="@color/blackPrimary"
+            android:textSize="@dimen/sp_content" />
+
+
+    </LinearLayout>
+
+    <com.hq.tool.widget.view.InScorllListView
+        android:id="@+id/file_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/white_raid_small"
+        android:elevation="@dimen/dp_4"
+        android:padding="@dimen/dp_8"
+        android:dividerHeight="0dp"/>
+</LinearLayout>
+

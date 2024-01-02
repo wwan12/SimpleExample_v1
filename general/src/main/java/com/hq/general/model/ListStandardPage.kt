@@ -4,9 +4,10 @@ import com.google.gson.Gson
 import com.hq.general.expand.Expand
 import com.hq.tool.http.FailData
 import com.hq.tool.loge
+import java.io.Serializable
 import java.util.ArrayList
 
-data class ListStandardPage(val load: UrlInfo?, val rowName:String, val launchSearch:Boolean?, val onItemClick: ClickAction?,
+data class ListStandardPage(val load: UrlInfo?, val rowName:String, val launchSearch:LaunchSearch?, val onItemClick: ClickAction?,
                             val route: String?,val paging:Boolean?,val detailsPost:Boolean?, val lineSets: ArrayList<LineSet>,val itemLayoutName:String?) : PageSet(
     VersionInfo("1",""),
     null,
@@ -46,3 +47,5 @@ data class ListStandardPage(val load: UrlInfo?, val rowName:String, val launchSe
 
 
 }
+
+data class LaunchSearch(val def:String?,val hint:String?,val digits:String?):Serializable

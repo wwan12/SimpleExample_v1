@@ -4,17 +4,33 @@ import android.app.Activity
 import com.hq.general.expand.Expand
 import com.hq.general.extraction.DataExtraction
 import com.hq.general.widget.file.FileDialog
+import com.hq.general.widget.file.FileMultiple
 import com.hq.general.widget.form.Parent
 
-data class FileSet(var format: FileFormat,val supports:ArrayList<String>): LineSet(DataType.File){
+data class FileSet(var format: FileFormat,var type:FileType,var max:Int,var defIcon:String?,var openBySys:Boolean=false,val supports:ArrayList<String>): LineSet(DataType.File){
     override fun place(activity: Activity, data: DataExtraction): Parent<*, *> {
-        val file=FileDialog()
-        file.viewBinding = Expand.getViewBinding(activity, file.getViewBindingCls())
+        val file=  when(type){
+            FileType.Single->{
+                val file=FileDialog()
+                file.viewBinding = Expand.getViewBinding(activity, file.getViewBindingCls())
+                file
+            }
+            FileType.Multiple->{
+                val file=FileMultiple()
+                file.viewBinding = Expand.getViewBinding(activity, file.getViewBindingCls())
+                file
+            }
+        }
         file.line=this
         file.data=data
         file.init()
         return file
     }
+}
+
+enum class FileType{
+    Single,
+    Multiple
 }
 
 //enum class FileType(name:String){
