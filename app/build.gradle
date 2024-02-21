@@ -43,5 +43,5 @@ dependencies {
 //    implementation project(':simpleanimation')
     implementation project(':danmuku')
     implementation project( ':independentmodule')
-    implementation project(':qrcode')
+//    implementation project(':qrcode')
 }

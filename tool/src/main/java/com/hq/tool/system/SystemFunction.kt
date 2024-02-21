@@ -95,7 +95,7 @@ fun Activity.closeInput() {
     imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS)
 }
 /**
- * 反向输入法
+ *  隐藏输入法
  */
 fun Context.closeInput(view: View) {
     val imm = (this
@@ -150,6 +150,20 @@ private fun isShouldHideInput(v: View?, event: MotionEvent): Boolean {
     }
     return false
 }
+
+/**
+ * 沉浸式状态栏
+ */
+fun Activity.immersiveBar(): Unit {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        val window: Window = window
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+        window.statusBarColor = Color.TRANSPARENT
+    }
+}
+
 /**
  * 打开应用内网页
  * isAutoStyle自动适配（性能会受到较大影响）

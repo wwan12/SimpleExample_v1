@@ -2,7 +2,10 @@ package com.hq.general.widget.file
 
 import android.Manifest
 import android.app.Activity
+import android.content.Intent
+import android.os.Build
 import android.os.Environment
+import android.provider.Settings
 import android.util.Base64
 import android.view.View
 import android.widget.BaseAdapter
@@ -76,16 +79,26 @@ class FileMultiple : Parent<FileSet, LayerStandardFileMultipleBinding>() {
                         "已添加最大${line.title}数量".toast(viewBinding.root.context)
                         return@setOnClickListener
                     }
-                    if (!(viewBinding.root.context as Activity).checkPermission(
-                            Manifest.permission.READ_EXTERNAL_STORAGE,
-                            Manifest.permission.WRITE_EXTERNAL_STORAGE
-                        )
-                    ) {
-                        (viewBinding.root.context as Activity).signPermission(
-                            Manifest.permission.READ_EXTERNAL_STORAGE,
-                            Manifest.permission.WRITE_EXTERNAL_STORAGE
-                        )
-                        return@setOnClickListener
+                    if (Build.VERSION.SDK_INT >= 31) {
+                        if (!Environment.isExternalStorageManager()) {
+                            val intent =
+                                Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION)
+                            (viewBinding.root.context as Activity).startActivity(
+                                intent
+                            )
+                        }
+                    }else{
+                        if (!(viewBinding.root.context as Activity).checkPermission(
+                                Manifest.permission.READ_EXTERNAL_STORAGE,
+                                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                            )
+                        ) {
+                            (viewBinding.root.context as Activity).signPermission(
+                                Manifest.permission.READ_EXTERNAL_STORAGE,
+                                Manifest.permission.WRITE_EXTERNAL_STORAGE
+                            )
+                            return@setOnClickListener
+                        }
                     }
 
                     FileTool.openFilePicker(viewBinding.root.context as Activity,line.supports){

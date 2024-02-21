@@ -47,7 +47,9 @@ class ViewPagerActivity: BaseActivity<ActivityViewPagerBinding>() {
         viewBinding.viewpager.adapter = FragmentAdapter(supportFragmentManager, fragments, titles)
         viewBinding.viewpager.offscreenPageLimit = fragments.size - 1
         viewBinding.viewpager.addOnPageChangeListener(object :
-            TabLayout.TabLayoutOnPageChangeListener( viewBinding.tabLayout) {})
+            TabLayout.TabLayoutOnPageChangeListener( viewBinding.tabLayout) {
+
+            })
         viewBinding.tabLayout.setupWithViewPager( viewBinding.viewpager)
         viewBinding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {

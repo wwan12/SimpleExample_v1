@@ -8,4 +8,8 @@
     <string name="android_auto_update_download_progress">正在下载:%1$d%%</string>
 
     <string name="description_define_in_xml">正在加载</string>
+    <string name="tips_scan_code">请对准二维码</string>
+    <string name="can_not_empty">%s不能为空</string>
+    <string name="pwd_digts">0123456789:;^_-#%@*`~/?$()+=|\'!&amp;[]{}qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM</string>
+
 </resources>

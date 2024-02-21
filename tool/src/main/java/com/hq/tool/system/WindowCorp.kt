@@ -28,7 +28,7 @@ fun Activity.getWindowBitmap(outMedia:Boolean): Unit {
     view.draw(canvas)
     if (outMedia){
         // 把文件插入到系统图库
-        MediaStore.Images.Media.insertImage(contentResolver, bitmap2, "慧住截图", null)
+        MediaStore.Images.Media.insertImage(contentResolver, bitmap2, "截图", null)
     }
 }
 

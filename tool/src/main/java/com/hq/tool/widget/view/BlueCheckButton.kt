@@ -1,4 +1,4 @@
-package com.aisino.grblfz.widget
+package com.hq.tool.widget.view
 
 import android.content.Context
 import android.graphics.Typeface

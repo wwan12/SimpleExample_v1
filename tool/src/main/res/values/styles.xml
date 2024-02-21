@@ -140,4 +140,26 @@
         <item name="android:backgroundDimEnabled">true</item>
         <item name="android:backgroundDimAmount">0.4</item>
     </style>
+    <declare-styleable name="TitleEditText">
+        <attr name="title" format="string"/>
+        <attr name="hint" format="string"/>
+        <attr name="arrowVisible" format="boolean"/>
+        <attr name="editable" format="boolean"/>
+        <attr name="inputType" format="string"/>
+        <attr name="maxLength" format="integer"/>
+        <attr name="titleAlign" format="string"/>
+        <attr name="textAlign" format="string"/>
+        <attr name="digits" format="string"/>
+    </declare-styleable>
+    <style name="TitleEditStyle">
+        <item name="android:background">@null</item>
+        <item name="android:textSize">@dimen/sp_large</item>
+        <item name="android:textColorHint">@color/secondary_text</item>
+        <item name="android:gravity">center_vertical|right</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">15dp</item>
+        <item name="android:singleLine">true</item>
+    </style>
 </resources>
