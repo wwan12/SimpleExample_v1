@@ -8,9 +8,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.aisino.simpleexample.R;
-import com.hq.tool.model.swipe.SimpleSwipeListener;
-import com.hq.tool.model.swipe.SwipeLayout;
-import com.hq.tool.model.swipe.adapters.BaseSwipeAdapter;
+import com.hq.tool.widget.view.swipe.SimpleSwipeListener;
+import com.hq.tool.widget.view.swipe.SwipeLayout;
+import com.hq.tool.widget.view.swipe.adapters.BaseSwipeAdapter;
+
 
 public class ListViewAdapter extends BaseSwipeAdapter {
 

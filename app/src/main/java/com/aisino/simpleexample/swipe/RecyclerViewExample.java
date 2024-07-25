@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.aisino.simpleexample.R;
 import com.aisino.simpleexample.swipe.adapter.RecyclerViewAdapter;
 import com.aisino.simpleexample.swipe.adapter.util.DividerItemDecoration;
-import com.hq.tool.model.swipe.util.Attributes;
+import com.hq.tool.widget.view.swipe.util.Attributes;
 
 import java.util.ArrayList;
 import java.util.Arrays;

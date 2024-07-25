@@ -9,23 +9,7 @@ private val controllerViews= mutableMapOf<Int,Long>()
 
 private val MIN_DELAY_TIME=1000
 
-fun Activity.onLoad(): LoadingDialog {
-    val subLog = LoadingDialog(this)
-    subLog.show()
-//    val load = AlertDialog.Builder(this)
-//    val subLog = load.show() as LoadingDialog
-    subLog.setCancelable(false)
-    return subLog
-}
 
-fun Fragment.onLoad(): LoadingDialog {
-    val subLog = LoadingDialog(context)
-    subLog.show()
-//    val load = AlertDialog.Builder(this)
-//    val subLog = load.show() as LoadingDialog
-    subLog.setCancelable(false)
-    return subLog
-}
 
 fun View.setOnNotFastClick(click:(view: View)->Unit){
     this.setOnClickListener {

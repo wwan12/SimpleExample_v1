@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 
 import com.aisino.simpleexample.R;
-import com.hq.tool.model.swipe.adapters.BaseSwipeAdapter;
+import com.hq.tool.widget.view.swipe.adapters.BaseSwipeAdapter;
 
 public class GridViewAdapter extends BaseSwipeAdapter {
 

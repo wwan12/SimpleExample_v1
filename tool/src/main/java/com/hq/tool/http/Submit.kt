@@ -263,7 +263,7 @@ class Submit {
         okHttpClient.connectTimeout(outTime, TimeUnit.SECONDS).readTimeout(outTime, TimeUnit.SECONDS)
         //     "".toRequestBody("application/json".toMediaTypeOrNull())
         val json= js ?: Gson().toJson(_params)
-        json.loge()
+        json.loge("up_params")
         val build = json.toRequestBody("application/json".toMediaTypeOrNull())
         val request = Request.Builder().addheaders(_headers).url(url).post(build).build()
         val call = okHttpClient.build().newCall(request)
@@ -482,29 +482,31 @@ class Submit {
             failMsg.log("failCall")
             _fail(FailData(url,failMsg).apply { this.submitTime=DateAndTime.nowDateTime })
             retrySubmit()
+
         }
     }
 
     private fun successCall(response: Response): Unit {
-        toUI.post {
-            if (response.code != 200) {
-                response.request.url.toString().log("failCall"+"code:"+response.code)
+        if (response.code != 200) {
+            toUI.post {
+                response.request.url.toString().log("failCall" + "code:" + response.code)
                 failCall("请求失败:" + response.code)
-             //   _fail(FailData(url,"请求失败:" + response.code).apply { this.submitTime=DateAndTime.nowDateTime })
-                return@post
+
             }
+            return
         }
         response.request.url.toString().log("successCall_req_url")
         _params.toString().log("successCall_params")
         when (returnType) {
             ReturnType.JSON -> {
                 var jsonString = response.body?.string()
-                jsonString?.log("successCall")
+
                 for (interceptor in interceptors){
                     if (interceptor.check(url)){
                         jsonString= interceptor.inPut(jsonString!!)
                     }
                 }
+                jsonString?.log("successCall")
                 pullJson(jsonString!!)
             }
             ReturnType.XML -> {

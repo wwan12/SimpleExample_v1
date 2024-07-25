@@ -1,8 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 
-apply from: "${rootProject.project("tool").projectDir}/tinker-ext.gradle"
-
 android {
     compileSdkVersion 32
 
@@ -68,11 +66,7 @@ dependencies {
     implementation 'androidx.camera:camera-view:1.0.0-alpha19'
     implementation 'com.google.zxing:core:3.4.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-    //Tinker
-    if (tinkerEnabled){
-        //tinker的核心库
-        api('com.tencent.tinker:tinker-android-lib:1.9.14.25.3')
 
-        api "androidx.multidex:multidex:2.0.1"
-    }
+    //授予允许悬浮框，饼摇晃设备
+    debugImplementation 'com.github.whataa:pandora:androidx_v2.1.0'
 }

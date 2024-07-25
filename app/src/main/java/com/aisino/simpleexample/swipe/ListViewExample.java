@@ -18,8 +18,8 @@ import android.widget.Toast;
 
 import com.aisino.simpleexample.R;
 import com.aisino.simpleexample.swipe.adapter.ListViewAdapter;
-import com.hq.tool.model.swipe.SwipeLayout;
-import com.hq.tool.model.swipe.util.Attributes;
+import com.hq.tool.widget.view.swipe.SwipeLayout;
+import com.hq.tool.widget.view.swipe.util.Attributes;
 
 public class ListViewExample extends Activity {
 

@@ -240,9 +240,14 @@ fun String.pwd(): Boolean {
  * */
 fun String.pwdHigh(): Boolean {
     val m: Matcher = Pattern.compile("^(?:(?=.*[0-9].*)(?=.*[A-Za-z].*)(?=.*[,\\.#%'\\+\\*-:;^_`].*))[,\\._`~!@#\$%^&*()+=|{}\\+\\*-:;.<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？^_`0-9A-Za-z]{8,20}$").matcher(this)
+//    ^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[^a-zA-Z0-9]).{8,20}$
     return m.matches()
 }
-
+fun String.pwdHigh2(): Boolean {
+    val m: Matcher = Pattern.compile("^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[^a-zA-Z0-9]).{8,20}\$").matcher(this)
+//
+    return m.matches()
+}
 fun String.hasNumber(): Boolean {
     val m: Matcher = Pattern.compile(".*\\d+.*").matcher(this)
     return m.matches()

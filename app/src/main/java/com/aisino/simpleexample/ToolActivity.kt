@@ -93,7 +93,7 @@ class ToolActivity : AppCompatActivity() {
         tool_attach.addView(showImg)
         actReust = { requestCode, resultCode, data ->
             if (requestCode == CAMERA_REQUEST) {
-                showImg.setImageBitmap(uri.getCameraImg(this))
+                showImg.setImageBitmap(uri?.getCameraImg(this))
             }
         }
     }

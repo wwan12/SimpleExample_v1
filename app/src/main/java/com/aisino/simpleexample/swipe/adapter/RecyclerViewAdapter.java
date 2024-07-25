@@ -13,9 +13,9 @@ import android.widget.Toast;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.aisino.simpleexample.R;
-import com.hq.tool.model.swipe.SimpleSwipeListener;
-import com.hq.tool.model.swipe.SwipeLayout;
-import com.hq.tool.model.swipe.adapters.RecyclerSwipeAdapter;
+import com.hq.tool.widget.view.swipe.SimpleSwipeListener;
+import com.hq.tool.widget.view.swipe.SwipeLayout;
+import com.hq.tool.widget.view.swipe.adapters.RecyclerSwipeAdapter;
 
 import java.util.ArrayList;
 

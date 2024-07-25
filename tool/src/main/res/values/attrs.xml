@@ -152,4 +152,26 @@
     </attr>
     <attr name="android:layout_gravity" />
   </declare-styleable>
+
+  <declare-styleable name="MultiScrollNumber">
+    <attr name="primary_number" format="integer"/>
+    <attr name="target_number" format="integer"/>
+    <attr name="number_size" format="integer"/>
+    <!--<attr name="number_color" format="color"/>-->
+  </declare-styleable>
+  <declare-styleable name="BlurView">
+    <attr name="blurOverlayColor" format="color"/>
+  </declare-styleable>
+  <declare-styleable name="CardStackView">
+    <attr name="stackOverlapGaps" format="dimension"/>
+    <attr name="stackOverlapGapsCollapse" format="dimension"/>
+    <attr name="stackHeaderHeight" format="dimension"/>
+    <attr name="stackDuration" format="integer"/>
+    <attr name="stackNumBottomShow" format="integer"/>
+    <attr name="stackAnimationType">
+      <flag name="allDown" value="0" />
+      <flag name="upDown" value="1" />
+      <flag name="upDownStack" value="2" />
+    </attr>
+  </declare-styleable>
 </resources>

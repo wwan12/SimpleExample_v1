@@ -10,7 +10,6 @@ import android.widget.GridView;
 import com.aisino.simpleexample.R;
 import com.aisino.simpleexample.swipe.adapter.GridViewAdapter;
 
-import com.hq.tool.model.swipe.util.Attributes;
 
 public class GridViewExample extends Activity{
 

@@ -7,6 +7,7 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.util.Log
@@ -19,6 +20,7 @@ import java.io.File
 import java.io.IOException
 import android.text.method.Touch.onTouchEvent
 import android.view.MotionEvent
+import android.view.Window
 import android.webkit.MimeTypeMap
 import android.widget.EditText
 import com.hq.tool.toast

@@ -5,10 +5,10 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.hq.general.BaseActivity
 import com.hq.general.set.Storage
+import com.hq.tool.cache.loadPro
+import com.hq.tool.cache.savePro
 import com.hq.tool.http.Http
-import com.hq.tool.loadPro
 import com.hq.tool.loge
-import com.hq.tool.savePro
 import com.hq.zip.IZipCallback
 import com.hq.zip.ZipManager
 import java.io.File

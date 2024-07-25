@@ -19,9 +19,9 @@
         <activity android:name=".model.webview.HtmlActivity"/>
         <activity android:name=".discreteness.StreamActivity"/>
         <service android:name=".model.update.DownloadService"/>
-        <service
-            android:name=".model.tinker.service.TinkerResultService"
-            android:exported="false"/>
+<!--        <service-->
+<!--            android:name=".model.tinker.service.TinkerResultService"-->
+<!--            android:exported="false"/>-->
 <!--        <activity-->
 <!--            android:name="com.yalantis.ucrop.UCropActivity"-->
 <!--            android:screenOrientation="portrait"-->

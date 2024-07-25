@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.aisino.simpleexample.R;
-import com.hq.tool.model.swipe.SwipeLayout;
+import com.hq.tool.widget.view.swipe.SwipeLayout;
 
 public class NestedExample extends Activity{
 

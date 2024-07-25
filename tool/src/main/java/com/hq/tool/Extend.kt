@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import com.hq.tool.animation.LoadingDialog
 
 
@@ -83,6 +84,14 @@ fun Activity.onLoadPro(rid:Int): View {
     success.setCancelable(false)
     return log
 }
+fun Fragment.onLoad(): LoadingDialog {
+    val subLog = LoadingDialog(context)
+    subLog.show()
+//    val load = AlertDialog.Builder(this)
+//    val subLog = load.show() as LoadingDialog
+    subLog.setCancelable(false)
+    return subLog
+}
 
 fun String.dialog(context: Context,call:(b:Boolean)->Unit): AlertDialog {
     val load = AlertDialog.Builder(context)
@@ -133,20 +142,7 @@ fun Dialog.noCrashShow(): Unit {
     }
 }
 
-fun String.save(activity: AppCompatActivity,key:String): Unit {
-    activity.getSharedPreferences("activity",AppCompatActivity.MODE_PRIVATE).edit().putString(key,this).apply()
-}
 
-fun String.load(activity: AppCompatActivity): String {
-    return activity.getSharedPreferences("activity", AppCompatActivity.MODE_PRIVATE).getString(this,"")!!
-}
-fun String.savePro(app: Application,key:String): Unit {
-    app.getSharedPreferences("activity",AppCompatActivity.MODE_PRIVATE).edit().putString(key,this).apply()
-}
-
-fun String.loadPro(app: Application): String {
-    return app.getSharedPreferences("activity", AppCompatActivity.MODE_PRIVATE).getString(this,"")!!
-}
 
 fun String.promptError(describe: String): Unit {
         Log.e("promptError", "File\t" + getFileName() + "\n"

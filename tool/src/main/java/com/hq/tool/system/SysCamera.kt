@@ -208,11 +208,17 @@ fun Activity.openCameraPro(call:(Bitmap?)->Unit): Unit {
         .forResult(object : OnResultCallbackListener<LocalMedia> {
             override fun onResult(result: MutableList<LocalMedia>) {
                 //  if(result[0]!=null&&result[0].path!=null)
-                var b=BitmapFactory.decodeFile(result[0].path)
+                val filePath =
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+                        result[0].androidQToPath
+                    } else {
+                        result[0].realPath
+                    }
+                val b = BitmapFactory.decodeFile(filePath)
                 if  (b==null){
                     val uri= Uri.parse(result[0].path)
                     //   call(BitmapFactory.decodeStream(FileInputStream(file) ))
-                    var pfd:ParcelFileDescriptor?
+                    val pfd:ParcelFileDescriptor?
                     if (uri != null) {
                         pfd = this@openCameraPro.contentResolver.openFileDescriptor(uri, "r")
                         if (pfd != null) {
@@ -220,10 +226,16 @@ fun Activity.openCameraPro(call:(Bitmap?)->Unit): Unit {
                             // show the bitmap, or do something else.
                             pfd.close()
                             call(bitmap)
+                            contentResolver.delete(
+                                uri,
+                                null,
+                                null
+                            )
                         }
                     }
                 }else{
                     call(b)
+                    File(filePath).delete()
                 }
                 result[0].path.loge()
             }
@@ -284,20 +296,28 @@ fun Activity.openCameraAndGalleryWindow() {
 }
 
 fun Activity.openGallery() {
+    if (!checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.CAMERA)){
+        signPermission(Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.CAMERA)
+        return
+    }
     val intent = Intent()
     intent.type = "image/*"
     intent.action = Intent.ACTION_GET_CONTENT
     this.startActivityForResult(intent, GALLERY_REQUEST)
 }
 
-fun Activity.openCamera() :Uri{
+fun Activity.openCamera() :Uri?{
+    if (!checkPermission(Manifest.permission.CAMERA)){
+        signPermission(Manifest.permission.CAMERA)
+        return null
+    }
     val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
     val c = Calendar.getInstance()
     val year = c.get(Calendar.YEAR)
     val month = c.get(Calendar.MONTH) + 1
     val day = c.get(Calendar.DAY_OF_MONTH)
     val imgName = year.toString() + "_" + month + "_" + day + "(" + System.currentTimeMillis() + ").jpg"
-    var f = File(this.filesDir.path, imgName)
+    var f = File(this.cacheDir.path, imgName)
     if (Build.VERSION.SDK_INT == Build.VERSION_CODES.M){
         val absolutePath = Environment.getExternalStorageDirectory().absolutePath + File.separator + "zhly"
         val f1 = File(absolutePath)
