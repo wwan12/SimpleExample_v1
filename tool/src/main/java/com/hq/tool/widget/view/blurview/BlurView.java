@@ -173,7 +173,7 @@ public class BlurView extends FrameLayout {
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     private BlurAlgorithm getBlurAlgorithm() {
         BlurAlgorithm algorithm;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+        if (Build.VERSION.SDK_INT >= 31) {
             algorithm = new RenderEffectBlur();
         } else {
             algorithm = new RenderScriptBlur(getContext());

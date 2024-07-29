@@ -40,4 +40,5 @@
 
   <color name="zxl_capture_status_bar_color">#00000000</color>
   <color name="zxl_capture_navigation_bar_color">#00000000</color>
+  <color name="pomegranate">#f4511e</color>
 </resources>

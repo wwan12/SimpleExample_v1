@@ -12,4 +12,8 @@
     <string name="can_not_empty">%s不能为空</string>
     <string name="pwd_digts">0123456789:;^_-#%@*`~/?$()+=|\'!&amp;[]{}qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM</string>
 
+    <string name="message_pattern_dot_added">点添加到图案中</string>
+    <string name="message_pattern_started">图案绘制已开始</string>
+    <string name="message_pattern_detected">图案绘制已完成</string>
+    <string name="message_pattern_cleared">图案已清除</string>
 </resources>

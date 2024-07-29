@@ -5,15 +5,15 @@ plugins {
 
     id 'kotlin-android-extensions'
 
-    id 'pandora-plugin'
+ //   id 'pandora-plugin'
 }
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 31
     defaultConfig {
         applicationId "com.hq.simpleexample"
         minSdkVersion 24
-        targetSdkVersion 31
+        targetSdkVersion 32
         versionCode 1
         versionName "1.0"
     }
@@ -31,6 +31,9 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
     }
 }
 

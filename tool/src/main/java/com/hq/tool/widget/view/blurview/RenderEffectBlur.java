@@ -19,7 +19,7 @@ import androidx.annotation.RequiresApi;
  * It doesn't block the Main thread, however it can still cause an FPS drop,
  * because it's just in a different part of the rendering pipeline.
  */
-@RequiresApi(Build.VERSION_CODES.S)
+@RequiresApi(31)
 public class RenderEffectBlur implements BlurAlgorithm {
 
     private final RenderNode node = new RenderNode("BlurViewNode");

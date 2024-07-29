@@ -68,5 +68,5 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
 
     //授予允许悬浮框，饼摇晃设备
-    debugImplementation 'com.github.whataa:pandora:androidx_v2.1.0'
+  //  debugImplementation 'com.github.whataa:pandora:androidx_v2.1.0'
 }
