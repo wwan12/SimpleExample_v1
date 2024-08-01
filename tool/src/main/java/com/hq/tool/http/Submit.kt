@@ -27,6 +27,10 @@ import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 import okhttp3.RequestBody
 import java.lang.Exception
+import java.security.cert.CertificateException
+import javax.net.ssl.SSLContext
+import javax.net.ssl.TrustManager
+import javax.net.ssl.X509TrustManager
 
 
 /**
@@ -75,11 +79,12 @@ class Submit {
     var cacheUrl=""
     var tag = ""
     var method = Method.GET
-    var returnType = ReturnType.JSON
+    var returnType = ReturnType.STRING
     var downloadPath = System.currentTimeMillis().toString() + ".jpg"
     var outTime = 20L//单位为秒
     //出错是否重启请求
     var isRetry = false
+    var isUnSafeMode=false
     var retryCount=0
     private val _params: MutableMap<String, Any> = mutableMapOf()
   //  val _fileParams: MutableMap<String, String> = mutableMapOf()
@@ -131,7 +136,7 @@ class Submit {
             }
         }
         if (url == ""||!url.contains("http")){
-            _fail(FailData(url,"url设置错误"))
+            _fail(FailData(url,404,"url设置错误"))
             return
         }
         tag = method.name
@@ -199,18 +204,52 @@ class Submit {
     fun socketClose(open: () -> Unit): Unit {
         _socketClose=open
     }
-//    private fun test(): Unit {//测试方法
-//        toUI.postDelayed({
-////            if (){
-//                pullJson()
-////            }else{
-////                _fail(RuntimeException().toString())
-////            }
-//        },200)
-//    }
+
+    private fun getBuilder(): OkHttpClient.Builder {
+        return if (isUnSafeMode){
+             getUnsafeOkHttpClient()
+        }else{
+            OkHttpClient.Builder()
+        }
+    }
+
+    private fun getUnsafeOkHttpClient(): OkHttpClient.Builder {
+        try {
+            // Create a trust manager that does not validate certificate chains
+            val trustAllCerts = arrayOf<TrustManager>(object : X509TrustManager {
+                @Throws(CertificateException::class)
+                override fun checkClientTrusted(chain: Array<java.security.cert.X509Certificate>, authType: String) {
+                }
+
+                @Throws(CertificateException::class)
+                override fun checkServerTrusted(chain: Array<java.security.cert.X509Certificate>, authType: String) {
+                }
+
+                override fun getAcceptedIssuers(): Array<java.security.cert.X509Certificate> {
+                    return arrayOf()
+                }
+            })
+
+            // Install the all-trusting trust manager
+            val sslContext = SSLContext.getInstance("SSL")
+            sslContext.init(null, trustAllCerts, java.security.SecureRandom())
+            // Create an ssl socket factory with our all-trusting manager
+            val sslSocketFactory = sslContext.socketFactory
+
+            val builder = OkHttpClient.Builder().connectTimeout(outTime, TimeUnit.SECONDS).readTimeout(
+                outTime, TimeUnit.SECONDS)
+            builder.sslSocketFactory(sslSocketFactory, trustAllCerts[0] as X509TrustManager)
+            builder.hostnameVerifier { _, _ -> true }
+            return builder
+        } catch (e: Exception) {
+            throw RuntimeException(e)
+        }
+    }
+
+
 
     private fun get(): Unit {
-        val okHttpClient = OkHttpClient.Builder().cookieJar(cookjar).connectTimeout(outTime, TimeUnit.SECONDS).readTimeout(outTime, TimeUnit.SECONDS)
+        val okHttpClient = getBuilder().cookieJar(cookjar).connectTimeout(outTime, TimeUnit.SECONDS).readTimeout(outTime, TimeUnit.SECONDS)
         if (cacheUrl.length > 0 && !cacheUrl.substring(cacheUrl.length - 1, cacheUrl.length).equals("?")&&_params.size>0) {
             cacheUrl = cacheUrl + "?"
         }
@@ -225,7 +264,7 @@ class Submit {
         val call = okHttpClient.build().newCall(request)
         call.enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-                failCall(e.toString())
+                failCall(500,e.toString())
             }
 
             override fun onResponse(call: Call, response: Response) {
@@ -235,7 +274,7 @@ class Submit {
     }
 
     private fun post(): Unit {
-        val okHttpClient = OkHttpClient.Builder().cookieJar(cookjar).connectTimeout(outTime, TimeUnit.SECONDS).readTimeout(outTime, TimeUnit.SECONDS)
+        val okHttpClient = getBuilder().cookieJar(cookjar).connectTimeout(outTime, TimeUnit.SECONDS).readTimeout(outTime, TimeUnit.SECONDS)
         val build = FormBody.Builder()
         url.log("post")
         for (p in _params) {
@@ -247,7 +286,7 @@ class Submit {
         val call = okHttpClient.build().newCall(request)
         call.enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-                failCall(e.toString())
+                failCall(500,e.toString())
 
             }
 
@@ -259,7 +298,7 @@ class Submit {
 
 
     private fun postJson(js:String?=null): Unit {
-         val okHttpClient = OkHttpClient.Builder()
+         val okHttpClient = getBuilder()
         okHttpClient.connectTimeout(outTime, TimeUnit.SECONDS).readTimeout(outTime, TimeUnit.SECONDS)
         //     "".toRequestBody("application/json".toMediaTypeOrNull())
         val json= js ?: Gson().toJson(_params)
@@ -269,7 +308,7 @@ class Submit {
         val call = okHttpClient.build().newCall(request)
         call.enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-                failCall(e.toString())
+                failCall(500,e.toString())
 
             }
 
@@ -280,7 +319,7 @@ class Submit {
     }
 
     private fun put(): Unit {
-        val okHttpClient = OkHttpClient.Builder().cookieJar(cookjar).connectTimeout(outTime, TimeUnit.SECONDS).readTimeout(outTime, TimeUnit.SECONDS)
+        val okHttpClient = getBuilder().cookieJar(cookjar).connectTimeout(outTime, TimeUnit.SECONDS).readTimeout(outTime, TimeUnit.SECONDS)
         val build = FormBody.Builder()
         url.log("post")
         for (p in _params) {
@@ -292,7 +331,7 @@ class Submit {
         val call = okHttpClient.build().newCall(request)
         call.enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-                failCall(e.toString())
+                failCall(500,e.toString())
 
             }
 
@@ -303,7 +342,7 @@ class Submit {
     }
 
     private fun putJson(): Unit {
-        val okHttpClient = OkHttpClient.Builder()
+        val okHttpClient = getBuilder()
         okHttpClient.connectTimeout(5, TimeUnit.SECONDS)
         //     "".toRequestBody("application/json".toMediaTypeOrNull())
         val json:String= Gson().toJson(_params) //_params.get("json") as String
@@ -313,7 +352,7 @@ class Submit {
         val call = okHttpClient.build().newCall(request)
         call.enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-                failCall(e.toString())
+                failCall(500,e.toString())
 
             }
 
@@ -324,7 +363,7 @@ class Submit {
     }
 
     private fun upImage() {
-        val mOkHttpClient = OkHttpClient.Builder().cookieJar(cookjar).connectTimeout(outTime, TimeUnit.SECONDS).readTimeout(outTime, TimeUnit.SECONDS)
+        val mOkHttpClient = getBuilder().cookieJar(cookjar).connectTimeout(outTime, TimeUnit.SECONDS).readTimeout(outTime, TimeUnit.SECONDS)
         val build = MultipartBody.Builder().setType(MultipartBody.FORM)
         for (p in _params) {
             if (p.value is File) {
@@ -344,7 +383,7 @@ class Submit {
 
         mOkHttpClient.build().newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-                failCall(e.toString())
+                failCall(500,e.toString())
             }
 
             override fun onResponse(call: Call, response: Response) {
@@ -354,7 +393,7 @@ class Submit {
     }
 
     private fun upFile(){
-        val mOkHttpClient = OkHttpClient.Builder().cookieJar(cookjar).connectTimeout(outTime, TimeUnit.SECONDS).writeTimeout(outTime, TimeUnit.SECONDS)
+        val mOkHttpClient = getBuilder().cookieJar(cookjar).connectTimeout(outTime, TimeUnit.SECONDS).writeTimeout(outTime, TimeUnit.SECONDS)
         val build = MultipartBody.Builder().setType(MultipartBody.FORM)
         for (p in _params) {
             if (p.value is File) {
@@ -374,7 +413,7 @@ class Submit {
 
         mOkHttpClient.build().newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-                failCall(e.toString())
+                failCall(500,e.toString())
             }
 
             override fun onResponse(call: Call, response: Response) {
@@ -385,7 +424,7 @@ class Submit {
 
 
     private fun socketOpen(): Unit {
-        val mOkHttpClient = OkHttpClient.Builder()
+        val mOkHttpClient = getBuilder()
                 .readTimeout(10, TimeUnit.SECONDS)//设置读取超时时间
                 .writeTimeout(10, TimeUnit.SECONDS)//设置写的超时时间
                 .connectTimeout(10, TimeUnit.SECONDS)//设置连接超时时间
@@ -440,7 +479,12 @@ class Submit {
             override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
                 super.onFailure(webSocket, t, response)
                 ("closing:" + t.message).loge("onFailure")
-                failCall(t.message!!)
+                if (response!=null){
+                    failCall(response.code,t.message!!)
+                }else{
+                    failCall(500,t.message!!)
+                }
+
                 timer.cancel()
                 _socketClose()
 
@@ -452,11 +496,11 @@ class Submit {
 
 
     private fun download(): Unit {
-        val mOkHttpClient = OkHttpClient.Builder().cookieJar(cookjar).connectTimeout(outTime, TimeUnit.SECONDS).readTimeout(outTime, TimeUnit.SECONDS)
+        val mOkHttpClient = getBuilder().cookieJar(cookjar).connectTimeout(outTime, TimeUnit.SECONDS).readTimeout(outTime, TimeUnit.SECONDS)
         val request = Request.Builder().addheaders(_headers).url(cacheUrl).build()
         mOkHttpClient.build().newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-                failCall(e.toString())
+                failCall(500,e.toString())
             }
 
             override fun onResponse(call: Call, response: Response) {
@@ -477,10 +521,10 @@ class Submit {
 
 
 
-    private fun failCall(failMsg: String): Unit {
+    private fun failCall(code: Int,failMsg: String): Unit {
         toUI.post {
             failMsg.log("failCall")
-            _fail(FailData(url,failMsg).apply { this.submitTime=DateAndTime.nowDateTime })
+            _fail(FailData(url,code,failMsg).apply { this.submitTime=DateAndTime.nowDateTime })
             retrySubmit()
 
         }
@@ -490,7 +534,7 @@ class Submit {
         if (response.code != 200) {
             toUI.post {
                 response.request.url.toString().log("failCall" + "code:" + response.code)
-                failCall("请求失败:" + response.code)
+                failCall(response.code,"请求失败:" + response.code)
 
             }
             return
@@ -581,7 +625,7 @@ class Submit {
     private fun testSuccessCall(response: TestResult): Unit {
         if (response.code != 200) {
             response.url.toString().log("failCall" + "code:" + response.code)
-            failCall("请求失败:" + response.code)
+            failCall(response.code,"请求失败:" + response.result)
             //   _fail(FailData(url,"请求失败:" + response.code).apply { this.submitTime=DateAndTime.nowDateTime })
             return
         }

@@ -16,4 +16,7 @@
     <string name="message_pattern_started">图案绘制已开始</string>
     <string name="message_pattern_detected">图案绘制已完成</string>
     <string name="message_pattern_cleared">图案已清除</string>
+
+    <string name="indicator_color_error">indicator color attribute : “@color/colorID or #000000”</string>
+    <string name="banner_adapter_null_error">Adapter is NULL!</string>
 </resources>
