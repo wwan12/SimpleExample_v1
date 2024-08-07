@@ -172,7 +172,7 @@ object Expand {
                 fail(fail)
             }
         }else{
-            fail(FailData("255","未设置请求"))
+            fail(FailData("",255,"未设置请求"))
         }
     }
     private fun getLoadParams(params:ArrayList<LoadParam>): MutableMap<String,Any> {

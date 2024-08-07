@@ -19,4 +19,11 @@
 
     <string name="indicator_color_error">indicator color attribute : “@color/colorID or #000000”</string>
     <string name="banner_adapter_null_error">Adapter is NULL!</string>
+    <string-array name="default_preview">
+        <item>#df5a55</item>
+        <item>#f9bb72</item>
+        <item>#76afcf</item>
+        <item>#dd6495</item>
+        <item>#72d3b4</item>
+    </string-array>
 </resources>

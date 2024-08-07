@@ -40,7 +40,7 @@ data class ListStandardPage(val load: UrlInfo?, val rowName:String, val launchSe
             if (list != null) {
                 successCall(list)
             } else {
-                failCall(FailData(load.loadUrl, "No Data"))
+                failCall(FailData(load.loadUrl,404, "No Data"))
             }
         },failCall)
     }

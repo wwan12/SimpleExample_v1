@@ -73,7 +73,7 @@ data class UrlInfo(val loadUrl:String,val requestMethod: Method,val loadParams:A
                     map["code"]="200"
                     success(SuccessData(loadUrl,map))
                 }else{
-                    fail(FailData(loadUrl,"数据未初始化"))
+                    fail(FailData(loadUrl,500,"数据未初始化"))
                 }
             }
             CacheType.Net->{
