@@ -59,6 +59,8 @@ val testResult=HashMap<String,Submit.TestResult>()
 
 val interceptors= mutableListOf<Interceptor>()
 
+val globalReturnType=ReturnType.STRING
+
 //private var socket: WebSocket?=null
 
 
@@ -79,7 +81,7 @@ class Submit {
     var cacheUrl=""
     var tag = ""
     var method = Method.GET
-    var returnType = ReturnType.STRING
+    var returnType = globalReturnType
     var downloadPath = System.currentTimeMillis().toString() + ".jpg"
     var outTime = 20L//单位为秒
     //出错是否重启请求
@@ -287,7 +289,6 @@ class Submit {
         call.enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 failCall(500,e.toString())
-
             }
 
             override fun onResponse(call: Call, response: Response) {
@@ -301,7 +302,7 @@ class Submit {
          val okHttpClient = getBuilder()
         okHttpClient.connectTimeout(outTime, TimeUnit.SECONDS).readTimeout(outTime, TimeUnit.SECONDS)
         //     "".toRequestBody("application/json".toMediaTypeOrNull())
-        val json= js ?: Gson().toJson(_params)
+        val json= js?: Gson().toJson(_params)
         json.loge("up_params")
         val build = json.toRequestBody("application/json".toMediaTypeOrNull())
         val request = Request.Builder().addheaders(_headers).url(url).post(build).build()
@@ -626,7 +627,6 @@ class Submit {
         if (response.code != 200) {
             response.url.toString().log("failCall" + "code:" + response.code)
             failCall(response.code,"请求失败:" + response.result)
-            //   _fail(FailData(url,"请求失败:" + response.code).apply { this.submitTime=DateAndTime.nowDateTime })
             return
         }
         response.url.log("successCall")

@@ -35,8 +35,10 @@
         <entry key="..\:/AndroidStudioProjects/SimpleExample_v2/qrcode/src/main/res/layout/zxl_capture.xml" value="0.1453125" />
         <entry key="..\:/AndroidStudioProjects/SimpleExample_v2/tool/src/main/res/drawable/bottom_line.xml" value="0.22447916666666667" />
         <entry key="..\:/AndroidStudioProjects/SimpleExample_v2/tool/src/main/res/drawable/check_blue_button.xml" value="0.22447916666666667" />
+        <entry key="..\:/AndroidStudioProjects/SimpleExample_v2/tool/src/main/res/layout/activity_capture.xml" value="0.20516304347826086" />
         <entry key="..\:/AndroidStudioProjects/SimpleExample_v2/tool/src/main/res/layout/activity_html.xml" value="0.24818840579710144" />
         <entry key="..\:/AndroidStudioProjects/SimpleExample_v2/tool/src/main/res/layout/dialog_alert.xml" value="0.20833333333333334" />
+        <entry key="..\:/AndroidStudioProjects/SimpleExample_v2/tool/src/main/res/layout/easy_capture_activity.xml" value="0.20516304347826086" />
         <entry key="..\:/AndroidStudioProjects/SimpleExample_v2/tool/src/main/res/layout/fragment_camera.xml" value="0.13333333333333333" />
         <entry key="..\:/AndroidStudioProjects/SimpleExample_v2/tool/src/main/res/layout/listview_refresh.xml" value="0.286231884057971" />
         <entry key="..\:/AndroidStudioProjects/SimpleExample_v2/tool/src/main/res/layout/view_fragment_paper.xml" value="0.286231884057971" />

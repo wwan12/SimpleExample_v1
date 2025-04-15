@@ -91,7 +91,7 @@ public class CameraManager {
         }
 
         Camera.Parameters parameters = theCamera.getParameters();
-        String parametersFlattened = parameters == null ? null : parameters.flatten(); // Save
+        String parametersFlattened = parameters == null ? null : parameters.flatten(); // com.hq.tool.cache.Save
         // these,
         // temporarily
         try {

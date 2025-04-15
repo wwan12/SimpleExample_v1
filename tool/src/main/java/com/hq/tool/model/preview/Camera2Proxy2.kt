@@ -12,7 +12,6 @@ import android.os.HandlerThread
 import android.util.Size
 import android.view.Surface
 import android.view.TextureView
-import androidx.core.app.ActivityCompat
 
 class Camera2Proxy2(val activity: Activity) {
 

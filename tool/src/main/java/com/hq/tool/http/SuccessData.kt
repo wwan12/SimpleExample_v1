@@ -19,6 +19,7 @@ class SuccessData (url:String,data: MutableMap<String,Any>){
     var submitTime=""
     var retryCount=0
     var stringBody=""
+    var code=0
     init {
         this.url=url
         this.data.putAll(data)

@@ -1,17 +1,19 @@
+package com.hq.tool.cache
+
 import android.content.ContentValues
 import android.content.Context
 import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
-import com.hq.tool.dialog
-import com.hq.tool.toast
-import java.io.File
-import java.io.FileOutputStream
-import java.io.InputStream
+import java.io.*
 
-open class Save {
+
+
+
+object Local {
 //    addFileToAlbum(inputStream,filePath,fileName,"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
 
+    /**添加文件到相册**/
     fun addFileToAlbum(content:Context, fileInput: InputStream, displayName: String, mimeType: String) {
         val values = ContentValues()
         values.put(MediaStore.Downloads.DISPLAY_NAME, displayName)
@@ -38,6 +40,7 @@ open class Save {
         }
     }
 
+    /**从静态资源获取文件,并写入新地址**/
     fun getFromAssets(content:Context,filePath: String, fileName: String) {
         var inputStream:InputStream?=null
         try {
@@ -57,6 +60,63 @@ open class Save {
             inputStream?.close()
 
         }
+    }
+
+    fun readAssetTextAsString(context: Context, fileName: String): String {
+        val stringBuilder = java.lang.StringBuilder()
+        try {
+            val inputStream = context.assets.open(fileName)
+            val reader = BufferedReader(InputStreamReader(inputStream))
+            var line: String?
+            while (reader.readLine().also { line = it } != null) {
+                stringBuilder.append(line)
+                stringBuilder.append("\n") // 添加换行符
+            }
+            reader.close()
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+        return stringBuilder.toString()
+    }
+
+    fun readAssetsText(context:Context,fileName: String): String  {
+        val am = context.assets
+        var ips: InputStream? = null
+        return try {
+            ips = am.open(fileName)
+            convertStreamToString(ips)
+        } catch (e: IOException) {
+            e.printStackTrace()
+            ""
+        } finally {
+            if (ips != null) {
+                try {
+                    ips.close()
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
+            }
+        }
+    }
+
+    private fun convertStreamToString(ips: InputStream): String {
+        val reader = BufferedReader(InputStreamReader(ips))
+        val sb = StringBuilder()
+        var line: String?
+        try {
+            while (reader.readLine().also { line = it } != null) {
+                sb.append(line).append("\n")
+            }
+        } catch (e: IOException) {
+            e.printStackTrace()
+        } finally {
+            try {
+                reader.close()
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+        }
+        return sb.toString()
     }
 }
 
