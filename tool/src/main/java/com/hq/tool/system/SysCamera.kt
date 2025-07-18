@@ -19,24 +19,17 @@ import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.PopupWindow
 import androidx.core.content.FileProvider
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.DataSource
-import com.bumptech.glide.load.engine.GlideException
-import com.bumptech.glide.request.RequestListener
-import com.bumptech.glide.request.target.Target
 import com.hq.tool.R
 import com.hq.tool.bitmap.drawable2Bitmap
 import com.hq.tool.loge
-import com.luck.picture.lib.PictureSelectionModel
-import com.luck.picture.lib.PictureSelector
-import com.luck.picture.lib.config.PictureConfig
-import com.luck.picture.lib.config.PictureMimeType
-import com.luck.picture.lib.config.PictureMimeType.ofImage
+import com.luck.picture.lib.basic.PictureSelector
+import com.luck.picture.lib.config.SelectMimeType
 import com.luck.picture.lib.entity.LocalMedia
-import com.luck.picture.lib.listener.OnResultCallbackListener
+import com.luck.picture.lib.interfaces.OnResultCallbackListener
 import java.io.File
 import java.io.InputStream
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 /**
@@ -110,18 +103,14 @@ fun Activity.openCameraAndGalleryWindowPro(call:(Bitmap?)->Unit,delete: Boolean=
 fun Activity.openGalleryPro(call:(Bitmap?)->Unit) {
 
     PictureSelector.create(this)
-        .openGallery(ofImage())
-        .imageEngine(GlideEngine.create())
-        .maxSelectNum(1)
-        .minSelectNum(1)
-        .isCompress(true)
-       // .selectionMode(PictureConfig.SINGLE)// 单选或是多选
-        .isWeChatStyle(true)
-        .isCamera(false)
+        .openGallery(SelectMimeType.ofImage())
+        .setMinSelectNum(1)
+        .setMaxSelectNum(1)
+        .setImageEngine(GlideEngine.createGlideEngine())
         .forResult(object : OnResultCallbackListener<LocalMedia> {
-            override fun onResult(result: MutableList<LocalMedia>) {
+            override fun onResult(result: ArrayList<LocalMedia>) {
                 val filePath= if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
-                    result[0].androidQToPath;
+                    result[0].availablePath;
                 } else {
                     result[0].realPath;
                 }
@@ -157,16 +146,12 @@ fun Activity.openGalleryPro(call:(Bitmap?)->Unit) {
 fun Activity.openGalleryPathPro(call:(String?)->Unit) {
 
     PictureSelector.create(this)
-        .openGallery(ofImage())
-        .imageEngine(GlideEngine.create())
-        .maxSelectNum(1)
-        .minSelectNum(1)
-        .isCompress(true)
-        // .selectionMode(PictureConfig.SINGLE)// 单选或是多选
-        .isWeChatStyle(true)
-        .isCamera(false)
+        .openGallery(SelectMimeType.ofImage())
+        .setMinSelectNum(1)
+        .setMaxSelectNum(1)
+        .setImageEngine(GlideEngine.createGlideEngine())
         .forResult(object : OnResultCallbackListener<LocalMedia> {
-            override fun onResult(result: MutableList<LocalMedia>) {
+            override fun onResult(result: ArrayList<LocalMedia>) {
                 call(result[0].path)
             }
             override fun onCancel() {
@@ -178,13 +163,9 @@ fun Activity.openGalleryPathPro(call:(String?)->Unit) {
 }
 fun Activity.openCameraPathPro(call:(String?)->Unit): Unit {
     PictureSelector.create(this)
-        .openCamera(ofImage())
-        .maxSelectNum(1)
-        .minSelectNum(1)
-        .isCompress(true)
-        .isWeChatStyle(true)
+        .openCamera(SelectMimeType.ofImage())
         .forResult(object : OnResultCallbackListener<LocalMedia> {
-            override fun onResult(result: MutableList<LocalMedia>) {
+            override fun onResult(result: ArrayList<LocalMedia>) {
                 call(result[0].path)
             }
             override fun onCancel() {
@@ -195,22 +176,15 @@ fun Activity.openCameraPathPro(call:(String?)->Unit): Unit {
 
 
 fun Activity.openCameraPro(call:(Bitmap?)->Unit): Unit {
-    if (!checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.CAMERA)){
-        signPermission(Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.CAMERA)
-        return
-    }
+
     PictureSelector.create(this)
-        .openCamera(ofImage())
-        .maxSelectNum(1)
-        .minSelectNum(1)
-        .isCompress(true)
-        .isWeChatStyle(true)
+        .openCamera(SelectMimeType.ofImage())
         .forResult(object : OnResultCallbackListener<LocalMedia> {
-            override fun onResult(result: MutableList<LocalMedia>) {
+            override fun onResult(result: ArrayList<LocalMedia>) {
                 //  if(result[0]!=null&&result[0].path!=null)
                 val filePath =
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
-                        result[0].androidQToPath
+                        result[0].availablePath
                     } else {
                         result[0].realPath
                     }
